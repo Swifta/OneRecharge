@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">One Recharge</string>
+    <string name="finish">FINISH</string>
+    <string name="skip">SKIP</string>
+
+    <string-array name="onboarding_title">
+        <item>Recharge with ease</item>
+        <item>View your recharge history</item>
+        <item>Save your card details</item>
+    </string-array>
+
+    <string-array name="onboarding_description">
+        <item>Recharge your mobile phone with no hassle and in no time</item>
+        <item>Manage your weekly and monthly recharge expenses</item>
+        <item>Register your card details for faster checkout</item>
+    </string-array>
 </resources>
