@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">One Recharge</string>
+
+    <!-- Onboarding Activity -->
     <string name="finish">FINISH</string>
     <string name="skip">SKIP</string>
 
@@ -14,4 +16,50 @@
         <item>Manage your weekly and monthly recharge expenses</item>
         <item>Register your card details for faster checkout</item>
     </string-array>
+
+    <!-- MainActivity -->
+    <string name="customer">Customer</string>
+    <string name="Agent">Agent</string>
+
+    <!-- CustomerRegistrationActivity -->
+    <string name="sign_up">Sign Up</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="save_and_continue">SAVE AND CONTINUE</string>
+    <string name="log_in">Log In</string>
+    <string name="fifty_percent">50%</string>
+    <string name="hundred_percent">100%</string>
+    <string name="first_name_empty_error">Please enter your first name</string>
+    <string name="last_name_empty_error">Please enter your last name</string>
+    <string name="password_empty_error">Please enter your password</string>
+    <string name="email_empty_error">Please enter your email address</string>
+    <string name="email_invalid_error">Please enter a valid email
+        address</string>
+
+    <string name="credit_card_number">Credit Card Number</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="cvv">CVV</string>
+    <string name="submit">Submit</string>
+    <string name="back">Back</string>
+
+    <!-- AgentRegistrationActivity -->
+    <string name="internet_error">Please check your internet connection
+    and try again.</string>
+    <string name="agent_server_error">An error occurred :( Our engineers
+        are looking into it, we promise.</string>
+    <string name="agent_login_error">Login unsuccessful. Please check your
+        email address or password and try again.</string>
+    <string name="title_activity_agent">AgentActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

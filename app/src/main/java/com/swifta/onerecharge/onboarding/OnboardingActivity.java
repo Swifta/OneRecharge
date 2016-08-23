@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.chyrta.onboarder.OnboarderActivity;
 import com.chyrta.onboarder.OnboarderPage;
+import com.swifta.onerecharge.CustomerRegistrationActivity;
 import com.swifta.onerecharge.MainActivity;
 import com.swifta.onerecharge.R;
 

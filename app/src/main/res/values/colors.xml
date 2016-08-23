@@ -6,4 +6,6 @@
     <color name="onboardingTitle">#747474</color>
     <color name="onboardingDescription">#aeaeae</color>
     <color name="onboardingActiveIndicator">#0E96B9</color>
+    <color name="colorGray">#cecece</color>
+    <color name="colorGrayDark">#8b8b8b</color>
 </resources>

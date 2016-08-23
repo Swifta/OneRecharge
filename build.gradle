@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,11 +28,17 @@ ext {
     minSdkVersion = 16
     targetSdkVersion = 24
     compileSdkVersion = 24
-    buildToolsVersion = '24.1.1'
+    buildToolsVersion = '24.2.0'
 
     // dependencies versions
-    supportLibraryVersion = '24.1.1'
-
+    supportLibraryVersion = '24.2.0'
+    butterKnifeVersion = '8.2.1'
+    retrofitVersion = '2.1.0'
+    converterGsonVersion = '2.0.0'
+    adapterRxJava = '2.0.2'
+    rXAndroidVersion = '1.2.1'
+    rXJavaVersion = '1.1.6'
+    gsonVersion = '2.6.2'
 }
 
 
