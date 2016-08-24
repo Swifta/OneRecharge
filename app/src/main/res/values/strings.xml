@@ -20,23 +20,32 @@
     <!-- MainActivity -->
     <string name="customer">Customer</string>
     <string name="Agent">Agent</string>
+    <string name="internet_error">Please check your internet connection
+    and try again.</string>
 
     <!-- CustomerRegistrationActivity -->
     <string name="sign_up">Sign Up</string>
+    <string name="sign_up_upload">Sign Up - Upload</string>
     <string name="firstname">First Name</string>
     <string name="lastname">Last Name</string>
     <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="save_and_continue">SAVE AND CONTINUE</string>
     <string name="log_in">Log In</string>
+    <string name="twenty_five_percent">25%</string>
     <string name="fifty_percent">50%</string>
+    <string name="seventy_five_percent">75%</string>
     <string name="hundred_percent">100%</string>
     <string name="first_name_empty_error">Please enter your first name</string>
     <string name="last_name_empty_error">Please enter your last name</string>
+    <string name="other_names_empty_error">Please enter your other
+        names</string>
     <string name="password_empty_error">Please enter your password</string>
     <string name="email_empty_error">Please enter your email address</string>
     <string name="email_invalid_error">Please enter a valid email
         address</string>
+    <string name="phone_number_empty_error">Please enter your phone
+        number</string>
 
     <string name="credit_card_number">Credit Card Number</string>
     <string name="month">Month</string>
@@ -46,12 +55,49 @@
     <string name="back">Back</string>
 
     <!-- AgentRegistrationActivity -->
-    <string name="internet_error">Please check your internet connection
-    and try again.</string>
+    <string name="agent_last_name">Last Name</string>
+    <string name="agent_other_names">Other Names</string>
+    <string name="personal_phone">Personal Phone Number</string>
+    <string name="alternate_phone">Alternate Phone Number</string>
+    <string name="agent_company_name">Company Name</string>
+    <string name="agent_company_registration_number">Company
+        Registration Number</string>
+    <string name="agent_company_telephone_number">Company Telephone
+        Number</string>
+    <string name="agent_contact_name">Company Contact Name</string>
+    <string name="agent_contact_telephone_number">Contact Person
+    Phone Number</string>
+    <string name="business_certificate">Business CAC Certificate</string>
+    <string name="means_of_identification">Means of identification</string>
+    <string name="proof_of_address">Proof of address</string>
+    <string name="type_of_agent">Type of Agent</string>
+    <string name="individual">Individual</string>
+    <string name="business">Business</string>
+    <string name="class_of_account">Class of Account</string>
+    <string name="discount_based">Discount</string>
+    <string name="commissioned_based">Commission</string>
+    <string name="enter_referral_id">Have a valid referral ID?</string>
+    <string name="agree_to_terms_and_conditions">Agree to the terms and conditions</string>
+    <string name="agent_is_aware">Agent is aware of this profile modification</string>
+    <string name="upload_cac_certificate">Please upload your Business CAC
+        Certificate</string>
+    <string name="upload_means_of_identification">Please upload your means of
+        identification</string>
+    <string name="upload_proof_of_address">Please upload your proof of
+        address</string>
+    <string name="individual_agent">Individual Agent</string>
+    <string name="business_agent">Business Agent</string>
+    <string name="discount_based_agent">Discount Based Agent</string>
+    <string name="commission_based_agent">Commissioned Based Agent</string>
+    <string name="please_accept_terms_and_conditions">Please accept our terms
+        and conditions</string>
+
     <string name="agent_server_error">An error occurred :( Our engineers
         are looking into it, we promise.</string>
     <string name="agent_login_error">Login unsuccessful. Please check your
         email address or password and try again.</string>
+
+
     <string name="title_activity_agent">AgentActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
