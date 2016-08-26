@@ -145,17 +145,25 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
     private String authToken;
     private SharedPreferences sharedPreferences;
+    private boolean isAgentLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = getSharedPreferences(getString(R
+                .string.shared_preference_name), Context.MODE_PRIVATE);
+        isAgentLoggedIn = sharedPreferences.getBoolean(getString(R.string
+                .is_agent_logged_in), false);
+
+        if (isAgentLoggedIn) {
+            switchToAgentActivity();
+        }
+
         setContentView(R.layout.activity_agent_registration);
         ButterKnife.bind(this);
 
         getSupportActionBar().hide();
-
-        sharedPreferences = getSharedPreferences(getString(R
-                .string.shared_preference_name), Context.MODE_PRIVATE);
     }
 
     @OnClick(R.id.agent_signup_button)
@@ -247,11 +255,8 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                         if (agentRegistration.getStatus() == 1) {
                             authToken = agentRegistration.getData();
                             saveAgentLoginResult();
-                            Intent intent = new Intent
-                                    (AgentRegistrationActivity.this,
-                                            AgentActivity.class);
-                            startActivity(intent);
-                            finish();
+                            saveAgentState();
+                            switchToAgentActivity();
                         } else {
                             agentLoginProgress.setVisibility(View.GONE);
                             agentLogInView.setVisibility(View.VISIBLE);
@@ -449,5 +454,18 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                 loginEmailAddress);
         editor.putString(getResources().getString(R.string.saved_auth_token), authToken);
         editor.apply();
+    }
+
+    private void saveAgentState() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.is_agent_logged_in), true);
+        editor.apply();
+    }
+
+    private void switchToAgentActivity() {
+        Intent intent = new Intent(AgentRegistrationActivity.this,
+                AgentActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

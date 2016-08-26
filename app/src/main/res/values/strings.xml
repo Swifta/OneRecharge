@@ -109,6 +109,7 @@
     <string name="shared_preference_name">shared_pref</string>
     <string name="saved_email_address">saved_email_address</string>
     <string name="saved_auth_token">saved_auth_token</string>
+    <string name="is_agent_logged_in">is_agent_logged_in</string>
 
 
     <string name="title_activity_agent">Welcome, agent!</string>
