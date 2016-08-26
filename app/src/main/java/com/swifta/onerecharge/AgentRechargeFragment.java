@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.agentplatform;
+package com.swifta.onerecharge;
 
 
 import android.os.Bundle;

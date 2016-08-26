@@ -29,13 +29,21 @@
         <activity android:name=".agentregistration.AgentRegistrationActivity">
         </activity>
         <activity
-            android:name=".agentplatform.AgentActivity"
+            android:name=".AgentActivity"
             android:label="@string/title_activity_agent"
             android:parentActivityName=".agentregistration.AgentRegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.swifta.onerecharge.agentregistration.AgentRegistrationActivity"/>
+        </activity>
+        <activity
+            android:name=".resetagentpassword.ProfileActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".AgentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AgentActivity"/>
         </activity>
     </application>
 

@@ -1,6 +1,8 @@
 package com.swifta.onerecharge.agentregistration;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -14,7 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import com.swifta.onerecharge.R;
-import com.swifta.onerecharge.agentplatform.AgentActivity;
+import com.swifta.onerecharge.AgentActivity;
+import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.EmailRegexValidator;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
@@ -140,6 +143,9 @@ public class AgentRegistrationActivity extends AppCompatActivity {
     String referralId;
     boolean isTermsAndConditionsAccepted;
 
+    private String authToken;
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,6 +153,9 @@ public class AgentRegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getSupportActionBar().hide();
+
+        sharedPreferences = getSharedPreferences(getString(R
+                .string.shared_preference_name), Context.MODE_PRIVATE);
     }
 
     @OnClick(R.id.agent_signup_button)
@@ -211,9 +220,9 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                 .baseUrl(Url.BASE_URL)
                 .build();
 
-        AgentRegistrationService agentRegistrationService = retrofit
-                .create(AgentRegistrationService.class);
-        final Observable<AgentRegistration> agent = agentRegistrationService
+        AgentService agentService = retrofit
+                .create(AgentService.class);
+        final Observable<AgentRegistration> agent = agentService
                 .logAgentIn(loginEmailAddress, password);
 
         agent.subscribeOn(Schedulers.io())
@@ -236,6 +245,8 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onNext(AgentRegistration agentRegistration) {
                         if (agentRegistration.getStatus() == 1) {
+                            authToken = agentRegistration.getData();
+                            saveAgentLoginResult();
                             Intent intent = new Intent
                                     (AgentRegistrationActivity.this,
                                             AgentActivity.class);
@@ -430,5 +441,13 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                 // TODO: performSignUpNetworkRequest
             }
         }
+    }
+
+    private void saveAgentLoginResult() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getResources().getString(R.string.saved_email_address),
+                loginEmailAddress);
+        editor.putString(getResources().getString(R.string.saved_auth_token), authToken);
+        editor.apply();
     }
 }

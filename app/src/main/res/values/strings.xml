@@ -22,6 +22,7 @@
     <string name="Agent">Agent</string>
     <string name="internet_error">Please check your internet connection
     and try again.</string>
+    <string name="logout">Logout</string>
 
     <!-- CustomerRegistrationActivity -->
     <string name="sign_up">Sign Up</string>
@@ -91,14 +92,26 @@
     <string name="commission_based_agent">Commissioned Based Agent</string>
     <string name="please_accept_terms_and_conditions">Please accept our terms
         and conditions</string>
-
     <string name="agent_server_error">An error occurred :( Our engineers
         are looking into it, we promise.</string>
     <string name="agent_login_error">Login unsuccessful. Please check your
         email address or password and try again.</string>
 
+    <!-- ProfileActivity -->
+    <string name="enter_old_password">Enter your old password</string>
+    <string name="enter_new_password">Enter your new password</string>
+    <string name="password_reset_successful">Your password has been
+        reset successfully.</string>
+    <string name="password_reset_failed">Authentication Failed, Invalid
+        Account or Token</string>
 
-    <string name="title_activity_agent">AgentActivity</string>
+    <!-- Shared Preferences -->
+    <string name="shared_preference_name">shared_pref</string>
+    <string name="saved_email_address">saved_email_address</string>
+    <string name="saved_auth_token">saved_auth_token</string>
+
+
+    <string name="title_activity_agent">Welcome, agent!</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
