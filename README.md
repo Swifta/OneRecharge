@@ -1,6 +1,7 @@
 # OneRecharge
 
-One Recharge is an Android app that allows users and agents recharge their mobile phones
+One Recharge is a system that allows users and agents perform recharge transactions on their mobile
+phones.
 
 Knowing full well that the Virtual Airtime top up in the country has not fully been harnessed to its potential, OneRecharge® is one application that can bridge this gap and further expand the outreach of Virtual Top up. Such bottlenecks like occasional unavailability of recharge cards and/or agents and the time consuming mundane task of having to move around to buy airtime can be eradicated through the sales of all network airtime from a common platform. 
 
