@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/agent_upload_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_half_margin"
+        android:layout_marginTop="@dimen/activity_half_margin"
+        android:text="@string/sign_up_upload"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sign_up_text_size"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/business_certificate_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/business_certificate_success_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_success"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/business_certificate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_half_margin"
+            android:background="@drawable/white_button_selector"
+            android:padding="@dimen/activity_margin"
+            android:text="@string/business_certificate"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/identification_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/identification_success_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_success"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/upload_identification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:background="@drawable/white_button_selector"
+            android:padding="@dimen/activity_half_margin"
+            android:text="@string/means_of_identification"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/proof_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/proof_success_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_success"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/upload_proof_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:background="@drawable/white_button_selector"
+            android:padding="@dimen/activity_half_margin"
+            android:text="@string/proof_of_address"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <Button
+            android:id="@+id/agent_upload_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/white_button_selector"
+            android:text="@string/back"
+            android:textColor="@color/colorPrimary"/>
+
+        <Button
+            android:id="@+id/agent_upload_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/blue_button_selector"
+            android:text="@string/button.next"
+            android:textColor="@android:color/white"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/upload_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_half_margin"
+        android:max="100"/>
+
+    <TextView
+        android:id="@+id/upload_progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorAccent"/>
+
+</LinearLayout>

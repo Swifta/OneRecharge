@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "117476557165",
+    "firebase_url": "https://onerecharge-f844e.firebaseio.com",
+    "project_id": "onerecharge-f844e",
+    "storage_bucket": "onerecharge-f844e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117476557165:android:58425f84afefa34f",
+        "android_client_info": {
+          "package_name": "com.swifta.onerecharge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117476557165-aikgavcelckjqp8kmp4f2c98i44vs0c4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbwpQYRT7F6KJpU5OrEoH_NwhWsf8dJQg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

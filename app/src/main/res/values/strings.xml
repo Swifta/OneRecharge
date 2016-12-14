@@ -1,0 +1,256 @@
+<resources>
+    <string name="app_name">One Recharge</string>
+
+    <!-- Onboarding Activity -->
+    <string name="finish">FINISH</string>
+    <string name="skip">SKIP</string>
+
+    <string-array name="onboarding_title">
+        <item>Recharge with ease</item>
+        <item>View your recharge history</item>
+        <item>Save your card details</item>
+    </string-array>
+
+    <string-array name="onboarding_description">
+        <item>Recharge your mobile phone with no hassle and in no time</item>
+        <item>Manage your weekly and monthly recharge expenses</item>
+        <item>Register your card details for faster checkout</item>
+    </string-array>
+
+    <!-- MainActivity -->
+    <string name="customer">Customer</string>
+    <string name="Agent">Agent</string>
+    <string name="internet_error">Please check your internet connection and try again.</string>
+    <string name="logout">Logout</string>
+
+    <!-- CustomerRegistrationActivity -->
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_upload">Sign Up - Upload</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="save_and_continue">SAVE AND CONTINUE</string>
+    <string name="log_in">Log In</string>
+    <string name="twenty_five_percent">25%</string>
+    <string name="thirty_three_percent">33%</string>
+    <string name="fifty_percent">50%</string>
+    <string name="sixty_seven_percent">67%</string>
+    <string name="seventy_five_percent">75%</string>
+    <string name="hundred_percent">100%</string>
+    <string name="first_name_empty_error">Please enter your first name</string>
+    <string name="last_name_empty_error">Please enter your last name</string>
+    <string name="other_names_empty_error">Please enter your other names</string>
+    <string name="password_empty_error">Please enter your password</string>
+    <string name="email_empty_error">Please enter your email address</string>
+    <string name="email_invalid_error">Please enter a valid email address</string>
+    <string name="phone_number_empty_error">Please enter your phone number</string>
+
+    <string name="credit_card_number">Credit Card Number</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="cvv">CVV</string>
+    <string name="submit">Submit</string>
+    <string name="back">Back</string>
+
+    <!-- AgentRegistrationActivity -->
+    <string name="agent_last_name">Last Name</string>
+    <string name="agent_other_names">Other Names</string>
+    <string name="personal_phone">Personal Phone Number</string>
+    <string name="alternate_phone">Alternate Phone Number</string>
+    <string name="agent_company_name">Company Name</string>
+    <string name="agent_company_registration_number">Company Registration Number</string>
+    <string name="agent_company_telephone_number">Company Telephone Number</string>
+    <string name="agent_contact_name">Company Contact Name</string>
+    <string name="agent_contact_telephone_number">Contact Person Phone Number</string>
+    <string name="business_certificate">Business CAC Certificate</string>
+    <string name="means_of_identification">Means of identification</string>
+    <string name="proof_of_address">Proof of address</string>
+    <string name="type_of_agent">What type of agent are you?</string>
+    <string name="individual">Individual</string>
+    <string name="business">Business</string>
+    <string name="class_of_account">Class of Account</string>
+    <string name="discount_based">Discount</string>
+    <string name="commissioned_based">Commission</string>
+    <string name="enter_referral_id">Have a valid referral ID?</string>
+    <string name="agree_to_terms_and_conditions">Agree to the terms and conditions</string>
+    <string name="agent_is_aware">Agent is aware of this profile modification</string>
+    <string name="upload_cac_certificate">Please upload your Business CAC Certificate</string>
+    <string name="upload_means_of_identification">Please upload your means of
+        identification</string>
+    <string name="upload_proof_of_address">Please upload your proof of address</string>
+    <string name="individual_agent">Individual Agent</string>
+    <string name="business_agent">Business Agent</string>
+    <string name="discount_based_agent">Discount Based Agent</string>
+    <string name="commission_based_agent">Commissioned Based Agent</string>
+    <string name="please_accept_terms_and_conditions">Please accept our terms and
+        conditions</string>
+    <string name="agent_server_error">An error occurred :( Our engineers
+        are looking into it, we promise.</string>
+    <string name="user_login_error">Login unsuccessful. Please check your email address or
+        password and try again.</string>
+
+    <!-- CustomerRegistrationActivity -->
+    <string name="customer_fullname">Full name</string>
+    <string name="customer_phone_number">Phone number</string>
+    <string name="fullname_empty_error">Please enter your full name</string>
+    <string name="user_signup_error">Your sign up attempt was unsuccessful. Please try again
+        with another email address.</string>
+
+    <!-- TopUpActivity -->
+    <string name="promo">Promo</string>
+    <string name="discounts">Discounts</string>
+    <string name="recharged">Recharged</string>
+    <string name="reference">Reference</string>
+    <string name="description">Description</string>
+    <string name="reference_empty_error">Please enter a reference</string>
+    <string name="customer_topup_error">Top up failed. Please try again later.</string>
+
+    <!-- ProfileActivity -->
+    <string name="enter_old_password">Enter your old password</string>
+    <string name="enter_new_password">Enter your new password</string>
+    <string name="password_reset_successful">Your password has been reset successfully.</string>
+    <string name="password_reset_failed">Authentication Failed, Invalid Account or Token</string>
+
+    <!-- Shared Preferences Agents -->
+    <string name="agent_shared_preference_name">agent_shared_pref</string>
+    <string name="saved_email_address">saved_email_address</string>
+    <string name="saved_auth_token">saved_auth_token</string>
+    <string name="is_user_new">is_user_new</string>
+    <string name="is_agent_logged_in">is_agent_logged_in</string>
+    <string name="saved_wallet_balance">saved_wallet_balance</string>
+    <string name="saved_msisdn_purchase_limit">saved_msisdn_purchase_limit</string>
+    <string name="saved_minimum_wallet_balance">saved_minimum_wallet_balance</string>
+    <string name="saved_airtime_purchase_discount">saved_airtime_purchase_discount</string>
+    <string name="saved_airtime_sold_commission">saved_airtime_sold_commission</string>
+    <string name="saved_referral_id">saved_referral_id</string>
+    <string name="saved_agent_type">saved_agent_type</string>
+    <string name="saved_agent_class">saved_agent_class</string>
+    <string name="saved_date_and_time">saved_date_and_time</string>
+    <string name="saved_total_transactions">saved_total_transactions</string>
+    <string name="saved_successful_transactions">saved_successful_transactions</string>
+    <string name="saved_total_amount_sold">saved_total_amount_sold</string>
+    <string name="saved_last_successful_amount">saved_last_successful_amount</string>
+    <string name="saved_last_successful_time">saved_last_successful_time</string>
+    <string name="saved_total_failed_transaction">saved_total_failed_transaction</string>
+    <string name="saved_total_failed_transaction_amount">saved_total_failed_transaction_amount</string>
+    <string name="saved_last_failed_amount">saved_last_failed_amount</string>
+    <string name="saved_last_failed_time">saved_last_failed_time</string>
+    <string name="saved_failed_transaction_description">saved_failed_transaction_description</string>
+    <string name="saved_agent_api_key">saved_agent_api_key</string>
+
+    <!-- Shared Preferences Customers -->
+    <string name="customer_shared_preference_name">customer_shared_pref</string>
+    <string name="saved_customer_auth_token">saved_customer_auth_token</string>
+    <string name="saved_customer_id">saved_customer_id</string>
+    <string name="saved_customer_fullname">saved_customer_fullname</string>
+    <string name="saved_customer_email_address">saved_customer_email_address</string>
+    <string name="saved_customer_telephone">saved_customer_telephone</string>
+    <string name="saved_customer_password">saved_customer_password</string>
+    <string name="saved_customer_linked_agent_id">saved_customer_linked_agent_id</string>
+    <string name="saved_customer_linked_agent_country">saved_customer_linked_agent_country</string>
+    <string name="saved_customer_promo">saved_customer_promo</string>
+    <string name="saved_customer_discount">saved_customer_discount</string>
+    <string name="saved_customer_recharged">saved_customer_recharged</string>
+    <string name="saved_customer_balance">saved_customer_balance</string>
+    <string name="saved_customer_created">saved_customer_created</string>
+
+
+    <string name="title_activity_agent"/>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Amazon Bucket Credentials -->
+    <string name="amazon_access_key_id">AKIAJUSJYLOPPRIL27XA</string>
+    <string name="amazon_secret_access_key">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</string>
+
+    <!-- AgentActivity -->
+    <!-- Hamburger Menu -->
+    <string name="dashboard">Dashboard</string>
+    <string name="quick_recharge">Quick Recharge</string>
+    <string name="scheduled_recharge">Scheduled Recharge</string>
+    <string name="quick_recharge_history">Quick Recharge History</string>
+    <string name="schedule_history">Scheduled Recharge History</string>
+
+    <!-- Dashboard -->
+    <string name="wallet_balance">₦%1$s</string>
+    <string name="top_up_wallet">Topup Wallet</string>
+
+    <!-- Profile Rules and Limits -->
+    <string name="profile_rules">Profile Rules and Limits</string>
+    <string name="msisdn_purchase_limit">MSISDN purchase limit (daily)</string>
+    <string name="msisdn_purchase_limit_value">%1$s</string>
+    <string name="minimum_wallet_ballance">Minimum wallet balance</string>
+    <string name="minimum_wallet_ballance_value">%1$s</string>
+    <string name="airtime_purchase_discount">Airtime purchase discount (%)</string>
+    <string name="airtime_purchase_discount_value">%1$s</string>
+    <string name="airtime_sold_commission">Airtime sold commission (%)</string>
+    <string name="airtime_sold_commission_value">%1$s</string>
+
+    <!-- Profile Summary -->
+    <string name="profile_summary">Profile Summary</string>
+    <string name="your_referral_id">Your referral ID:</string>
+    <string name="your_referral_id_value">%1$s</string>
+    <string name="agent_type">Agent Type</string>
+    <string name="agent_type_value">%1$s</string>
+    <string name="agent_class">Agent Class</string>
+    <string name="agent_class_value">%1$s</string>
+    <string name="date_and_time_created">Date and Time Created</string>
+    <string name="date_and_time_created_value">%1$s</string>
+    <string name="total_transactions">Total Transactions</string>
+    <string name="total_transactions_value">%1$d</string>
+    <string name="total_successful_transactions">Total Transactions</string>
+    <string name="total_successful_transactions_value">%1$d</string>
+    <string name="total_amount_sold">Total Amount Sold</string>
+    <string name="total_amount_sold_value">₦%1$d</string>
+    <string name="last_successful_transaction_amount">Last Transaction Amount</string>
+    <string name="last_successful_transaction_amount_value">₦%1$d</string>
+    <string name="last_successful_transaction_time">Last Transaction Time</string>
+    <string name="last_successful_transaction_time_value">%1$s</string>
+    <string name="total_failed_transactions">Total Transactions</string>
+    <string name="total_failed_transactions_value">%1$d</string>
+    <string name="total_failed_transaction_amount">Total Amount Failed</string>
+    <string name="total_failed_transaction_amount_value">₦%1$d</string>
+    <string name="last_failed_transaction_amount">Last Transaction Amount</string>
+    <string name="last_failed_transaction_amount_value">₦%1$d</string>
+
+    <string name="last_failed_transaction_time">Last Transaction Time</string>
+    <string name="last_failed_transaction_time_value">%1$s</string>
+    <string name="failed_transaction_description">Failed Transaction Description</string>
+    <string name="failed_transaction_description_value">%1$s</string>
+
+    <string name="general_information">General Information</string>
+    <string name="successful_transactions">Successful transactions</string>
+    <string name="failed_transactions">Failed transactions</string>
+
+    <!-- QuickRechargeFragment -->
+    <string name="quick_recharge_phone_hint">e.g. 08012345678</string>
+    <string name="amount_hint">Amount</string>
+    <string name="recharge">Recharge</string>
+    <string name="browse">Browse</string>
+    <string name="amount_empty_error">Please enter an amount</string>
+    <string name="amount_low_error">Please enter an amount greater than 50</string>
+    <string name="phone_empty_error">Please enter a phone number</string>
+    <string name="phone_length_error">Please enter an 11 digit number</string>
+
+    <!-- ScheduleRechargeFragment -->
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="add_new_schedule">Add new schedule</string>
+
+    <!-- Sort menu -->
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_recipient">Sort by recipient</string>
+    <string name="sort_by_network">Sort by network</string>
+    <string name="sort_by_amount">Sort by amount</string>
+    <string name="sort_by_status">Sort by status</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_customer">CustomerActivity</string>
+
+</resources>

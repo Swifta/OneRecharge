@@ -1,0 +1,25 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- CustomerRegistrationActivity -->
+    <dimen name="sign_up_text_size">24sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Agent Dashboard -->
+    <dimen name="wallet_balance_text_size">40sp</dimen>
+    <dimen name="top_up_button_text_size">20sp</dimen>
+    <dimen name="profile_rules_text_size">16sp</dimen>
+
+    <dimen name="horizontal_line_height">0.5dp</dimen>
+    <dimen name="horizontal_line_margin">16dp</dimen>
+
+    <!-- Customer Dashboard -->
+    <dimen name="customer_email_header_size">16sp</dimen>
+    <dimen name="customer_image_header_height">75dp</dimen>
+
+</resources>

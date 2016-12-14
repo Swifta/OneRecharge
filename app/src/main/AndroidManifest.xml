@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.swifta.onerecharge">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <application
+        android:name=".OneRechargeApplication"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/my_backup_rules"
+        android:icon="@drawable/onerecharge"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".customerregistration.CustomerRegistrationActivity"/>
+        <activity
+            android:name=".onboarding.OnboardingActivity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".agentregistration.AgentRegistrationActivity"/>
+        <activity
+            android:name=".AgentActivity"
+            android:label="@string/title_activity_agent"
+            android:parentActivityName=".agentregistration.AgentRegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.swifta.onerecharge.agentregistration.AgentRegistrationActivity"/>
+        </activity>
+        <activity
+            android:name=".resetagentpassword.ProfileActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".AgentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AgentActivity"/>
+        </activity>
+        <activity android:name=".onboarding.LauncherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CustomerActivity"
+            android:label="@string/title_activity_customer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".customertopup.TopUpActivity">
+        </activity>
+    </application>
+
+</manifest>

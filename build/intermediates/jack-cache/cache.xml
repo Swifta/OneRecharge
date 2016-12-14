@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-cc54f7a67882ca908bd81ac26da9d1ad35ce12c9.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.0.0/49eb3ad545e7701234e4dd83db8dc1344b577f23/converter-gson-2.0.0.jar"
+        revision="25.0.0"
+        sha1="49eb3ad545e7701234e4dd83db8dc1344b577f23">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/converter-gson-2.0.0-c9f89fcc9ebabe0854c444cf50539c182f443b56.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-820e954798a92ea8e027883e855ae657d996193c.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="8a372c4191f80489770a231f7be4820b204b886a">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-38d4ad86f442b62ae824001b0cf6448598cef07b.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
+        revision="25.0.0"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/support-annotations-25.0.0-9d4ea301aea04ed5eb1bfd8be7fd602655cd0993.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        revision="25.0.0"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/internal_impl-25.0.0-9fb6ee2e4edf540662b82a72d037ca8657132518.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-crash/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="b4671be3d1288bf4e5f527cd33e42909fbe4ecc6">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-c2aa2a2618dd948c36e9bf53279080df72301fe0.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        revision="25.0.0"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/internal_impl-25.0.0-b6121fe0f62e3073768d236c2e61455c2137fbbd.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.robinhood.spark/spark/1.1.2/jars/classes.jar"
+        revision="25.0.0"
+        sha1="88998b1d461a43d0d81167d8da7cc6ce3cf12af9">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-0d6c72585d2473664acd8adc0b85c901dcdfd61b.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-core/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="e7cd5eec60e1e914bb56df6fd8fc1a34faf9ff54">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-f2731fc6983c099b70831fa6e9b4ba63de8291c3.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/design/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="26384be22ddc74cfe197ebda9edbc7d1fd8bd537">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-88b79cb51f3b8c3bad0662c96ac00806c111dea3.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.1.6/2586312cd2b8a511e4c6236736f5a039fc0f2273/rxjava-1.1.6.jar"
+        revision="25.0.0"
+        sha1="2586312cd2b8a511e4c6236736f5a039fc0f2273">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/rxjava-1.1.6-7ae5e7d962ca8dca95371e074aafa6daa1d74651.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/org.threeten/threetenbp/1.3.2/3383b1b96ab32688073ef99dd7d53b3d03f2ccde/threetenbp-1.3.2-no-tzdb.jar"
+        revision="25.0.0"
+        sha1="3383b1b96ab32688073ef99dd7d53b3d03f2ccde">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/threetenbp-1.3.2-no-tzdb-7eba52ba7adfa9e0671091006e4ba14f9a963896.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="c61641e333fa88da21758bab8cc28ee16604b05f">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-f1ce26abad42ebd417ac8a05239d31773272d422.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="6b6f292b8b951dcf2ecf2b20853e3eabc7d65c48">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-5e2b38827f3f6f32e647945e106ebb562ae862ca.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.jakewharton/butterknife/8.3.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="9fc69c9eb208228b7feef1d3108ef28a16cc3abf">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-3311946f880183f295bb8ef3e6f8ca0918f4d785.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-264789871534d551ee249a12c702d92a1028b207.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.3.0/2b802460eea20f8f2ad9c08c74e0f14718e88aa9/okhttp-3.3.0.jar"
+        revision="25.0.0"
+        sha1="2b802460eea20f8f2ad9c08c74e0f14718e88aa9">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/okhttp-3.3.0-a6b68aa04c20ff5d7a3f00c607089aa3be007a08.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.github.chyrta/AndroidOnboarder/0.6/jars/classes.jar"
+        revision="25.0.0"
+        sha1="847ee2c03aff4e2f0e30c9201d0b0b119bbed6dd">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-67a08a1e197918916694b22e65871a6072f90257.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife-annotations/8.3.0/e1707f3752463c5d240f427240a54762d7b60474/butterknife-annotations-8.3.0.jar"
+        revision="25.0.0"
+        sha1="e1707f3752463c5d240f427240a54762d7b60474">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/butterknife-annotations-8.3.0-fb5f990e9c0beb60d15532ec975d07d551ab098f.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
+        revision="25.0.0"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/javax.inject-1-0268bf8a49a42d45f55d6908e7f310eb437c127c.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-798b9b991572da221a313f6ddee1bce951927da4.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        revision="25.0.0"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/internal_impl-25.0.0-2d85ebe224cba60600edca14b2dbb47c01420328.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.google.dagger/dagger/2.8/55a1aa1cdcfd06b9950ca856e2bc2790e105146a/dagger-2.8.jar"
+        revision="25.0.0"
+        sha1="55a1aa1cdcfd06b9950ca856e2bc2790e105146a">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/dagger-2.8-b01adc6901712610dcf451a46599b82c01bcb743.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.1.0/2de7cd8b95b7021b1d597f049bcb422055119f2c/retrofit-2.1.0.jar"
+        revision="25.0.0"
+        sha1="2de7cd8b95b7021b1d597f049bcb422055119f2c">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/retrofit-2.1.0-51ce84a05a580b94b62722d5c9cd37929c03387b.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="190a642ba16d1421296a4d794606279b80039c59">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-135b0eb74c05fbe24612fb3bb750f22756d3b2cc.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-aa7d54f98a1036bab45fcf2de4152375591d20e0.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
+        revision="25.0.0"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/gson-2.6.2-d181c9f0a674436763075a5e186e2ba4e6dcfc9f.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="9ff04cc3470178a44512624036751a803418c2ca">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-c1cea3b1674c42b1a170df90cc32f03c250bcd1d.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-b4213850a6ece6b6eac875a4fba19ae69ead2bf5.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava/2.0.2/a60c039ba54c73d1133b72178e1b04133c73d13d/adapter-rxjava-2.0.2.jar"
+        revision="25.0.0"
+        sha1="a60c039ba54c73d1133b72178e1b04133c73d13d">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/adapter-rxjava-2.0.2-e9f3b405c3fc4ef5e31e821f6966ff27b2cee7c3.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-s3/2.3.7/dc09ccbd0d8d4c6ce512912b37cb9c3b52267042/aws-android-sdk-s3-2.3.7.jar"
+        revision="25.0.0"
+        sha1="dc09ccbd0d8d4c6ce512912b37cb9c3b52267042">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/aws-android-sdk-s3-2.3.7-7e4ee9dacf3d60e3c11bf313310e047fc2f31f01.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-a1a183cb704ce9ac0c0967dbaf91cdb68cdab88d.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/transition/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="0c6d948e6cb9ea6f535d175fb61ba2930719c0e9">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-6b6ed94504b7767ea4d3eb943ce15faf4b504234.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="5e497d60f0cb6ce87c458ac5420a46d0fed49bd0">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-52934afca274f073e856a9108744101840f154b8.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-e32d81a575ea2f0e4f78717cb8cbd1fd0ee9b4a3.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.jakewharton.threetenabp/threetenabp/1.0.4/jars/classes.jar"
+        revision="25.0.0"
+        sha1="6c689b6b0a0c6219bdd55eec9009b2ea1d33116e">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-5e25f59bacfbd06f096dc89c61c7bae1a8e2f6df.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        revision="25.0.0"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/internal_impl-25.0.0-ed717e8145f6ec8180095915ea27f5be99937b78.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="bf2e1838e4428616c1aa26edf43de72b5b99bf84">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-fd51dd27ee477890075e691e4df1465e57ddad27.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-1007fb7b94313ada4ce9c1913e0b2f3c91240a59.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.8.0/jars/classes.jar"
+        revision="25.0.0"
+        sha1="9f6d236bac26d02b410e4ee186ba517ace5ee661">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-849a1340d2c968776cffd5f07f545ebe277d9b5b.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.2.1/jars/classes.jar"
+        revision="25.0.0"
+        sha1="5a2386ad9bfff580b206a7fe305cdccd00798159">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/classes-5268daa5506e0c17b457c0a395615117863a4741.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-android-sdk-core/2.3.7/856d750e6886d89c6223e15c95dd23a0d0ccf85b/aws-android-sdk-core-2.3.7.jar"
+        revision="25.0.0"
+        sha1="856d750e6886d89c6223e15c95dd23a0d0ccf85b">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/aws-android-sdk-core-2.3.7-89df04e8f2a2dcdc252ec8ed4658f812a3709134.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        revision="25.0.0"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/internal_impl-25.0.0-1a525e102219f9e019c199f2afebfed854b4a7e7.jar" />
+    </item>
+    <item
+        jar="/Users/moyinoluwa/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.8.0/5ea7af56cc7c567ed9856d99efb30740e9b17ff/okio-1.8.0.jar"
+        revision="25.0.0"
+        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
+        <dex dex="/Users/moyinoluwa/Desktop/OneRecharge/app/build/intermediates/transforms/preJackPackagedLibraries/debug/jars/8000/1f/okio-1.8.0-958210170b05c84b96e906cd8e77ab2563468797.jar" />
+    </item>
+
+</items>

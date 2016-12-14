@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort_by_date"
+        android:orderInCategory="100"
+        android:title="@string/sort_by_date"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_by_recipient"
+        android:orderInCategory="200"
+        android:title="@string/sort_by_recipient"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_by_network"
+        android:orderInCategory="200"
+        android:title="@string/sort_by_network"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_by_amount"
+        android:orderInCategory="400"
+        android:title="@string/sort_by_amount"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sort_by_status"
+        android:orderInCategory="500"
+        android:title="@string/sort_by_status"
+        app:showAsAction="never"/>
+
+</menu>

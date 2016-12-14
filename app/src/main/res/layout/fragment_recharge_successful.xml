@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="@dimen/activity_margin"
+              tools:context=".agentquickrecharge.RechargeResponseFragment">
+
+    <ImageView
+        android:id="@+id/recharge_response_image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+
+    <TextView
+        android:id="@+id/successful_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin"
+        android:gravity="center"
+        android:textSize="@dimen/top_up_button_text_size"/>
+
+    <Button
+        android:id="@+id/dismiss_success_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:background="@drawable/white_button_selector"
+        android:text="@android:string/ok"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/sign_up_text_size"/>
+
+</LinearLayout>

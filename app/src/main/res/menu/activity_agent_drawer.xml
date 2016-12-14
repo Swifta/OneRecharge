@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard_grey_500_24dp"
+            android:title="@string/dashboard"/>
+        <item
+            android:id="@+id/nav_quick_recharge"
+            android:icon="@drawable/ic_done_all_grey_500_24dp"
+            android:title="@string/quick_recharge"/>
+        <item
+            android:id="@+id/nav_auto_recharge"
+            android:icon="@drawable/ic_autorenew_grey_500_24dp"
+            android:title="@string/scheduled_recharge"/>
+
+        <item
+            android:id="@+id/nav_quick_transaction_history"
+            android:icon="@drawable/ic_history_grey_500_24dp"
+            android:title="@string/quick_recharge_history"/>
+        <item
+            android:id="@+id/nav_scheduled_transaction_history"
+            android:icon="@drawable/ic_history_grey_500_24dp"
+            android:title="@string/schedule_history"/>
+    </group>
+
+</menu>
