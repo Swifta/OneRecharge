@@ -17,6 +17,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
             enabled true
         }
@@ -64,5 +65,11 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
     provided "javax.annotation:jsr250-api:$rootProject.ext.jsr250Version"
+
+    androidTestCompile "com.android.support:support-annotations:$rootProject.ext.supportLibraryVersion"
+    androidTestCompile "com.android.support.test:runner:$rootProject.ext.espressoRunnerVersion"
+    androidTestCompile "com.android.support.test:rules:$rootProject.ext.espressoRunnerVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
 }
 apply plugin: 'com.google.gms.google-services'

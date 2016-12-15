@@ -90,8 +90,7 @@ public class ResetAgentPasswordPresenter implements ResetAgentPasswordContract.P
                             mView.showEmptyTextFields();
                         }
 
-                        mView.showSuccessfullyChangedMessage(agentPassword.getData()
-                                .getMessage());
+                        mView.showSuccessfullyChangedMessage(agentPassword.getData().getMessage());
                     }
                 });
 

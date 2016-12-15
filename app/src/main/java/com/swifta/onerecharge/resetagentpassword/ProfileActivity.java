@@ -37,9 +37,6 @@ public class ProfileActivity extends AppCompatActivity implements ResetAgentPass
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
-    String oldPassword;
-    String newPassword;
-
     @Inject
     ResetAgentPasswordPresenter mResetAgentPasswordPresenter;
 
@@ -108,8 +105,8 @@ public class ProfileActivity extends AppCompatActivity implements ResetAgentPass
     @OnClick(R.id.request_password_change)
     void changePassword() {
 
-        oldPassword = oldPasswordField.getText().toString();
-        newPassword = newPasswordField.getText().toString();
+        String oldPassword = oldPasswordField.getText().toString();
+        String newPassword = newPasswordField.getText().toString();
 
         boolean cancel = false;
         View focusView = null;

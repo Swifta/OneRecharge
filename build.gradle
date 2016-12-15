@@ -48,4 +48,6 @@ ext {
     firebaseVersion = '9.8.0'
     daggerVersion = '2.8'
     jsr250Version = '1.0'
+    espressoVersion = '2.2.2'
+    espressoRunnerVersion = '0.5'
 }
