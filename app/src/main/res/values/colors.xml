@@ -6,7 +6,9 @@
     <color name="onboardingTitle">#747474</color>
     <color name="onboardingDescription">#aeaeae</color>
     <color name="onboardingActiveIndicator">#0277bd</color>
+    <color name="materialLightBlue300">#4FC3F7</color>
     <color name="colorGray">#cecece</color>
     <color name="colorLightGray">#e4e4e4</color>
     <color name="colorGrayDark">#8b8b8b</color>
+    <color name="colorGreen">#00695C</color>
 </resources>

@@ -11,7 +11,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Agent Dashboard -->
-    <dimen name="wallet_balance_text_size">40sp</dimen>
+    <dimen name="current_balance_text_size">13sp</dimen>
+    <dimen name="wallet_balance_text_size">50sp</dimen>
     <dimen name="top_up_button_text_size">20sp</dimen>
     <dimen name="profile_rules_text_size">16sp</dimen>
 

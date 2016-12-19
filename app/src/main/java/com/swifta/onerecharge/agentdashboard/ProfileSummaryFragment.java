@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.swifta.onerecharge.R;
@@ -52,7 +52,7 @@ public class ProfileSummaryFragment extends Fragment {
     TextView failedDescriptionTextview;
 
     @BindView(R.id.referral_layout)
-    LinearLayout referralLayout;
+    RelativeLayout referralLayout;
     @BindView(R.id.horizontal_line)
     View horizontalLine;
 

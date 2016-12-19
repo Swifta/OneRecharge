@@ -13,6 +13,97 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorGray</item>
+    </style>
+
+    <style name="ProfileFragmentIcon">
+        <item name="android:contentDescription">"wallet icon"</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">@dimen/activity_margin</item>
+        <item name="android:src">@drawable/ic_account_balance_wallet_grey_500_24dp</item>
+    </style>
+
+    <style name="ProfileFragmentText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/profile_rules_text_size</item>
+    </style>
+
+    <style name="ProfileFragmentValue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">@dimen/profile_rules_text_size</item>
+    </style>
+
+    <style name="ProfileSummaryCardview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="ProfileSummaryCardview.General">
+        <item name="android:layout_margin">@dimen/activity_margin</item>
+    </style>
+
+    <style name="ProfileSummaryCardview.Successful">
+        <item name="android:layout_marginLeft">@dimen/activity_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_margin</item>
+    </style>
+
+    <style name="ProfileSummaryHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:padding">@dimen/activity_half_margin</item>
+        <item name="android:textSize">@dimen/profile_rules_text_size</item>
+    </style>
+
+    <style name="ProfileSummaryHeader.General">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:text">@string/general_information</item>
+        <item name="android:background">@color/colorGray</item>
+    </style>
+
+    <style name="ProfileSummaryHeader.Successful">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">@string/successful_transactions</item>
+        <item name="android:background">@color/colorGreen</item>
+    </style>
+
+    <style name="ProfileSummaryHeader.Failed">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">@string/failed_transactions</item>
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="ProfileSummaryValues">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="ProfileSummaryText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay"
            parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 

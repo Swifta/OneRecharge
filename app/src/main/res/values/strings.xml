@@ -178,6 +178,7 @@
 
     <!-- Dashboard -->
     <string name="wallet_balance">₦%1$s</string>
+    <string name="current_balance">CURRENT BALANCE</string>
     <string name="top_up_wallet">Topup Wallet</string>
 
     <!-- Profile Rules and Limits -->
@@ -193,7 +194,7 @@
 
     <!-- Profile Summary -->
     <string name="profile_summary">Profile Summary</string>
-    <string name="your_referral_id">Your referral ID:</string>
+    <string name="your_referral_id">Referral ID</string>
     <string name="your_referral_id_value">%1$s</string>
     <string name="agent_type">Agent Type</string>
     <string name="agent_type_value">%1$s</string>
@@ -220,7 +221,7 @@
 
     <string name="last_failed_transaction_time">Last Transaction Time</string>
     <string name="last_failed_transaction_time_value">%1$s</string>
-    <string name="failed_transaction_description">Failed Transaction Description</string>
+    <string name="failed_transaction_description">Failed Transaction Description:</string>
     <string name="failed_transaction_description_value">%1$s</string>
 
     <string name="general_information">General Information</string>

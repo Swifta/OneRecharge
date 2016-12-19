@@ -1,6 +1,5 @@
 package com.swifta.onerecharge.agentdashboard;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;

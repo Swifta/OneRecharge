@@ -1,485 +1,280 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.swifta.onerecharge.agentdashboard.ProfileSummaryFragment">
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/referral_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_half_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:orientation="horizontal"
-            android:visibility="gone">
+        <android.support.v7.widget.CardView
+            style="@style/ProfileSummaryCardview.General">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="end"
-                android:text="@string/your_referral_id"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/referral_id"
-                android:layout_width="wrap_content"
+                <TextView
+                    style="@style/ProfileSummaryHeader.General"/>
+
+                <RelativeLayout
+                    android:id="@+id/referral_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/referral_id"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/your_referral_id"/>
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/horizontal_line"
+                    style="@style/HorizontalDivider"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/agent_type"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/agent_type"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/agent_class"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/agent_class"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/date_and_time_created"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/date_and_time_created"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/total_transactions"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/total_transactions"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            style="@style/ProfileSummaryCardview.Successful">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="@dimen/top_up_button_text_size"/>
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <View
-            android:id="@+id/horizontal_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/activity_half_margin"
-            android:background="@color/colorPrimary"
-            android:visibility="gone"/>
+                <TextView
+                    style="@style/ProfileSummaryHeader.Successful"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/activity_margin"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_horizontal"
-            android:text="@string/general_information"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/top_up_button_text_size"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/total_successful_transactions"
+                        style="@style/ProfileSummaryValues"/>
 
-            <TextView
-                android:id="@+id/agent_type"
-                android:layout_width="wrap_content"
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/total_successful_transactions"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/total_amount_sold"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/total_amount_sold"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/last_successful_amount"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/last_successful_transaction_amount"/>
+                </RelativeLayout>
+
+                <View style="@style/HorizontalDivider"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/last_successful_time"
+                        style="@style/ProfileSummaryValues"/>
+
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/last_successful_transaction_time"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            style="@style/ProfileSummaryCardview.General">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/agent_type"
-                android:layout_toStartOf="@id/agent_type"
-                android:fontFamily="sans-serif"
-                android:text="@string/agent_type"/>
-        </RelativeLayout>
+                <TextView
+                    style="@style/ProfileSummaryHeader.Failed"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/total_failed_transactions"
+                        style="@style/ProfileSummaryValues"/>
 
-            <TextView
-                android:id="@+id/agent_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"/>
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/total_failed_transactions"/>
+                </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/agent_class"
-                android:layout_toStartOf="@id/agent_class"
-                android:fontFamily="sans-serif"
-                android:text="@string/agent_class"/>
-        </RelativeLayout>
+                <View style="@style/HorizontalDivider"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/total_failed_transaction_amount"
+                        style="@style/ProfileSummaryValues"/>
 
-            <TextView
-                android:id="@+id/date_and_time_created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"/>
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/total_failed_transaction_amount"/>
+                </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/date_and_time_created"
-                android:layout_toStartOf="@id/date_and_time_created"
-                android:fontFamily="sans-serif"
-                android:text="@string/date_and_time_created"/>
-        </RelativeLayout>
+                <View style="@style/HorizontalDivider"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/last_failed_transaction_amount"
+                        style="@style/ProfileSummaryValues"/>
 
-            <TextView
-                android:id="@+id/total_transactions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"/>
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/last_failed_transaction_amount"/>
+                </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/total_transactions"
-                android:layout_toStartOf="@id/total_transactions"
-                android:fontFamily="sans-serif"
-                android:text="@string/total_transactions"/>
-        </RelativeLayout>
+                <View style="@style/HorizontalDivider"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/activity_margin"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_horizontal"
-            android:text="@string/successful_transactions"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/top_up_button_text_size"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/last_failed_transaction_time"
+                        style="@style/ProfileSummaryValues"/>
 
-            <TextView
-                android:id="@+id/total_successful_transactions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_green_dark"/>
+                    <TextView
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/last_failed_transaction_time"/>
+                </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/total_successful_transactions"
-                android:layout_toStartOf="@id/total_successful_transactions"
-                android:fontFamily="sans-serif"
-                android:text="@string/total_successful_transactions"/>
-        </RelativeLayout>
+                <View style="@style/HorizontalDivider"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
+                    <TextView
+                        android:id="@+id/description"
+                        style="@style/ProfileSummaryText"
+                        android:text="@string/failed_transaction_description"/>
 
-            <TextView
-                android:id="@+id/total_amount_sold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_green_dark"/>
+                    <TextView
+                        android:id="@+id/failed_transaction_description"
+                        style="@style/ProfileSummaryValues"/>
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@id/total_amount_sold"
-                android:layout_toStartOf="@id/total_amount_sold"
-                android:fontFamily="sans-serif"
-                android:text="@string/total_amount_sold"/>
-        </RelativeLayout>
+            </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/last_successful_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_green_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/last_successful_amount"
-                android:layout_toStartOf="@id/last_successful_amount"
-                android:fontFamily="sans-serif"
-                android:text="@string/last_successful_transaction_amount"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/last_successful_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_green_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/last_successful_time"
-                android:layout_toStartOf="@id/last_successful_time"
-                android:fontFamily="sans-serif"
-                android:text="@string/last_successful_transaction_time"/>
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/activity_margin"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_horizontal"
-            android:text="@string/failed_transactions"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/top_up_button_text_size"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/total_failed_transactions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/total_failed_transactions"
-                android:layout_toStartOf="@id/total_failed_transactions"
-                android:fontFamily="sans-serif"
-                android:text="@string/total_failed_transactions"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/total_failed_transaction_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/total_failed_transaction_amount"
-                android:layout_toStartOf="@id/total_failed_transaction_amount"
-                android:fontFamily="sans-serif"
-                android:text="@string/total_failed_transaction_amount"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/last_failed_transaction_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/last_failed_transaction_amount"
-                android:layout_toStartOf="@id/last_failed_transaction_amount"
-                android:fontFamily="sans-serif"
-                android:text="@string/last_failed_transaction_amount"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/last_failed_transaction_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/last_failed_transaction_time"
-                android:layout_toStartOf="@id/last_failed_transaction_time"
-                android:fontFamily="sans-serif"
-                android:text="@string/last_failed_transaction_time"/>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/horizontal_line_height"
-            android:layout_marginLeft="@dimen/horizontal_line_margin"
-            android:layout_marginStart="@dimen/horizontal_line_margin"
-            android:background="@android:color/darker_gray"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin">
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/failed_transaction_description"/>
-
-            <TextView
-                android:id="@+id/failed_transaction_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/description"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@android:color/holo_red_dark"/>
-        </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 </ScrollView>

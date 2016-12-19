@@ -38,13 +38,12 @@ public class AgentActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        sharedPreferences = getSharedPreferences(getString
-                (R.string.agent_shared_preference_name), Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString (R.string
+                .agent_shared_preference_name), Context.MODE_PRIVATE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
-                drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -81,14 +80,13 @@ public class AgentActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent settingsIntent = new Intent(AgentActivity.this,
-                        ProfileActivity.class);
+                Intent settingsIntent = new Intent(AgentActivity.this, ProfileActivity.class);
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_logout:
                 clearAgentData();
-                Intent logoutIntent = new Intent(AgentActivity.this,
-                        AgentRegistrationActivity.class);
+                Intent logoutIntent = new Intent(AgentActivity.this, AgentRegistrationActivity
+                        .class);
                 startActivity(logoutIntent);
                 return true;
             default:
