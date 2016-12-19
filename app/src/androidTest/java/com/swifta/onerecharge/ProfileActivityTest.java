@@ -91,8 +91,8 @@ public class ProfileActivityTest {
 
     @Test
     public void performPasswordChange() {
-        onView(withId(R.id.old_password)).perform(clearText(), typeText(dummyPassword), ViewActions
-                .closeSoftKeyboard());
+        onView(withId(R.id.old_password)).perform(clearText(), typeText(dummyPassword),
+                ViewActions.closeSoftKeyboard());
         onView(withId(R.id.new_password)).perform(clearText(), typeText(dummyPassword),
                 ViewActions.closeSoftKeyboard());
         onView(withId(R.id.request_password_change)).perform(click());

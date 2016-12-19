@@ -48,7 +48,6 @@ public class ResetAgentPasswordModule {
         return mView;
     }
 
-
     @Provides
     @Singleton
     SharedPreferences providesSharedPreferences(Application application) {
