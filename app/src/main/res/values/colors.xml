@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0E96B9</color>
-    <color name="colorPrimaryDark">#08586C</color>
-    <color name="colorAccent">#D06D10</color>
+    <color name="colorPrimary">#0277bd</color>
+    <color name="colorPrimaryDark">#01579B</color>
+    <color name="colorAccent">#F44336</color>
     <color name="onboardingTitle">#747474</color>
     <color name="onboardingDescription">#aeaeae</color>
-    <color name="onboardingActiveIndicator">#0E96B9</color>
+    <color name="onboardingActiveIndicator">#0277bd</color>
     <color name="colorGray">#cecece</color>
     <color name="colorLightGray">#e4e4e4</color>
     <color name="colorGrayDark">#8b8b8b</color>
