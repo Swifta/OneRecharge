@@ -147,21 +147,18 @@ public class ProfileSummaryFragment extends Fragment {
                 .saved_failed_transaction_description), "");
     }
 
-
     private void setUpUiWithSavedValues() {
         String time = "";
 
         if (!getReferralId().equals("")) {
             referralLayout.setVisibility(View.VISIBLE);
             horizontalLine.setVisibility(View.VISIBLE);
-            referralIdTextView.setText(getResources().getString(R.string
-                    .your_referral_id_value, getReferralId()));
+            referralIdTextView.setText(getResources().getString(R.string.your_referral_id_value,
+                    getReferralId()));
         }
 
-        agentType.setText(getResources().getString(R.string
-                .agent_type_value, getAgentType()));
-        agentClass.setText(getResources().getString(R.string
-                .agent_class_value, getAgentClass()));
+        agentType.setText(getResources().getString(R.string.agent_type_value, getAgentType()));
+        agentClass.setText(getResources().getString(R.string.agent_class_value, getAgentClass()));
         if(getDateAndTimeCreated().length() > 0) {
             time = InstantTimeFormatter.formatInstantTime(getDateAndTimeCreated());
         }

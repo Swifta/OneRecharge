@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  */
 public class ProfileRulesFragment extends Fragment {
     private SharedPreferences sharedPreferences;
-    private static final String defaultValue = "0.00";
+    private static final String DEFAULT_VALUE = "0.00";
 
     @BindView(R.id.msisdn_purchase_limit_text)
     TextView msisdnPurchaseLimitText;
@@ -41,8 +41,7 @@ public class ProfileRulesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile_rules, container,
-                false);
+        View view = inflater.inflate(R.layout.fragment_profile_rules, container, false);
 
         ButterKnife.bind(this, view);
 
@@ -56,22 +55,22 @@ public class ProfileRulesFragment extends Fragment {
 
     private String getMSISDNPurchaseLimit() {
         return sharedPreferences.getString(getResources().getString(R.string
-                .saved_msisdn_purchase_limit), defaultValue);
+                .saved_msisdn_purchase_limit), DEFAULT_VALUE);
     }
 
     private String getMinimumWalletBalance() {
         return sharedPreferences.getString(getResources().getString(R.string
-                .saved_minimum_wallet_balance), defaultValue);
+                .saved_minimum_wallet_balance), DEFAULT_VALUE);
     }
 
     private String getAirtimePurchaseDiscount() {
         return sharedPreferences.getString(getResources().getString(R.string
-                .saved_airtime_purchase_discount), defaultValue);
+                .saved_airtime_purchase_discount), DEFAULT_VALUE);
     }
 
     private String getAirtimeSoldCommission() {
         return sharedPreferences.getString(getResources().getString(R.string
-                .saved_airtime_sold_commission), defaultValue);
+                .saved_airtime_sold_commission), DEFAULT_VALUE);
     }
 
     private void setUpUiWithSavedValues() {
