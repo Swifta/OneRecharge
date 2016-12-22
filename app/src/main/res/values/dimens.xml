@@ -3,6 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- AgentActivity -->
+    <dimen name="agent_activity_margin">100dp</dimen>
+
     <!-- CustomerRegistrationActivity -->
     <dimen name="sign_up_text_size">24sp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

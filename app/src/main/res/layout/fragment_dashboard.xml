@@ -5,38 +5,6 @@
               android:orientation="vertical"
               tools:context="com.swifta.onerecharge.agentdashboard.DashboardFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/current_balance"
-            android:textColor="@color/materialLightBlue300"
-            android:textSize="@dimen/current_balance_text_size"/>
-
-        <TextView
-            android:id="@+id/wallet_balance_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/wallet_balance_text_size"/>
-
-        <Button
-            android:id="@+id/wallet_topup_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/top_up_wallet"/>
-
-    </LinearLayout>
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
