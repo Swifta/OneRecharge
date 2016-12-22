@@ -164,8 +164,10 @@ public class DashboardFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(getActivity(), e.getLocalizedMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        if(isAdded()) {
+                            Toast.makeText(getActivity(), e.getLocalizedMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
