@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,16 +19,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.swifta.onerecharge.agentapikey.AgentApiKeyResponse;
 import com.swifta.onerecharge.agentdashboard.AgentSummary;
-import com.swifta.onerecharge.agentdashboard.DashboardFragment;
+import com.swifta.onerecharge.agentdashboard.PagerAdapter;
+import com.swifta.onerecharge.agentdashboard.ProfileRulesFragment;
+import com.swifta.onerecharge.agentdashboard.ProfileSummaryFragment;
 import com.swifta.onerecharge.agentquickrecharge.QuickRechargeFragment;
 import com.swifta.onerecharge.agentquicktransactionhistory.AgentQuickTransactionHistoryFragment;
 import com.swifta.onerecharge.agentregistration.AgentRegistrationActivity;
 import com.swifta.onerecharge.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
+import com.swifta.onerecharge.networklist.NetworkListRepository;
+import com.swifta.onerecharge.networklist.NetworkListResponse;
 import com.swifta.onerecharge.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.Url;
@@ -42,18 +51,48 @@ import rx.schedulers.Schedulers;
 
 public class AgentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    FragmentManager fragmentManager;
-    TextView agentHeaderEmailView;
-    SharedPreferences sharedPreferences;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
+    @BindView(R.id.toolbar_dashboard)
+    Toolbar toolbarDashboard;
+
+//    @BindView(R.id.agent_activity_frame)
+//    FrameLayout activityFrame;
+//
+//    @BindView(R.id.dashboard_activity_frame)
+//    LinearLayout dashboardFrame;
+
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
+    @BindView(R.id.agent_container)
+    FrameLayout activityContainerFrame;
+
+    @BindView(R.id.dashboard_app_bar_layout)
+    AppBarLayout dashboardAppBarLayout;
+
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+
+    @BindView(R.id.pager)
+    ViewPager viewPager;
 
     @BindView(R.id.collapsingLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
+    ActionBarDrawerToggle toggle;
+    FragmentManager fragmentManager;
+    TextView agentHeaderEmailView;
+    SharedPreferences sharedPreferences;
+    boolean isDashboardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,26 +104,24 @@ public class AgentActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences(getString(R.string
                 .agent_shared_preference_name), Context.MODE_PRIVATE);
 
-        setSupportActionBar(toolbar);
-        setUpCollapsingToolbarWithCurrentValue();
-
-        getAgentSummary();
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
-                drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        displayFragmentDashboard();
 
         fragmentManager = getSupportFragmentManager();
-        displayFragment(new DashboardFragment());
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
         agentHeaderEmailView = (TextView) headerView.findViewById(R.id
                 .agent_header_email);
         setHeaderViewText();
+
+        setUpCollapsingToolbarWithCurrentValue();
+
+        getAgentSummary();
+
+        getAgentApiKey();
+
+        getNetworkList();
     }
 
     @Override
@@ -133,7 +170,7 @@ public class AgentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            displayFragment(new DashboardFragment());
+            displayFragmentDashboard();
         } else if (id == R.id.nav_quick_recharge) {
             displayFragment(new QuickRechargeFragment());
         } else if (id == R.id.nav_auto_recharge) {
@@ -147,6 +184,73 @@ public class AgentActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void displayFragmentDashboard() {
+        isDashboardFragment = true;
+        appBarLayout.setVisibility(View.GONE);
+        activityContainerFrame.setVisibility(View.GONE);
+
+        dashboardAppBarLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+
+        setSupportActionBar(toolbarDashboard);
+
+        toggle = new ActionBarDrawerToggle(this,
+                drawer, toolbarDashboard, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        initTabInstances();
+        tabLayout.setupWithViewPager(viewPager);
+
+        setupViewPager(viewPager, getSupportFragmentManager());
+    }
+
+    private void displayFragment(Fragment fragment) {
+        isDashboardFragment = false;
+        dashboardAppBarLayout.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+
+        appBarLayout.setVisibility(View.VISIBLE);
+        activityContainerFrame.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+
+        toggle = new ActionBarDrawerToggle(this,
+                drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.agent_container, fragment)
+                .commit();
+    }
+
+    private void setHeaderViewText() {
+        String email = sharedPreferences.getString(getResources().getString(R.string
+                .saved_email_address), "");
+        if (!email.isEmpty()) {
+            agentHeaderEmailView.setText(email);
+        }
+    }
+
+    private void setupViewPager(ViewPager viewPager, FragmentManager fragmentManager) {
+        PagerAdapter adapter = new PagerAdapter(this, fragmentManager);
+        adapter.addFragment(new ProfileRulesFragment(), getResources().getString(R
+                .string.profile_rules));
+        adapter.addFragment(new ProfileSummaryFragment(), getResources().getString(R
+                .string.profile_summary));
+        viewPager.setAdapter(adapter);
+    }
+
+    private void initTabInstances() {
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString
+                (R.string.profile_rules)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString
+                (R.string.profile_summary)));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     private void setUpCollapsingToolbarWithCurrentValue() {
@@ -331,17 +435,79 @@ public class AgentActivity extends AppCompatActivity
                 });
     }
 
-    private void displayFragment(Fragment fragment) {
-        fragmentManager.beginTransaction()
-                .replace(R.id.agent_container, fragment)
-                .commit();
+    private void getNetworkList() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        final AgentService agentService = retrofit
+                .create(AgentService.class);
+        final Observable<NetworkListResponse> agent = agentService.getNetworkList();
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<NetworkListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(NetworkListResponse networkListResponse) {
+                        if (networkListResponse.getStatus() == 1) {
+                            NetworkListRepository.setNetworkList(networkListResponse.getData());
+                        }
+                    }
+                });
     }
 
-    private void setHeaderViewText() {
-        String email = sharedPreferences.getString(getResources().getString(R.string
-                .saved_email_address), "");
-        if (!email.isEmpty()) {
-            agentHeaderEmailView.setText(email);
-        }
+    private void getAgentApiKey() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        final AgentService agentService = retrofit
+                .create(AgentService.class);
+        final Observable<AgentApiKeyResponse> agent = agentService.getAgentApiKey(getEmailAddress
+                (), getToken());
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<AgentApiKeyResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(AgentApiKeyResponse agentApiKeyResponse) {
+                        if (agentApiKeyResponse.getStatus() == 1) {
+                            saveApiAgentKey(agentApiKeyResponse.getData());
+                        }
+                    }
+                });
+    }
+
+    private void saveApiAgentKey(String agentApiKey) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getResources().getString(R.string.saved_agent_api_key), agentApiKey);
+
+        editor.apply();
     }
 }
