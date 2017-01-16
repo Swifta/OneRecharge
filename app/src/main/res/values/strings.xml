@@ -236,6 +236,7 @@
     <string name="amount_empty_error">Please enter an amount</string>
     <string name="amount_low_error">Please enter an amount greater than 50</string>
     <string name="phone_empty_error">Please enter a phone number</string>
+    <string name="select_network">Please select a network</string>
     <string name="phone_length_error">Please enter an 11 digit number</string>
 
     <!-- ScheduleRechargeFragment -->

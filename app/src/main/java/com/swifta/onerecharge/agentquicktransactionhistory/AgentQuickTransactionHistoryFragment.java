@@ -20,13 +20,17 @@ import android.widget.Toast;
 import com.robinhood.spark.SparkView;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.util.AgentService;
+import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.SparkCustomAdapter;
 import com.swifta.onerecharge.util.Url;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,6 +54,8 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     private QuickRechargeHistoryAdapter quickRechargeHistoryAdapter;
     public List<Row> rowList;
 
+    private Realm realm;
+
     public AgentQuickTransactionHistoryFragment() {
         // Required empty public constructor
     }
@@ -69,8 +75,11 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
 
         sharedPreferences = getActivity().getSharedPreferences(getString(R
                 .string.agent_shared_preference_name), Context.MODE_PRIVATE);
+        realm = Realm.getDefaultInstance();
 
-        getRowList();
+        populateViewWithSavedData();
+
+        pullUpdatedDataWitheInternetConnection();
 
         return view;
     }
@@ -127,6 +136,12 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
     private void getRowList() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -159,29 +174,77 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
                         if (agentQuickTransactionHistory.getRows() != null) {
                             rowList = agentQuickTransactionHistory.getRows();
 
-                            QuickRechargeHistoryRepository.setOriginalHistoryList(rowList);
-
-                            progressBar.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            sparkView.setVisibility(View.VISIBLE);
-
-                            float[] amountArray = new float[rowList.size()];
-                            int amountArrayIndex = 0;
-
-                            for (int i = rowList.size() - 1; i >= 0; i--) {
-                                amountArray[amountArrayIndex] = rowList.get(i).getAmount();
-                                amountArrayIndex++;
-                            }
-
-                            sparkView.setAdapter(new SparkCustomAdapter(amountArray));
-
-                            quickRechargeHistoryAdapter = new QuickRechargeHistoryAdapter
-                                    (QuickRechargeHistoryRepository.getHistoryListSortedByDate());
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            recyclerView.setAdapter(quickRechargeHistoryAdapter);
+                            clearPreviousRealmData();
+                            saveDataToRealm(rowList);
+                            displayTransactions(rowList);
                         }
                     }
                 });
+    }
+
+    private void clearPreviousRealmData() {
+        RealmResults<Row> results = getRowListFromRealm();
+        realm.beginTransaction();
+        results.deleteAllFromRealm();
+        realm.commitTransaction();
+    }
+
+    private void saveDataToRealm(List<Row> rowList) {
+        realm.beginTransaction();
+
+        // TO:DO: Clear previous data first
+
+        for (Row row : rowList) {
+            realm.copyToRealm(row);
+        }
+
+        realm.commitTransaction();
+    }
+
+    private void populateViewWithSavedData() {
+        if (!getRowListFromRealm().isEmpty()) {
+            List<Row> rows = new ArrayList<Row>();
+
+            for (Row r : getRowListFromRealm()) {
+                rows.add(r);
+            }
+
+            displayTransactions(rows);
+        }
+    }
+
+    private void pullUpdatedDataWitheInternetConnection() {
+        if (InternetConnectivity.isDeviceConnected(getActivity())) {
+            getRowList();
+        }
+    }
+
+    private RealmResults<Row> getRowListFromRealm() {
+        return realm.where(Row.class).findAll();
+    }
+
+    private void displayTransactions(List<Row> row) {
+        QuickRechargeHistoryRepository.setOriginalHistoryList(row);
+
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        sparkView.setVisibility(View.VISIBLE);
+
+        float[] amountArray = new float[row.size()];
+        int amountArrayIndex = 0;
+
+        for (int i = row.size() - 1; i >= 0; i--) {
+            amountArray[amountArrayIndex] = row.get(i).getAmount();
+            amountArrayIndex++;
+        }
+
+        sparkView.setAdapter(new SparkCustomAdapter(amountArray));
+
+        quickRechargeHistoryAdapter = new QuickRechargeHistoryAdapter
+                (QuickRechargeHistoryRepository.getHistoryListSortedByDate());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(quickRechargeHistoryAdapter);
+        recyclerView.setHasFixedSize(true);
     }
 
     private String getEmailAddress() {

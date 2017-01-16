@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Created by moyinoluwa on 9/19/16.
  */
@@ -14,5 +17,12 @@ public class OneRechargeApplication extends Application {
         super.onCreate();
 
         AndroidThreeTen.init(this);
+
+        Realm.init(this);
+
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
+        // Delete Realm between app restarts.
+        Realm.deleteRealm(realmConfig);
+        Realm.setDefaultConfiguration(realmConfig);
     }
 }

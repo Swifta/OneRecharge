@@ -3,11 +3,15 @@ package com.swifta.onerecharge.agentquicktransactionhistory;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by moyinoluwa on 9/26/16.
  */
 
-public class Row {
+public class Row extends RealmObject {
+    @PrimaryKey
     @SerializedName("_id")
     @Expose
     private String id;

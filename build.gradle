@@ -11,6 +11,8 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.google.guava:guava:20.0'
+        classpath "io.realm:realm-gradle-plugin:2.2.2"
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 
@@ -50,4 +52,5 @@ ext {
     jsr250Version = '1.0'
     espressoVersion = '2.2.2'
     espressoRunnerVersion = '0.5'
+    realmVersion = '1.4.0'
 }
