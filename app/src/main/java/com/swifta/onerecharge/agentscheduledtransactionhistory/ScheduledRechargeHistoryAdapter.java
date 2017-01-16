@@ -26,10 +26,10 @@ import butterknife.ButterKnife;
 public class ScheduledRechargeHistoryAdapter extends RecyclerView
         .Adapter<ScheduledRechargeHistoryAdapter.ViewHolder> {
 
-    private List<Row> scheduledHistoryList = new ArrayList<>();
+    private List<RealmRow> scheduledHistoryList = new ArrayList<>();
     private Context context;
 
-    public ScheduledRechargeHistoryAdapter(List<Row> scheduledHistoryList) {
+    public ScheduledRechargeHistoryAdapter(List<RealmRow> scheduledHistoryList) {
         this.scheduledHistoryList.addAll(scheduledHistoryList);
     }
 
@@ -43,7 +43,7 @@ public class ScheduledRechargeHistoryAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Row scheduledTransactionHistory = scheduledHistoryList.get(position);
+        final RealmRow scheduledTransactionHistory = scheduledHistoryList.get(position);
         holder.recipientTextView.setText(scheduledTransactionHistory.getRecipient());
 
         String networkType = scheduledTransactionHistory.getNetwork();
@@ -79,7 +79,7 @@ public class ScheduledRechargeHistoryAdapter extends RecyclerView
         holder.amountTextView.setText(amount);
     }
 
-    public void swapItems(List<Row> history) {
+    public void swapItems(List<RealmRow> history) {
         final ScheduledRechargeHistoryCallback diffCallback = new ScheduledRechargeHistoryCallback(this
                 .scheduledHistoryList, history);
 

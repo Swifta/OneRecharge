@@ -192,8 +192,6 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     private void saveDataToRealm(List<Row> rowList) {
         realm.beginTransaction();
 
-        // TO:DO: Clear previous data first
-
         for (Row row : rowList) {
             realm.copyToRealm(row);
         }

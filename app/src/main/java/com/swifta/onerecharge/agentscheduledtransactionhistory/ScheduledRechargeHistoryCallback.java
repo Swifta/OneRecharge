@@ -11,10 +11,10 @@ import java.util.List;
 
 public class ScheduledRechargeHistoryCallback extends DiffUtil.Callback {
 
-    private final List<Row> oldList;
-    private final List<Row> newList;
+    private final List<RealmRow> oldList;
+    private final List<RealmRow> newList;
 
-    public ScheduledRechargeHistoryCallback(List<Row> oldList, List<Row> newList) {
+    public ScheduledRechargeHistoryCallback(List<RealmRow> oldList, List<RealmRow> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }
@@ -36,8 +36,8 @@ public class ScheduledRechargeHistoryCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        final Row oldItem = oldList.get(oldItemPosition);
-        final Row newItem = newList.get(newItemPosition);
+        final RealmRow oldItem = oldList.get(oldItemPosition);
+        final RealmRow newItem = newList.get(newItemPosition);
 
         return oldItem.getAmount().equals(newItem.getAmount());
     }

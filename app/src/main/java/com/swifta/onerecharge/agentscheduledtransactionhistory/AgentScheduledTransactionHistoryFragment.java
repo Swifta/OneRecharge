@@ -20,13 +20,17 @@ import android.widget.Toast;
 import com.robinhood.spark.SparkView;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.util.AgentService;
+import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.SparkCustomAdapter;
 import com.swifta.onerecharge.util.Url;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,6 +54,8 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
     private ScheduledRechargeHistoryAdapter scheduledRechargeHistoryAdapter;
     public List<Row> rowList;
 
+    private Realm realm;
+
     public AgentScheduledTransactionHistoryFragment() {
         // Required empty public constructor
     }
@@ -68,9 +74,13 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
                 (getResources().getString(R.string.schedule_history));
 
         sharedPreferences = getActivity().getSharedPreferences(getString(R
-                .string.agent_shared_preference_name), Context.MODE_PRIVATE);
+                .string.agent_shared_preference_name), Context
+                .MODE_PRIVATE);
+        realm = Realm.getDefaultInstance();
 
-        getRowList();
+        populateViewWithSavedData();
+
+        pullUpdatedDataWitheInternetConnection();
 
         return view;
     }
@@ -126,6 +136,12 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
     private void getRowList() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -157,30 +173,96 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
                     public void onNext(AgentScheduledTransactionHistory agentScheduledTransactionHistory) {
                         if (agentScheduledTransactionHistory.getRows() != null) {
                             rowList = agentScheduledTransactionHistory.getRows();
+                            List<RealmRow> realmRowList = new ArrayList<RealmRow>();
 
-                            ScheduledRechargeHistoryRepository.setOriginalHistoryList(rowList);
+                            for(Row r: rowList) {
+                                RealmRow realmRow = new RealmRow();
 
-                            progressBar.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            sparkView.setVisibility(View.VISIBLE);
+                                realmRow.setId(r.getId());
+                                realmRow.setUserId(r.getUserId());
+                                realmRow.setUserToken(r.getUserToken());
+                                realmRow.setAmount(r.getAmount());
+                                realmRow.setRecipient(r.getRecipient());
+                                realmRow.setNetwork(r.getNetwork());
+                                realmRow.setGoTime(r.getGoTime());
+                                realmRow.setV(r.getV());
+                                realmRow.setTransactionId(r.getTransactionId());
+                                realmRow.setCreatedTime(r.getCreatedTime());
+                                realmRow.setCancelled(r.getCancelled());
+                                realmRow.setSuccessful(r.getSuccessful());
 
-                            float[] amountArray = new float[rowList.size()];
-                            int amountArrayIndex = 0;
-
-                            for (int i = rowList.size() - 1; i >= 0; i--) {
-                                amountArray[amountArrayIndex] = rowList.get(i).getAmount();
-                                amountArrayIndex++;
+                                realmRowList.add(realmRow);
                             }
 
-                            sparkView.setAdapter(new SparkCustomAdapter(amountArray));
-
-                            scheduledRechargeHistoryAdapter = new ScheduledRechargeHistoryAdapter(
-                                    ScheduledRechargeHistoryRepository.getHistoryListSortedByDate());
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            recyclerView.setAdapter(scheduledRechargeHistoryAdapter);
+                            clearPreviousRealmData();
+                            saveDataToRealm(realmRowList);
+                            displayTransactions(realmRowList);
                         }
                     }
                 });
+    }
+
+    private void clearPreviousRealmData() {
+        RealmResults<RealmRow> results = getRowListFromRealm();
+        realm.beginTransaction();
+        realm.delete(RealmRow.class);
+        realm.commitTransaction();
+    }
+
+    private void saveDataToRealm(List<RealmRow> rowList) {
+        realm.beginTransaction();
+
+        for (RealmRow realmRow : rowList) {
+            realm.copyToRealm(realmRow);
+        }
+
+        realm.commitTransaction();
+    }
+
+    private void populateViewWithSavedData() {
+        if (!getRowListFromRealm().isEmpty()) {
+            List<RealmRow> rows = new ArrayList<RealmRow>();
+
+            for (RealmRow r : getRowListFromRealm()) {
+                rows.add(r);
+            }
+
+            displayTransactions(rows);
+        }
+    }
+
+    private void pullUpdatedDataWitheInternetConnection() {
+        if (InternetConnectivity.isDeviceConnected(getActivity())) {
+            getRowList();
+        }
+    }
+
+    private RealmResults<RealmRow> getRowListFromRealm() {
+        return realm.where(RealmRow.class).findAll();
+    }
+
+    private void displayTransactions(List<RealmRow> row) {
+
+        ScheduledRechargeHistoryRepository.setOriginalHistoryList(row);
+
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        sparkView.setVisibility(View.VISIBLE);
+
+        float[] amountArray = new float[row.size()];
+        int amountArrayIndex = 0;
+
+        for (int i = row.size() - 1; i >= 0; i--) {
+            amountArray[amountArrayIndex] = row.get(i).getAmount();
+            amountArrayIndex++;
+        }
+
+        sparkView.setAdapter(new SparkCustomAdapter(amountArray));
+
+        scheduledRechargeHistoryAdapter = new ScheduledRechargeHistoryAdapter(
+                ScheduledRechargeHistoryRepository.getHistoryListSortedByDate());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(scheduledRechargeHistoryAdapter);
     }
 
     private String getEmailAddress() {
