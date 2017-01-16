@@ -8,48 +8,69 @@
     android:padding="@dimen/activity_margin"
     tools:context=".agentquickrecharge.QuickRechargeFragment">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/quick_recharge_phone_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/quick_recharge_phone_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_account_box_red_100_48dp"
-            android:drawableRight="@drawable/ic_account_box_red_100_48dp"
-            android:hint="@string/quick_recharge_phone_hint"
-            android:inputType="phone"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/network_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_margin"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/quick_recharge_amount_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_margin">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/quick_recharge_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/amount_hint"
-            android:inputType="numberDecimal"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/quick_recharge_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
-        android:background="@drawable/blue_button_selector"
-        android:text="@string/recharge"
-        android:textColor="@android:color/white"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/quick_recharge_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/quick_recharge_phone_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/quick_recharge_phone_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_account_box_red_100_48dp"
+                android:drawableRight="@drawable/ic_account_box_red_100_48dp"
+                android:hint="@string/quick_recharge_phone_hint"
+                android:inputType="phone"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/network_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/quick_recharge_amount_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/quick_recharge_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/amount_hint"
+                android:inputType="numberDecimal"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/quick_recharge_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/blue_button_selector"
+            android:text="@string/recharge"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
 
 </LinearLayout>

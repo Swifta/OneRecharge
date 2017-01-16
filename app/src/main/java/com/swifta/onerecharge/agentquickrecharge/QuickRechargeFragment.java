@@ -25,6 +25,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -65,6 +67,10 @@ public class QuickRechargeFragment extends Fragment {
     TextInputEditText quickRechargeAmountText;
     @BindView(R.id.quick_recharge_amount_layout)
     TextInputLayout quickRechargeAmountLayout;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.quick_recharge_container)
+    LinearLayout quickRechargeContainer;
 
     private SharedPreferences sharedPreferences;
     RechargeResponseFragment successfulFragment;
@@ -111,8 +117,8 @@ public class QuickRechargeFragment extends Fragment {
                     .R.layout.simple_spinner_item, networks);
         } else {
             String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
-            adapter = new ArrayAdapter<String>(getActivity(), android
-                    .R.layout.simple_spinner_item, networks);
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout
+                    .simple_spinner_item, networks);
         }
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -223,13 +229,23 @@ public class QuickRechargeFragment extends Fragment {
             amount = Integer.valueOf(quickRechargeAmountText.getText().toString());
             quickRechargeAmountLayout.setError(null);
         }
+/** This block of code was commented out because I was only initially working with the Nigerian
+ * usecase where the length of a telephone number is 11 digits. This might not hold again now
+ * that we have Ghanaian numbers too **/
+//        if (phoneNumber.isEmpty()) {
+//            quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
+//            focusView = quickRechargePhoneLayout;
+//            cancel = true;
+//        } else if (phoneNumber.length() != 11) {
+//            quickRechargePhoneLayout.setError(getString(R.string.phone_length_error));
+//            focusView = quickRechargePhoneLayout;
+//            cancel = true;
+//        } else {
+//            quickRechargePhoneLayout.setError(null);
+//        }
 
         if (phoneNumber.isEmpty()) {
             quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
-            focusView = quickRechargePhoneLayout;
-            cancel = true;
-        } else if (phoneNumber.length() != 11) {
-            quickRechargePhoneLayout.setError(getString(R.string.phone_length_error));
             focusView = quickRechargePhoneLayout;
             cancel = true;
         } else {
@@ -255,6 +271,9 @@ public class QuickRechargeFragment extends Fragment {
     }
 
     private void performQuickRecharge() {
+        quickRechargeContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
         QuickRechargeRequest quickRechargeRequest = new QuickRechargeRequest
                 (phoneNumber, amount, networkProvider, "", "");
 
@@ -276,7 +295,8 @@ public class QuickRechargeFragment extends Fragment {
 
                     @Override
                     public void onCompleted() {
-
+                        progressBar.setVisibility(View.GONE);
+                        quickRechargeContainer.setVisibility(View.VISIBLE);
                     }
 
                     @Override

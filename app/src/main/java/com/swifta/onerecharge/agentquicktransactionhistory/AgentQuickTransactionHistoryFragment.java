@@ -79,8 +79,25 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
         item.setVisible(false);
+
         item = menu.findItem(R.id.action_logout);
         item.setVisible(false);
+
+        item = menu.findItem(R.id.sort_by_date);
+        item.setVisible(true);
+
+        item = menu.findItem(R.id.sort_by_recipient);
+        item.setVisible(true);
+
+        item = menu.findItem(R.id.sort_by_amount);
+        item.setVisible(true);
+
+        item = menu.findItem(R.id.sort_by_network);
+        item.setVisible(true);
+
+        item = menu.findItem(R.id.sort_by_status);
+        item.setVisible(true);
+
     }
 
     @Override
