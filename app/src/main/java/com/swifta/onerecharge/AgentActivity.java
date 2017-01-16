@@ -41,6 +41,7 @@ import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -92,6 +93,7 @@ public class AgentActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     TextView agentHeaderEmailView;
     SharedPreferences sharedPreferences;
+    Realm realm;
     boolean isDashboardFragment;
 
     @Override
@@ -103,6 +105,7 @@ public class AgentActivity extends AppCompatActivity
 
         sharedPreferences = getSharedPreferences(getString(R.string
                 .agent_shared_preference_name), Context.MODE_PRIVATE);
+        realm = Realm.getDefaultInstance();
 
         displayFragmentDashboard();
 
@@ -221,6 +224,12 @@ public class AgentActivity extends AppCompatActivity
 
     private void clearAgentData() {
         sharedPreferences.edit().clear().apply();
+
+        realm.beginTransaction();
+        if (!realm.isClosed() && !realm.isEmpty()) {
+            realm.deleteAll();
+        }
+        realm.close();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
