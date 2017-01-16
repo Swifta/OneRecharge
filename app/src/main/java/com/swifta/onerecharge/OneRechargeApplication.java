@@ -21,8 +21,6 @@ public class OneRechargeApplication extends Application {
         Realm.init(this);
 
         RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
-        // Delete Realm between app restarts.
-        Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
     }
 }

@@ -183,7 +183,6 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     }
 
     private void clearPreviousRealmData() {
-        RealmResults<Row> results = getRowListFromRealm();
         realm.beginTransaction();
         realm.delete(Row.class);
         realm.commitTransaction();

@@ -194,16 +194,15 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
                                 realmRowList.add(realmRow);
                             }
 
+                            displayTransactions(realmRowList);
                             clearPreviousRealmData();
                             saveDataToRealm(realmRowList);
-                            displayTransactions(realmRowList);
                         }
                     }
                 });
     }
 
     private void clearPreviousRealmData() {
-        RealmResults<RealmRow> results = getRowListFromRealm();
         realm.beginTransaction();
         realm.delete(RealmRow.class);
         realm.commitTransaction();
