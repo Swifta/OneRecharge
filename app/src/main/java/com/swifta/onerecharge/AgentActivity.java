@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -58,12 +57,6 @@ public class AgentActivity extends AppCompatActivity
 
     @BindView(R.id.toolbar_dashboard)
     Toolbar toolbarDashboard;
-
-//    @BindView(R.id.agent_activity_frame)
-//    FrameLayout activityFrame;
-//
-//    @BindView(R.id.dashboard_activity_frame)
-//    LinearLayout dashboardFrame;
 
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
@@ -138,73 +131,6 @@ public class AgentActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.sort_by_date);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_recipient);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_amount);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_network);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_status);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.action_settings);
-        item.setVisible(true);
-
-        item = menu.findItem(R.id.action_logout);
-        item.setVisible(true);
-
-        return true;
-    }
-
-    private void setMenuItemToFalse(MenuItem item) {
-        if (item != null) {
-            item.setVisible(false);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.agent, menu);
-
-        MenuItem item = menu.findItem(R.id.sort_by_date);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_recipient);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_amount);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_network);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.sort_by_status);
-        setMenuItemToFalse(item);
-
-        item = menu.findItem(R.id.action_settings);
-        item.setVisible(true);
-
-        item = menu.findItem(R.id.action_logout);
-        item.setVisible(true);
-
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -239,7 +165,6 @@ public class AgentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            invalidateOptionsMenu();
             displayFragmentDashboard();
         } else if (id == R.id.nav_quick_recharge) {
             displayFragment(new QuickRechargeFragment());

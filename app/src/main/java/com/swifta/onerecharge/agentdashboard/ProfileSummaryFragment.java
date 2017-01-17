@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -69,12 +72,49 @@ public class ProfileSummaryFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        setHasOptionsMenu(true);
+
         sharedPreferences = getActivity().getSharedPreferences(getString(R
                 .string.agent_shared_preference_name), Context.MODE_PRIVATE);
 
         setUpUiWithSavedValues();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.agent, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.sort_by_date);
+        setMenuItemToFalse(item);
+
+        item = menu.findItem(R.id.sort_by_recipient);
+        setMenuItemToFalse(item);
+
+        item = menu.findItem(R.id.sort_by_amount);
+        setMenuItemToFalse(item);
+
+        item = menu.findItem(R.id.sort_by_network);
+        setMenuItemToFalse(item);
+
+        item = menu.findItem(R.id.sort_by_status);
+        setMenuItemToFalse(item);
+
+        item = menu.findItem(R.id.action_settings);
+        item.setVisible(true);
+
+        item = menu.findItem(R.id.action_logout);
+        item.setVisible(true);
+    }
+
+    private void setMenuItemToFalse(MenuItem item) {
+        if (item != null) {
+            item.setVisible(false);
+        }
     }
 
     private String getReferralId() {

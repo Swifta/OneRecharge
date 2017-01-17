@@ -88,10 +88,10 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_settings);
-        item.setVisible(false);
+        setMenuItemToFalse(item);
 
         item = menu.findItem(R.id.action_logout);
-        item.setVisible(false);
+        setMenuItemToFalse(item);
 
         item = menu.findItem(R.id.sort_by_date);
         item.setVisible(true);
@@ -107,6 +107,12 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
 
         item = menu.findItem(R.id.sort_by_status);
         item.setVisible(true);
+    }
+
+    private void setMenuItemToFalse(MenuItem item) {
+        if (item != null) {
+            item.setVisible(false);
+        }
     }
 
     @Override
@@ -175,7 +181,7 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
                             rowList = agentScheduledTransactionHistory.getRows();
                             List<RealmRow> realmRowList = new ArrayList<RealmRow>();
 
-                            for(Row r: rowList) {
+                            for (Row r : rowList) {
                                 RealmRow realmRow = new RealmRow();
 
                                 realmRow.setId(r.getId());
