@@ -266,8 +266,8 @@ public class AgentActivity extends AppCompatActivity
 
         setSupportActionBar(toolbarDashboard);
 
-        toggle = new ActionBarDrawerToggle(this,
-                drawer, toolbarDashboard, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbarDashboard, R.string
+                .navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
