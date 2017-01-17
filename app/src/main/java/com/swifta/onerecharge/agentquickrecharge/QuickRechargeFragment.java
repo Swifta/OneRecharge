@@ -101,6 +101,8 @@ public class QuickRechargeFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        setHasOptionsMenu(false);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
                 (getResources().getString(R.string.quick_recharge));
 
