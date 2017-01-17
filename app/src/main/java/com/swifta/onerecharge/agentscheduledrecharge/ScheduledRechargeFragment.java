@@ -119,8 +119,6 @@ public class ScheduledRechargeFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        setHasOptionsMenu(false);
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
                 (getResources().getString(R.string.scheduled_recharge));
 
