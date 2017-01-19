@@ -1,6 +1,5 @@
 package com.swifta.onerecharge.agentscheduledrecharge;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -64,6 +64,8 @@ import rx.schedulers.Schedulers;
  * A simple {@link Fragment} subclass.
  */
 public class ScheduledRechargeFragment extends Fragment {
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
     @BindView(R.id.scheduled_recharge_phone_text)
     TextInputEditText scheduledRechargePhoneText;
     @BindView(R.id.scheduled_recharge_phone_layout)
@@ -76,13 +78,13 @@ public class ScheduledRechargeFragment extends Fragment {
     @BindView(R.id.scheduled_recharge_amount_layout)
     TextInputLayout scheduledRechargeAmountLayout;
 
-    @BindView(R.id.extra_details)
-    LinearLayout extraDetailsLayout;
-
     @BindView(R.id.time_picker)
     Button timePickerButton;
     @BindView(R.id.date_picker)
     Button datePickerButton;
+
+    @BindView(R.id.recharge_container)
+    LinearLayout linearLayout;
 
     private SharedPreferences sharedPreferences;
     RechargeResponseFragment successfulFragment;
@@ -247,97 +249,6 @@ public class ScheduledRechargeFragment extends Fragment {
         datePickerButton.setText(date);
     }
 
-    @OnClick(R.id.add_new_transaction)
-    void addNewTransaction() {
-
-        phoneNumber = scheduledRechargePhoneText.getText().toString();
-        networkProvider = networkChoiceSpinner.getSelectedItem()
-                .toString();
-        String amountText = scheduledRechargeAmountText.getText().toString();
-        date = datePickerButton.getText().toString();
-        time = timePickerButton.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        if (time.equals(getResources().getString(R
-                .string.time))) {
-            Toast.makeText(getActivity(), "Please select a time", Toast
-                    .LENGTH_SHORT).show();
-            focusView = timePickerButton;
-            cancel = true;
-        }
-
-        if (date.equals(getResources().getString(R
-                .string.date))) {
-            Toast.makeText(getActivity(), "Please select a date", Toast
-                    .LENGTH_SHORT).show();
-            focusView = datePickerButton;
-            cancel = true;
-        }
-
-        if (amountText.isEmpty()) {
-            scheduledRechargeAmountLayout.setError(getString(R.string.amount_empty_error));
-            focusView = scheduledRechargeAmountLayout;
-            cancel = true;
-        } else if (Integer.valueOf(amountText) < 50) {
-            scheduledRechargeAmountLayout.setError(getString(R.string.amount_low_error));
-            focusView = scheduledRechargeAmountLayout;
-            cancel = true;
-        } else {
-            amount = Integer.valueOf(scheduledRechargeAmountText.getText().toString());
-            scheduledRechargeAmountLayout.setError(null);
-        }
-
-        if (phoneNumber.isEmpty()) {
-            scheduledRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
-            focusView = scheduledRechargePhoneLayout;
-            cancel = true;
-        } else if (phoneNumber.length() != 11) {
-            scheduledRechargePhoneLayout.setError(getString(R.string.phone_length_error));
-            focusView = scheduledRechargePhoneLayout;
-            cancel = true;
-        } else {
-            scheduledRechargePhoneLayout.setError(null);
-        }
-
-        if (!date.equals(getResources().getString(R
-                .string.date)) && !time.equals(getResources().getString(R
-                .string.time))) {
-
-            String selectedDate = date + " " + time;
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy " +
-                    "HH:mm", Locale.getDefault());
-            long selectedTimeMillis = 0L;
-            try {
-                Date simpleFormatDate = simpleDateFormat.parse(selectedDate);
-                selectedTimeMillis = simpleFormatDate.getTime();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (System.currentTimeMillis() > selectedTimeMillis) {
-                Toast.makeText(getActivity(), "Please select a date in the future",
-                        Toast.LENGTH_SHORT).show();
-                focusView = datePickerButton;
-                cancel = true;
-            }
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-            scheduleList.add(new Schedule(amount, date, time));
-            scheduledRechargePhoneLayout.setVisibility(View.GONE);
-            networkChoiceSpinner.setVisibility(View.GONE);
-            scheduledRechargeAmountText.setText("");
-            datePickerButton.setText(getResources().getString(R
-                    .string.date));
-            timePickerButton.setText(getResources().getString(R
-                    .string.time));
-        }
-    }
-
     @OnClick(R.id.scheduled_recharge_button)
     void processRecharge() {
 
@@ -386,13 +297,26 @@ public class ScheduledRechargeFragment extends Fragment {
             scheduledRechargeAmountLayout.setError(null);
         }
 
+        /** This block of code was commented out because I was only initially working with the Nigerian
+         * usecase where the length of a telephone number is 11 digits. This might not hold again now
+         * that we have Ghanaian numbers too **/
+//        if (scheduledRechargePhoneLayout.getVisibility() != View.GONE) {
+//            if (phoneNumber.isEmpty()) {
+//                scheduledRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
+//                focusView = scheduledRechargePhoneLayout;
+//                cancel = true;
+//            } else if (phoneNumber.length() != 11) {
+//                scheduledRechargePhoneLayout.setError(getString(R.string.phone_length_error));
+//                focusView = scheduledRechargePhoneLayout;
+//                cancel = true;
+//            } else {
+//                scheduledRechargePhoneLayout.setError(null);
+//            }
+//        }
+
         if (scheduledRechargePhoneLayout.getVisibility() != View.GONE) {
             if (phoneNumber.isEmpty()) {
                 scheduledRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
-                focusView = scheduledRechargePhoneLayout;
-                cancel = true;
-            } else if (phoneNumber.length() != 11) {
-                scheduledRechargePhoneLayout.setError(getString(R.string.phone_length_error));
                 focusView = scheduledRechargePhoneLayout;
                 cancel = true;
             } else {
@@ -431,6 +355,8 @@ public class ScheduledRechargeFragment extends Fragment {
                         Snackbar.LENGTH_SHORT).show();
             } else {
                 scheduleList.add(new Schedule(amount, date, time));
+                progressBar.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.GONE);
                 performScheduledRecharge();
             }
         }
@@ -471,6 +397,8 @@ public class ScheduledRechargeFragment extends Fragment {
 
                     @Override
                     public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
+                        linearLayout.setVisibility(View.VISIBLE);
                     }
 
                     @Override

@@ -240,8 +240,8 @@
     <string name="phone_length_error">Please enter an 11 digit number</string>
 
     <!-- ScheduleRechargeFragment -->
-    <string name="date">Date</string>
-    <string name="time">Time</string>
+    <string name="date">Pick a date</string>
+    <string name="time">Pick a time</string>
     <string name="add_new_schedule">Add new schedule</string>
 
     <!-- Sort menu -->
