@@ -87,7 +87,6 @@ public class AgentActivity extends AppCompatActivity
     TextView agentHeaderEmailView;
     SharedPreferences sharedPreferences;
     Realm realm;
-    boolean isDashboardFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +120,12 @@ public class AgentActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        displayFragmentDashboard();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -142,6 +147,7 @@ public class AgentActivity extends AppCompatActivity
                 Intent logoutIntent = new Intent(AgentActivity.this, AgentRegistrationActivity
                         .class);
                 startActivity(logoutIntent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -182,7 +188,6 @@ public class AgentActivity extends AppCompatActivity
     }
 
     private void displayFragmentDashboard() {
-        isDashboardFragment = true;
         appBarLayout.setVisibility(View.GONE);
         activityContainerFrame.setVisibility(View.GONE);
 
@@ -204,7 +209,6 @@ public class AgentActivity extends AppCompatActivity
     }
 
     private void displayFragment(Fragment fragment) {
-        isDashboardFragment = false;
         dashboardAppBarLayout.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
 
