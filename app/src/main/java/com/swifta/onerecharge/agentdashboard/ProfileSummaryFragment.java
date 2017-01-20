@@ -105,10 +105,10 @@ public class ProfileSummaryFragment extends Fragment {
         setMenuItemToFalse(item);
 
         item = menu.findItem(R.id.action_settings);
-        item.setVisible(true);
+        setMenuItemToTrue(item);
 
         item = menu.findItem(R.id.action_logout);
-        item.setVisible(true);
+        setMenuItemToTrue(item);
     }
 
     private void setMenuItemToFalse(MenuItem item) {
@@ -116,6 +116,13 @@ public class ProfileSummaryFragment extends Fragment {
             item.setVisible(false);
         }
     }
+
+    private void setMenuItemToTrue(MenuItem item) {
+        if (item != null) {
+            item.setVisible(true);
+        }
+    }
+
 
     private String getReferralId() {
         return sharedPreferences.getString(getResources().getString(R.string
@@ -199,7 +206,7 @@ public class ProfileSummaryFragment extends Fragment {
 
         agentType.setText(getResources().getString(R.string.agent_type_value, getAgentType()));
         agentClass.setText(getResources().getString(R.string.agent_class_value, getAgentClass()));
-        if(getDateAndTimeCreated().length() > 0) {
+        if (getDateAndTimeCreated().length() > 0) {
             time = InstantTimeFormatter.formatInstantTime(getDateAndTimeCreated());
         }
         dateAndTimeCreated.setText(getResources().getString(R.string
@@ -212,7 +219,7 @@ public class ProfileSummaryFragment extends Fragment {
                 .total_amount_sold_value, getTotalAmountSold()));
         lastSuccessfulAmountTextview.setText(getResources().getString(R.string
                 .last_successful_transaction_amount_value, getLastSuccessfulAmount()));
-        if(getLastSuccessfulTime().length() > 0) {
+        if (getLastSuccessfulTime().length() > 0) {
             time = InstantTimeFormatter.formatInstantTime(getLastSuccessfulTime());
         }
         lastSuccessfulTimeTextview.setText(getResources().getString(R.string
@@ -223,7 +230,7 @@ public class ProfileSummaryFragment extends Fragment {
                 .total_failed_transaction_amount_value, getTotalFailedTransactionAmount()));
         lastFailedAmountTextView.setText(getResources().getString(R.string
                 .last_failed_transaction_amount_value, getLastFailedAmount()));
-        if(getLastFailedTime().length() > 0) {
+        if (getLastFailedTime().length() > 0) {
             time = InstantTimeFormatter.formatInstantTime(getLastFailedTime());
         }
         lastFailedTimeTextview.setText(getResources().getString(R.string

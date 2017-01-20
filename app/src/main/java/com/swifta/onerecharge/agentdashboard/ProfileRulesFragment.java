@@ -81,15 +81,21 @@ public class ProfileRulesFragment extends Fragment {
         setMenuItemToFalse(item);
 
         item = menu.findItem(R.id.action_settings);
-        item.setVisible(true);
+        setMenuItemToTrue(item);
 
         item = menu.findItem(R.id.action_logout);
-        item.setVisible(true);
+        setMenuItemToTrue(item);
     }
 
     private void setMenuItemToFalse(MenuItem item) {
         if (item != null) {
             item.setVisible(false);
+        }
+    }
+
+    private void setMenuItemToTrue(MenuItem item) {
+        if (item != null) {
+            item.setVisible(true);
         }
     }
 
