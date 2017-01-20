@@ -87,6 +87,7 @@ public class AgentActivity extends AppCompatActivity
     TextView agentHeaderEmailView;
     SharedPreferences sharedPreferences;
     Realm realm;
+    String currentDisplayedView = "none";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +100,36 @@ public class AgentActivity extends AppCompatActivity
                 .agent_shared_preference_name), Context.MODE_PRIVATE);
         realm = Realm.getDefaultInstance();
 
-        displayFragmentDashboard();
-
         fragmentManager = getSupportFragmentManager();
+
+        if (savedInstanceState != null) {
+            currentDisplayedView = savedInstanceState.getString("current_displayed_view");
+
+            switch (currentDisplayedView) {
+                case "none":
+                    displayFragmentDashboard();
+                    break;
+                case "dashboard":
+                    displayFragmentDashboard();
+                    break;
+                case "nav_quick_recharge":
+                    displayFragment(new QuickRechargeFragment());
+                    break;
+                case "nav_auto_recharge":
+                    displayFragment(new ScheduledRechargeFragment());
+                    break;
+                case "nav_quick_transaction_history":
+                    displayFragment(new AgentQuickTransactionHistoryFragment());
+                    break;
+                case "nav_scheduled_transaction_history":
+                    displayFragment(new AgentScheduledTransactionHistoryFragment());
+                    break;
+                default:
+                    displayFragmentDashboard();
+            }
+        } else {
+            displayFragmentDashboard();
+        }
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -133,6 +161,12 @@ public class AgentActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("current_displayed_view", currentDisplayedView);
     }
 
     @Override
@@ -173,12 +207,16 @@ public class AgentActivity extends AppCompatActivity
         if (id == R.id.nav_dashboard) {
             displayFragmentDashboard();
         } else if (id == R.id.nav_quick_recharge) {
+            currentDisplayedView = "nav_quick_recharge";
             displayFragment(new QuickRechargeFragment());
         } else if (id == R.id.nav_auto_recharge) {
+            currentDisplayedView = "nav_auto_recharge";
             displayFragment(new ScheduledRechargeFragment());
         } else if (id == R.id.nav_quick_transaction_history) {
+            currentDisplayedView = "nav_quick_transaction_history";
             displayFragment(new AgentQuickTransactionHistoryFragment());
         } else if (id == R.id.nav_scheduled_transaction_history) {
+            currentDisplayedView = "nav_scheduled_transaction_history";
             displayFragment(new AgentScheduledTransactionHistoryFragment());
         }
 
@@ -205,6 +243,7 @@ public class AgentActivity extends AppCompatActivity
         initTabInstances();
         tabLayout.setupWithViewPager(viewPager);
 
+        currentDisplayedView = "dashboard";
         setupViewPager(viewPager, getSupportFragmentManager());
     }
 
