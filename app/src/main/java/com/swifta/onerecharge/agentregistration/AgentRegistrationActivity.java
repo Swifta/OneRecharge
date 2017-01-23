@@ -16,6 +16,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -169,6 +170,8 @@ public class AgentRegistrationActivity extends AppCompatActivity {
     String signUpEmail;
     String personalPhoneNumber;
     String alternatePhoneNumber;
+    String country = "";
+    String region = "";
 
     // Sign up fields for company details
     String companyName;
@@ -292,9 +295,11 @@ public class AgentRegistrationActivity extends AppCompatActivity {
             agentType = getString(R.string.business_agent);
         }
 
-        agentTypeDetailsView.setVisibility(View.GONE);
-        agentSignUpPersonalDetailsView.setVisibility(View.VISIBLE);
-        setUpPersonalDetailsView();
+        dummySignUp();
+
+//        agentTypeDetailsView.setVisibility(View.GONE);
+//        agentSignUpPersonalDetailsView.setVisibility(View.VISIBLE);
+//        setUpPersonalDetailsView();
     }
 
     @OnClick(R.id.agent_personal_back_button)
@@ -754,23 +759,26 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
         Data data = new Data(lastName, otherNames, signUpEmail,
                 personalPhoneNumber, alternatePhoneNumber, agentType,
-                agentClass, referralId, termsAndConditionsAccepted, uploads, businessProfile);
+                agentClass, referralId, country, region, termsAndConditionsAccepted, uploads,
+                businessProfile);
+
+        Log.e("data", data.toString());
 
         AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
 
-        if (identificationStream != null) {
-            uploadImageWithRxJava(identificationStream,
-                    meansOfIdentificationName);
-        }
-
-        if (proofOfAddressStream != null) {
-            uploadImageWithRxJava(proofOfAddressStream,
-                    proofOfAddressName);
-        }
-
-        if (businessCacStream != null) {
-            uploadImageWithRxJava(businessCacStream, businessCacName);
-        }
+//        if (identificationStream != null) {
+//            uploadImageWithRxJava(identificationStream,
+//                    meansOfIdentificationName);
+//        }
+//
+//        if (proofOfAddressStream != null) {
+//            uploadImageWithRxJava(proofOfAddressStream,
+//                    proofOfAddressName);
+//        }
+//
+//        if (businessCacStream != null) {
+//            uploadImageWithRxJava(businessCacStream, businessCacName);
+//        }
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -806,13 +814,74 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onNext(AgentSignUpResponse agentSignUpResponse) {
 
-                        if (agentSignUpResponse.getStatus() == 0) {
-                            Toast.makeText(AgentRegistrationActivity.this, "We are unable to " +
-                                    "register you. Please check your details and try again", Toast
-                                    .LENGTH_SHORT).show();
-                        } else if (agentSignUpResponse.getStatus() == 1) {
+                        if(agentSignUpResponse.getStatus() == 1) {
                             Intent i = new Intent(AgentRegistrationActivity.this, AgentActivity.class);
                             startActivity(i);
+                        } else {
+                            Toast.makeText(AgentRegistrationActivity.this, "OnNext! We are unable" +
+                                    " to register you. Please check your details and try again", Toast
+                                    .LENGTH_SHORT).show();
+                            Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
+                                    .getStatus().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void dummySignUp() {
+
+        Uploads uploads = new Uploads("public/uploads/agents/identification-ss@dfd.ccnull",
+                "public/uploads/agents/proof_of_address-ss@dfd.ccnull",
+                "");
+
+        BusinessProfile businessProfile = new BusinessProfile("", "", "", "", "");
+
+        Data data = new Data("As", "ss", "ss@hh.jjd", "08036326374", "", "Individual Agent",
+                "Discount Based Agent", "", "", "", 1, uploads, businessProfile);
+
+        Log.e("data", data.toString());
+
+        AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
+
+        final Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://40.117.36.121:3001/")
+                .build();
+
+        AgentService agentService = retrofit.create(AgentService.class);
+        final Observable<AgentSignUpResponse> registerObservable =
+                agentService.dummyRegistration(agentSignUpBody);
+
+        registerObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<AgentSignUpResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                        Toast.makeText(AgentRegistrationActivity.this, "Completed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println(((HttpException) e).code());
+                        Toast.makeText(AgentRegistrationActivity.this, "On error", Toast
+                                .LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(AgentSignUpResponse agentSignUpResponse) {
+
+                        if(agentSignUpResponse.getStatus() == 1) {
+                            Toast.makeText(AgentRegistrationActivity.this, "Successful. Agent " +
+                                    "created", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AgentRegistrationActivity.this, "OnNext! Sorry :(", Toast
+                                    .LENGTH_SHORT).show();
+                            Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
+                                    .getData().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -828,8 +897,7 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
     private String uploadToAmazonBucket(InputStream inputStream, String imageName) {
         AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials
-                (getResources().getString(R.string
-                        .amazon_access_key_id), getResources()
+                (getResources().getString(R.string.amazon_access_key_id), getResources()
                         .getString(R.string.amazon_secret_access_key)));
 
         File file = new File(getCacheDir(), "cacheFileAppeal.srl");

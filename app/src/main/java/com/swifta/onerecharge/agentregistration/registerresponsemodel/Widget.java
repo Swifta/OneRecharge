@@ -7,16 +7,16 @@ import com.google.gson.annotations.SerializedName;
  * Created by moyinoluwa on 1/23/17.
  */
 
-public class Wallet {
-    @SerializedName("balance")
+public class Widget {
+    @SerializedName("date_made")
     @Expose
-    private Integer balance;
+    private String dateMade;
 
-    public Integer getBalance() {
-        return balance;
+    public String getDateMade() {
+        return dateMade;
     }
 
-    public void setBalance(Integer balance) {
-        this.balance = balance;
+    public void setDateMade(String dateMade) {
+        this.dateMade = dateMade;
     }
 }

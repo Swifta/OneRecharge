@@ -5,11 +5,11 @@ package com.swifta.onerecharge.agentregistration.registerrequestmodel;
  */
 public class BusinessProfile {
 
-    public String companyTradingName;
-    public String companyRegistrationNumber;
-    public String companyTelephone;
-    public String companyContactName;
-    public String companyContactNumber;
+    private String companyTradingName;
+    private String companyRegistrationNumber;
+    private String companyTelephone;
+    private String companyContactName;
+    private String companyContactNumber;
 
     public BusinessProfile(String companyTradingName, String
             companyRegistrationNumber, String companyTelephone, String
@@ -19,5 +19,25 @@ public class BusinessProfile {
         this.companyTelephone = companyTelephone;
         this.companyContactName = companyContactName;
         this.companyContactNumber = companyContactNumber;
+    }
+
+    public String getCompanyTradingName() {
+        return companyTradingName;
+    }
+
+    public String getCompanyRegistrationNumber() {
+        return companyRegistrationNumber;
+    }
+
+    public String getCompanyTelephone() {
+        return companyTelephone;
+    }
+
+    public String getCompanyContactName() {
+        return companyContactName;
+    }
+
+    public String getCompanyContactNumber() {
+        return companyContactNumber;
     }
 }

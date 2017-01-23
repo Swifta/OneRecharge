@@ -33,17 +33,18 @@ public interface AgentService {
                                              @Path(Url.PASSWORD_PATH) String password);
 
     @POST(Url.AGENT_SIGNUP_URL)
-    Observable<AgentSignUpResponse> registerNewAgent(@Body AgentSignUpBody
-                                                             signUpBody);
+    Observable<AgentSignUpResponse> registerNewAgent(@Body AgentSignUpBody signUpBody);
+
+
+    @POST("api/agents/add/API")
+    Observable<AgentSignUpResponse> dummyRegistration(@Body AgentSignUpBody signUpBody);
 
     @PUT(Url.AGENT_CHANGE_PASSWORD_URL)
-    Observable<AgentPassword> changePassword(@Body RequestPasswordData
-                                                     passwordData);
+    Observable<AgentPassword> changePassword(@Body RequestPasswordData passwordData);
 
     @GET(Url.AGENT_SUMMARY_URL)
-    Observable<AgentSummary> getSummary(@Path(Url.EMAIL_PATH) String email,
-                                        @Path(Url.TOKEN_PATH) String
-                                                token);
+    Observable<AgentSummary> getSummary(@Path(Url.EMAIL_PATH) String email, @Path(Url.TOKEN_PATH)
+            String token);
 
     @GET(Url.AGENT_NETWORKS)
     Observable<NetworkListResponse> getNetworkList();
