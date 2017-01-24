@@ -54,7 +54,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
@@ -295,11 +294,9 @@ public class AgentRegistrationActivity extends AppCompatActivity {
             agentType = getString(R.string.business_agent);
         }
 
-        dummySignUp();
-
-//        agentTypeDetailsView.setVisibility(View.GONE);
-//        agentSignUpPersonalDetailsView.setVisibility(View.VISIBLE);
-//        setUpPersonalDetailsView();
+        agentTypeDetailsView.setVisibility(View.GONE);
+        agentSignUpPersonalDetailsView.setVisibility(View.VISIBLE);
+        setUpPersonalDetailsView();
     }
 
     @OnClick(R.id.agent_personal_back_button)
@@ -752,10 +749,9 @@ public class AgentRegistrationActivity extends AppCompatActivity {
         Uploads uploads = new Uploads(meansOfIdentificationName, proofOfAddressName,
                 businessCacName);
 
-        BusinessProfile businessProfile = new BusinessProfile
-                (companyName, companyRegistrationNumber,
-                        companyPhoneNumber, companyContactName,
-                        companyContactPhoneNumber);
+        BusinessProfile businessProfile = new BusinessProfile(companyName, companyRegistrationNumber,
+                companyPhoneNumber, companyContactName,
+                companyContactPhoneNumber);
 
         Data data = new Data(lastName, otherNames, signUpEmail,
                 personalPhoneNumber, alternatePhoneNumber, agentType,
@@ -766,14 +762,12 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
         AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
 
-//        if (identificationStream != null) {
-//            uploadImageWithRxJava(identificationStream,
-//                    meansOfIdentificationName);
-//        }
-//
+        if (identificationStream != null) {
+            uploadImageWithRxJava(identificationStream, meansOfIdentificationName);
+        }
+
 //        if (proofOfAddressStream != null) {
-//            uploadImageWithRxJava(proofOfAddressStream,
-//                    proofOfAddressName);
+//            uploadImageWithRxJava(proofOfAddressStream, proofOfAddressName);
 //        }
 //
 //        if (businessCacStream != null) {
@@ -797,15 +791,12 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
                     @Override
                     public void onCompleted() {
-                        agentLoginProgress.setVisibility(View.GONE);
-                        agentSignUpClassView.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         agentLoginProgress.setVisibility(View.GONE);
                         agentSignUpClassView.setVisibility(View.VISIBLE);
-                        System.out.println(((HttpException) e).code());
                         Toast.makeText(AgentRegistrationActivity.this, "We are unable to register" +
                                 " you. Please check your details and try again", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -814,74 +805,16 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onNext(AgentSignUpResponse agentSignUpResponse) {
 
-                        if(agentSignUpResponse.getStatus() == 1) {
+                        if (agentSignUpResponse.getStatus() == 1) {
                             Intent i = new Intent(AgentRegistrationActivity.this, AgentActivity.class);
                             startActivity(i);
                         } else {
-                            Toast.makeText(AgentRegistrationActivity.this, "OnNext! We are unable" +
-                                    " to register you. Please check your details and try again", Toast
+                            agentLoginProgress.setVisibility(View.GONE);
+                            agentSignUpClassView.setVisibility(View.VISIBLE);
+
+                            Toast.makeText(AgentRegistrationActivity.this, "Registration failed. " +
+                                    "Please update your email address and try again.", Toast
                                     .LENGTH_SHORT).show();
-                            Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
-                                    .getStatus().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void dummySignUp() {
-
-        Uploads uploads = new Uploads("public/uploads/agents/identification-ss@dfd.ccnull",
-                "public/uploads/agents/proof_of_address-ss@dfd.ccnull",
-                "");
-
-        BusinessProfile businessProfile = new BusinessProfile("", "", "", "", "");
-
-        Data data = new Data("As", "ss", "ss@hh.jjd", "08036326374", "", "Individual Agent",
-                "Discount Based Agent", "", "", "", 1, uploads, businessProfile);
-
-        Log.e("data", data.toString());
-
-        AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
-
-        final Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://40.117.36.121:3001/")
-                .build();
-
-        AgentService agentService = retrofit.create(AgentService.class);
-        final Observable<AgentSignUpResponse> registerObservable =
-                agentService.dummyRegistration(agentSignUpBody);
-
-        registerObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<AgentSignUpResponse>() {
-
-                    @Override
-                    public void onCompleted() {
-                        Toast.makeText(AgentRegistrationActivity.this, "Completed!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println(((HttpException) e).code());
-                        Toast.makeText(AgentRegistrationActivity.this, "On error", Toast
-                                .LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(AgentSignUpResponse agentSignUpResponse) {
-
-                        if(agentSignUpResponse.getStatus() == 1) {
-                            Toast.makeText(AgentRegistrationActivity.this, "Successful. Agent " +
-                                    "created", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AgentRegistrationActivity.this, "OnNext! Sorry :(", Toast
-                                    .LENGTH_SHORT).show();
-                            Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
-                                    .getData().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

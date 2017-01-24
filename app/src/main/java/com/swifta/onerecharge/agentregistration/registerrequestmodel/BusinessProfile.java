@@ -1,19 +1,43 @@
 package com.swifta.onerecharge.agentregistration.registerrequestmodel;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by moyinoluwa on 9/8/16.
  */
 public class BusinessProfile {
 
-    private String companyTradingName;
-    private String companyRegistrationNumber;
-    private String companyTelephone;
-    private String companyContactName;
-    private String companyContactNumber;
+    @SerializedName("company_trading_name")
+    @Expose
+    public String companyTradingName;
+    @SerializedName("company_registration_number")
+    @Expose
+    public String companyRegistrationNumber;
+    @SerializedName("company_telephone")
+    @Expose
+    public String companyTelephone;
+    @SerializedName("company_contact_name")
+    @Expose
+    public String companyContactName;
+    @SerializedName("company_contact_number")
+    @Expose
+    public String companyContactNumber;
 
-    public BusinessProfile(String companyTradingName, String
-            companyRegistrationNumber, String companyTelephone, String
-                                   companyContactName, String companyContactNumber) {
+    /**
+     * No args constructor for use in serialization
+     */
+    public BusinessProfile() {
+    }
+
+    /**
+     * @param companyContactName
+     * @param companyTradingName
+     * @param companyContactNumber
+     * @param companyTelephone
+     * @param companyRegistrationNumber
+     */
+    public BusinessProfile(String companyTradingName, String companyRegistrationNumber, String companyTelephone, String companyContactName, String companyContactNumber) {
         this.companyTradingName = companyTradingName;
         this.companyRegistrationNumber = companyRegistrationNumber;
         this.companyTelephone = companyTelephone;

@@ -1,15 +1,38 @@
 package com.swifta.onerecharge.agentregistration.registerrequestmodel;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by moyinoluwa on 9/8/16.
  */
 public class Uploads {
 
-    private String identification;
-    private String proofOfAddress;
-    private String cac;
+    @SerializedName("identification")
+    @Expose
+    public String identification;
+    @SerializedName("proof_of_address")
+    @Expose
+    public String proofOfAddress;
+    @SerializedName("cac")
+    @Expose
+    public String cac;
 
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public Uploads() {
+    }
+
+    /**
+     *
+     * @param cac
+     * @param proofOfAddress
+     * @param identification
+     */
     public Uploads(String identification, String proofOfAddress, String cac) {
+        super();
         this.identification = identification;
         this.proofOfAddress = proofOfAddress;
         this.cac = cac;

@@ -12,6 +12,15 @@ public class AgentSignUpBody {
     @Expose
     public Data data;
 
+    /**
+     * No args constructor for use in serialization
+     */
+    public AgentSignUpBody() {
+    }
+
+    /**
+     * @param data
+     */
     public AgentSignUpBody(Data data) {
         this.data = data;
     }

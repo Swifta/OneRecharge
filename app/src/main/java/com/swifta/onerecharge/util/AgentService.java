@@ -35,10 +35,6 @@ public interface AgentService {
     @POST(Url.AGENT_SIGNUP_URL)
     Observable<AgentSignUpResponse> registerNewAgent(@Body AgentSignUpBody signUpBody);
 
-
-    @POST("api/agents/add/API")
-    Observable<AgentSignUpResponse> dummyRegistration(@Body AgentSignUpBody signUpBody);
-
     @PUT(Url.AGENT_CHANGE_PASSWORD_URL)
     Observable<AgentPassword> changePassword(@Body RequestPasswordData passwordData);
 
