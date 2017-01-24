@@ -173,16 +173,16 @@ public class AgentRegistrationActivity extends AppCompatActivity {
     String region = "";
 
     // Sign up fields for company details
-    String companyName;
-    String companyRegistrationNumber;
-    String companyPhoneNumber;
-    String companyContactName;
-    String companyContactPhoneNumber;
+    String companyName = "";
+    String companyRegistrationNumber = "";
+    String companyPhoneNumber = "";
+    String companyContactName = "";
+    String companyContactPhoneNumber = "";
 
     // Sign up fields for upload details
-    String businessCacName;
-    String meansOfIdentificationName;
-    String proofOfAddressName;
+    String businessCacName = "";
+    String meansOfIdentificationName = "";
+    String proofOfAddressName = "";
 
     // Sign up fields for agent class details
     String agentClass;
@@ -426,10 +426,10 @@ public class AgentRegistrationActivity extends AppCompatActivity {
     void switchToAgentClassView() {
         if (agentType.equals(getString(R.string.individual_agent))) {
 
-            if (meansOfIdentificationName == null) {
+            if (meansOfIdentificationName.isEmpty()) {
                 Toast.makeText(this, "Please upload a means of identification",
                         Toast.LENGTH_SHORT).show();
-            } else if (proofOfAddressName == null) {
+            } else if (proofOfAddressName.isEmpty()) {
                 Toast.makeText(this, "Please upload your proof of address",
                         Toast.LENGTH_SHORT).show();
             } else {
@@ -438,14 +438,14 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                 referralIdField.requestFocus();
             }
         } else if (agentType.equals(getString(R.string.business_agent))) {
-            if (businessCacName == null) {
+            if (businessCacName.isEmpty()) {
                 Toast.makeText(this, "Please upload your Business CAC " +
                         "Certificate", Toast
                         .LENGTH_SHORT).show();
-            } else if (meansOfIdentificationName == null) {
+            } else if (meansOfIdentificationName.isEmpty()) {
                 Toast.makeText(this, "Please upload a means of identification",
                         Toast.LENGTH_SHORT).show();
-            } else if (proofOfAddressName == null) {
+            } else if (proofOfAddressName.isEmpty()) {
                 Toast.makeText(this, "Please upload your Proof of address",
                         Toast.LENGTH_SHORT).show();
             } else {
@@ -521,21 +521,22 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                         case UploadType.CAC:
                             businessCacName = imageName;
                             businessCacStream = imageStream;
-                            if (businessCacName != null && businessCacStream != null) {
+                            if ((!businessCacName.isEmpty()) && businessCacStream != null) {
                                 businessCertificateUploadImage.setVisibility(View.VISIBLE);
                             }
                             break;
                         case UploadType.IDENTIFICATION:
                             meansOfIdentificationName = imageName;
                             identificationStream = imageStream;
-                            if (meansOfIdentificationName != null && identificationStream != null) {
+                            if ((!meansOfIdentificationName.isEmpty()) && identificationStream !=
+                                    null) {
                                 identificationUploadImage.setVisibility(View.VISIBLE);
                             }
                             break;
                         case UploadType.PROOF_OF_ADDRESS:
                             proofOfAddressName = imageName;
                             proofOfAddressStream = imageStream;
-                            if (proofOfAddressName != null && proofOfAddressStream != null) {
+                            if ((!proofOfAddressName.isEmpty()) && proofOfAddressStream != null) {
                                 proofUploadImage.setVisibility(View.VISIBLE);
                             }
                             break;
@@ -722,30 +723,6 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
     private void performAgentSignUp() {
 
-        if (companyName == null) {
-            companyName = "";
-        }
-
-        if (companyRegistrationNumber == null) {
-            companyRegistrationNumber = "";
-        }
-
-        if (companyPhoneNumber == null) {
-            companyPhoneNumber = "";
-        }
-
-        if (companyContactName == null) {
-            companyContactName = "";
-        }
-
-        if (companyContactPhoneNumber == null) {
-            companyContactPhoneNumber = "";
-        }
-
-        if (businessCacName == null) {
-            businessCacName = "";
-        }
-
         Uploads uploads = new Uploads(meansOfIdentificationName, proofOfAddressName,
                 businessCacName);
 
@@ -766,13 +743,13 @@ public class AgentRegistrationActivity extends AppCompatActivity {
             uploadImageWithRxJava(identificationStream, meansOfIdentificationName);
         }
 
-//        if (proofOfAddressStream != null) {
-//            uploadImageWithRxJava(proofOfAddressStream, proofOfAddressName);
-//        }
-//
-//        if (businessCacStream != null) {
-//            uploadImageWithRxJava(businessCacStream, businessCacName);
-//        }
+        if (proofOfAddressStream != null) {
+            uploadImageWithRxJava(proofOfAddressStream, proofOfAddressName);
+        }
+
+        if (businessCacStream != null) {
+            uploadImageWithRxJava(businessCacStream, businessCacName);
+        }
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
