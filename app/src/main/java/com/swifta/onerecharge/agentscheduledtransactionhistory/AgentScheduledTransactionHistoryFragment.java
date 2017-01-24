@@ -93,6 +93,9 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
         item = menu.findItem(R.id.action_logout);
         setMenuItemToFalse(item);
 
+        item = menu.findItem(R.id.action_privacy_policy);
+        setMenuItemToFalse(item);
+
         item = menu.findItem(R.id.sort_by_date);
         item.setVisible(true);
 

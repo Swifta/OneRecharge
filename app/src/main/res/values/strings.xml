@@ -251,6 +251,19 @@
     <string name="sort_by_amount">Sort by amount</string>
     <string name="sort_by_status">Sort by status</string>
 
+    <!-- Privacy Policy -->
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_intro">OneRecharge allows subscribers pay bills and is currently available in two countries; Nigeria and Ghana.</string>
+    <string name="privacy_policy_info_we_collect">Information we collect</string>
+    <string name="privacy_policy_info_you_provide">Information You Provide (Your Account Information)</string>
+    <string name="privacy_policy_info_you_provide_content">You provide your mobile number to
+        create a OneRecharge account. You also provide us with the phone numbers in your mobile address book.</string>
+    <string name="privacy_policy_info_third_party">Third-Party Information (Information Others Provide About You)</string>
+    <string name="privacy_policy_info_third_party_content">We also allow other users select phone
+        numbers directly from their contacts, which may include information about you. For example, when other users you know use our Services, they may provide your phone number from their mobile address book (just as you may provide theirs).</string>
+    <string name="privacy_policy_info_how_we_use">How We Use the Information</string>
+    <string name="privacy_policy_info_how_we_use_content">We make it easier for you to populate fields requiring a phone number by allowing you select contacts from your address book directly.\n\nWe do not store your contacts locally, neither do we share it with third-party applications.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_customer">CustomerActivity</string>

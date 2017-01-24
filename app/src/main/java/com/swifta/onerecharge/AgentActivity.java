@@ -34,6 +34,7 @@ import com.swifta.onerecharge.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.networklist.NetworkListResponse;
+import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.Url;
@@ -172,6 +173,11 @@ public class AgentActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_privacy_policy:
+                Intent privacyPolicyIntent = new Intent(AgentActivity.this, PrivacyPolicyActivity
+                        .class);
+                startActivity(privacyPolicyIntent);
+                return true;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(AgentActivity.this, ProfileActivity.class);
                 startActivity(settingsIntent);

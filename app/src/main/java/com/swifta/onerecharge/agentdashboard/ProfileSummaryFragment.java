@@ -104,6 +104,9 @@ public class ProfileSummaryFragment extends Fragment {
         item = menu.findItem(R.id.sort_by_status);
         setMenuItemToFalse(item);
 
+        item = menu.findItem(R.id.action_privacy_policy);
+        setMenuItemToTrue(item);
+
         item = menu.findItem(R.id.action_settings);
         setMenuItemToTrue(item);
 

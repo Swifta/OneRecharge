@@ -52,6 +52,14 @@
         </activity>
         <activity android:name=".customertopup.TopUpActivity">
         </activity>
+        <activity
+            android:name=".privacypolicy.PrivacyPolicyActivity"
+            android:label="@string/privacy_policy"
+            android:parentActivityName=".AgentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AgentActivity"/>
+        </activity>
     </application>
 
 </manifest>
