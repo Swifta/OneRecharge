@@ -46,7 +46,7 @@ ext {
     sparkVersion = '1.1.2'
     threetenabpVersion = '1.0.4'
     AndroidOnboarderVersion = '0.6'
-    amazonSdkS3Version = '2.+'
+    amazonVersion = '2.2.16'
     firebaseVersion = '9.8.0'
     daggerVersion = '2.8'
     jsr250Version = '1.0'

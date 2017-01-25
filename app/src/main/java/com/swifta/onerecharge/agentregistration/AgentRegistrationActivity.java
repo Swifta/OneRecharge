@@ -26,9 +26,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.Bucket;
 import com.swifta.onerecharge.AgentActivity;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agentregistration.loginresponsemodel.AgentRegistration;
@@ -40,14 +42,11 @@ import com.swifta.onerecharge.agentregistration.registerresponsemodel.AgentSignU
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.EmailRegexValidator;
 import com.swifta.onerecharge.util.ImageNameBuilder;
-import com.swifta.onerecharge.util.InputStreamToFileConverter;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.UploadType;
 import com.swifta.onerecharge.util.Url;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import butterknife.BindView;
@@ -550,23 +549,23 @@ public class AgentRegistrationActivity extends AppCompatActivity {
         if (subscription != null) {
             subscription.unsubscribe();
         }
-        try {
-            if (imageStream != null) {
-                imageStream.close();
-            }
-            if (businessCacStream != null) {
-                businessCacStream.close();
-            }
-            if (identificationStream != null) {
-                identificationStream.close();
-            }
-
-            if (proofOfAddressStream != null) {
-                proofOfAddressStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (imageStream != null) {
+//                imageStream.close();
+//            }
+//            if (businessCacStream != null) {
+//                businessCacStream.close();
+//            }
+//            if (identificationStream != null) {
+//                identificationStream.close();
+//            }
+//
+//            if (proofOfAddressStream != null) {
+//                proofOfAddressStream.close();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         super.onDestroy();
     }
 
@@ -737,17 +736,17 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
         AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
 
-        if (identificationStream != null) {
-            uploadImageWithRxJava(identificationStream, meansOfIdentificationName);
-        }
-
-        if (proofOfAddressStream != null) {
-            uploadImageWithRxJava(proofOfAddressStream, proofOfAddressName);
-        }
-
-        if (businessCacStream != null) {
-            uploadImageWithRxJava(businessCacStream, businessCacName);
-        }
+//        if (identificationStream != null) {
+//            uploadImageWithRxJava(identificationStream, meansOfIdentificationName);
+//        }
+//
+//        if (proofOfAddressStream != null) {
+//            uploadImageWithRxJava(proofOfAddressStream, proofOfAddressName);
+//        }
+//
+//        if (businessCacStream != null) {
+//            uploadImageWithRxJava(businessCacStream, businessCacName);
+//        }
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -774,7 +773,8 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                         agentSignUpClassView.setVisibility(View.VISIBLE);
                         Toast.makeText(AgentRegistrationActivity.this, "We are unable to register" +
                                 " you. Please check your details and try again", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+
+                        Toast.makeText(AgentRegistrationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -783,11 +783,13 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
                         if (agentSignUpResponse.getStatus() == 1) {
                             AlertDialog.Builder builder = new AlertDialog.Builder
-                                    (getApplicationContext())
+                                    (AgentRegistrationActivity.this)
                                     .setCancelable(false)
-                                    .setMessage("Your registration was successful! If " +
-                                            "your registration is confirmed, " +
-                                            "you will get an email with your login credentials.")
+                                    .setTitle("Successful!")
+                                    .setMessage("Congrats, your registration was successful! " +
+                                            "\n\nIf your registration is confirmed by the admin, " +
+                                            "you will get an email with your credentials to login" +
+                                            " to this application as an agent.")
                                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                         Intent i = new Intent(AgentRegistrationActivity.this,
                                                 AgentRegistrationActivity.class);
@@ -801,9 +803,7 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                             agentSignUpClassView.setVisibility(View.VISIBLE);
 
                             Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
-                                    .getStatus().toString(),
-                                    Toast
-                                    .LENGTH_SHORT).show();
+                                    .getStatus().toString(), Toast.LENGTH_SHORT).show();
                             Toast.makeText(AgentRegistrationActivity.this, "Registration failed. " +
                                     "Please update your email address and try again.", Toast
                                     .LENGTH_SHORT).show();
@@ -821,17 +821,30 @@ public class AgentRegistrationActivity extends AppCompatActivity {
     }
 
     private String uploadToAmazonBucket(InputStream inputStream, String imageName) {
-        AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials
-                (getResources().getString(R.string.amazon_access_key_id), getResources()
-                        .getString(R.string.amazon_secret_access_key)));
+        AWSCredentials credentials = new BasicAWSCredentials(getResources().getString(R.string
+                .amazon_access_key_id), getResources().getString(R.string
+                .amazon_secret_access_key));
 
-        File file = new File(getCacheDir(), "cacheFileAppeal.srl");
-        InputStreamToFileConverter.copy(inputStream, file);
+        AmazonS3 s3Client = new AmazonS3Client(credentials);
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest
-                (UploadType.TEST_BUCKET, imageName, file);
+        // list buckets
+        for (Bucket bucket : s3Client.listBuckets()) {
+            System.out.println(" - " + bucket.getName());
+        }
 
-        s3Client.putObject(putObjectRequest);
+//        File file = new File(getCacheDir(), "cacheFileAppeal.srl");
+//        InputStreamToFileConverter.copy(inputStream, file);
+//
+//        ObjectMetadata metadata = new ObjectMetadata();
+//        metadata.setContentLength(file.length());
+
+//        PutObjectRequest putObjectRequest = new PutObjectRequest
+//                (UploadType.TEST_BUCKET, imageName, inputStream, metadata);
+
+//        PutObjectRequest putObjectRequest = new PutObjectRequest
+//                (UploadType.TEST_BUCKET, imageName, file);
+//
+//        s3Client.putObject(putObjectRequest);
 
         return null;
     }
