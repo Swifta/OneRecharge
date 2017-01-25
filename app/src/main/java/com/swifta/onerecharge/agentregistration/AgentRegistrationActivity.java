@@ -15,8 +15,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -735,8 +735,6 @@ public class AgentRegistrationActivity extends AppCompatActivity {
                 agentClass, referralId, country, region, termsAndConditionsAccepted, uploads,
                 businessProfile);
 
-        Log.e("data", data.toString());
-
         AgentSignUpBody agentSignUpBody = new AgentSignUpBody(data);
 
         if (identificationStream != null) {
@@ -781,14 +779,31 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(AgentSignUpResponse agentSignUpResponse) {
+                        agentLoginProgress.setVisibility(View.GONE);
 
                         if (agentSignUpResponse.getStatus() == 1) {
-                            Intent i = new Intent(AgentRegistrationActivity.this, AgentActivity.class);
-                            startActivity(i);
+                            AlertDialog.Builder builder = new AlertDialog.Builder
+                                    (getApplicationContext())
+                                    .setCancelable(false)
+                                    .setMessage("Your registration was successful! If " +
+                                            "your registration is confirmed, " +
+                                            "you will get an email with your login credentials.")
+                                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                        Intent i = new Intent(AgentRegistrationActivity.this,
+                                                AgentRegistrationActivity.class);
+                                        startActivity(i);
+                                        finish();
+                                    });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         } else {
-                            agentLoginProgress.setVisibility(View.GONE);
                             agentSignUpClassView.setVisibility(View.VISIBLE);
 
+                            Toast.makeText(AgentRegistrationActivity.this, agentSignUpResponse
+                                    .getStatus().toString(),
+                                    Toast
+                                    .LENGTH_SHORT).show();
                             Toast.makeText(AgentRegistrationActivity.this, "Registration failed. " +
                                     "Please update your email address and try again.", Toast
                                     .LENGTH_SHORT).show();
