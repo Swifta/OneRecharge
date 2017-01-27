@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'onerecharge'
             keyPassword 'onerecharge'
-            storeFile file('/Users/moyinoluwa/onerecharge.jks')
+            storeFile file('onerecharge.jks')
             storePassword 'onerecharge'
         }
     }
@@ -17,7 +17,7 @@ android {
         applicationId "com.swifta.onerecharge"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion 25
-        versionCode 1
+        versionCode 4
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        dataBinding.enabled = true
@@ -29,7 +29,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }

@@ -233,7 +233,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         CustomerService customerService = retrofit
                 .create(CustomerService.class);
         final Observable<CustomerRegistration> agent = customerService.logCustomerIn
-                ("Ksb9Fjaho7p7y2bQcN3QiYSPAitYoWSO", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
+                ("tPTpR4PIYtoFSiblO1P9Xn0ttGsWE9wS", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
                         loginEmailAddress, password);
 
         agent.subscribeOn(Schedulers.io())
