@@ -6,6 +6,7 @@
     <!-- AgentActivity -->
     <dimen name="app_bar_height">256dp</dimen>
     <dimen name="agent_activity_margin">100dp</dimen>
+    <dimen name="nav_header_image_width">50dp</dimen>
 
     <!-- CustomerRegistrationActivity -->
     <dimen name="sign_up_text_size">24sp</dimen>
