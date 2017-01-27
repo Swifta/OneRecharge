@@ -1,8 +1,8 @@
 package com.swifta.onerecharge.util;
 
-import com.swifta.onerecharge.customerregistration.loginresponsemodel.CustomerRegistration;
-import com.swifta.onerecharge.customerregistration.registerresponsemodel.CustomerSignUpResponse;
-import com.swifta.onerecharge.customertopup.CustomerTopUpResponse;
+import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
+import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
+import com.swifta.onerecharge.customer.customertopup.CustomerTopUpResponse;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

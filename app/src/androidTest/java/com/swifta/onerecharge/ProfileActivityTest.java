@@ -7,7 +7,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
-import com.swifta.onerecharge.resetagentpassword.ProfileActivity;
+import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

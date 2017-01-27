@@ -6,7 +6,7 @@
               android:gravity="center"
               android:orientation="vertical"
               android:padding="@dimen/activity_margin"
-              tools:context=".agentquickrecharge.RechargeResponseFragment">
+              tools:context=".agent.agentquickrecharge.RechargeResponseFragment">
 
     <ImageView
         android:id="@+id/recharge_response_image"

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.swifta.onerecharge.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment">
+              tools:context=".agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment">
 
     <ProgressBar
         android:id="@+id/progress_bar"

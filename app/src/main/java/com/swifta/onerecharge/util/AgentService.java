@@ -1,19 +1,19 @@
 package com.swifta.onerecharge.util;
 
-import com.swifta.onerecharge.agentapikey.AgentApiKeyResponse;
-import com.swifta.onerecharge.agentdashboard.AgentSummary;
-import com.swifta.onerecharge.agentquickrecharge.quickrechargerequestmodel.QuickRechargeRequest;
-import com.swifta.onerecharge.agentquickrecharge.quickrechargeresponsemodel.QuickRechargeResponse;
-import com.swifta.onerecharge.agentquicktransactionhistory.AgentQuickTransactionHistory;
-import com.swifta.onerecharge.agentregistration.loginresponsemodel.AgentRegistration;
-import com.swifta.onerecharge.agentregistration.registerrequestmodel.AgentSignUpBody;
-import com.swifta.onerecharge.agentregistration.registerresponsemodel.AgentSignUpResponse;
-import com.swifta.onerecharge.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
-import com.swifta.onerecharge.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
-import com.swifta.onerecharge.agentscheduledtransactionhistory.AgentScheduledTransactionHistory;
+import com.swifta.onerecharge.agent.agentapikey.AgentApiKeyResponse;
+import com.swifta.onerecharge.agent.agentdashboard.AgentSummary;
+import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargerequestmodel.QuickRechargeRequest;
+import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargeresponsemodel.QuickRechargeResponse;
+import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTransactionHistory;
+import com.swifta.onerecharge.agent.agentregistration.loginresponsemodel.AgentRegistration;
+import com.swifta.onerecharge.agent.agentregistration.registerrequestmodel.AgentSignUpBody;
+import com.swifta.onerecharge.agent.agentregistration.registerresponsemodel.AgentSignUpResponse;
+import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
+import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
+import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistory;
 import com.swifta.onerecharge.networklist.NetworkListResponse;
-import com.swifta.onerecharge.resetagentpassword.AgentPassword;
-import com.swifta.onerecharge.resetagentpassword.RequestPasswordData;
+import com.swifta.onerecharge.agent.resetagentpassword.AgentPassword;
+import com.swifta.onerecharge.agent.resetagentpassword.RequestPasswordData;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;

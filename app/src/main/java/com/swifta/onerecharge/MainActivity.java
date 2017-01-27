@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
 
-import com.swifta.onerecharge.agentregistration.AgentRegistrationActivity;
-import com.swifta.onerecharge.customerregistration.CustomerRegistrationActivity;
+import com.swifta.onerecharge.agent.agentregistration.AgentRegistrationActivity;
+import com.swifta.onerecharge.customer.customerregistration.CustomerRegistrationActivity;
 
 public class MainActivity extends AppCompatActivity {
 

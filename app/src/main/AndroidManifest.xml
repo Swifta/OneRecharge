@@ -15,28 +15,28 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".customerregistration.CustomerRegistrationActivity"/>
+        <activity android:name=".customer.customerregistration.CustomerRegistrationActivity"/>
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:theme="@style/Theme.AppCompat"/>
         <activity android:name=".MainActivity"/>
-        <activity android:name=".agentregistration.AgentRegistrationActivity"/>
+        <activity android:name=".agent.agentregistration.AgentRegistrationActivity"/>
         <activity
-            android:name=".AgentActivity"
+            android:name=".agent.AgentActivity"
             android:label="@string/title_activity_agent"
-            android:parentActivityName=".agentregistration.AgentRegistrationActivity"
+            android:parentActivityName=".agent.agentregistration.AgentRegistrationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.swifta.onerecharge.agentregistration.AgentRegistrationActivity"/>
+                android:value=".agent.agentregistration.AgentRegistrationActivity"/>
         </activity>
         <activity
-            android:name=".resetagentpassword.ProfileActivity"
+            android:name=".agent.resetagentpassword.ProfileActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".AgentActivity">
+            android:parentActivityName=".agent.AgentActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".AgentActivity"/>
+                android:value=".agent.AgentActivity"/>
         </activity>
         <activity android:name=".onboarding.LauncherActivity">
             <intent-filter>
@@ -46,19 +46,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CustomerActivity"
+            android:name=".customer.CustomerActivity"
             android:label="@string/title_activity_customer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".customertopup.TopUpActivity">
+        <activity android:name=".customer.customertopup.TopUpActivity">
         </activity>
         <activity
             android:name=".privacypolicy.PrivacyPolicyActivity"
             android:label="@string/privacy_policy"
-            android:parentActivityName=".AgentActivity">
+            android:parentActivityName=".agent.AgentActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".AgentActivity"/>
+                android:value=".agent.AgentActivity"/>
         </activity>
     </application>
 
