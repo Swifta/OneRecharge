@@ -16,11 +16,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
-import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
-import com.swifta.onerecharge.customer.customerregistration.CustomerRegistrationActivity;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
+import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
+import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
+import com.swifta.onerecharge.customer.customerregistration.CustomerRegistrationActivity;
+import com.swifta.onerecharge.util.CustomerService;
+import com.swifta.onerecharge.util.InternetConnectivity;
+import com.swifta.onerecharge.util.Url;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class CustomerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,10 +94,11 @@ public class CustomerActivity extends AppCompatActivity
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_logout:
-                clearCustomerData();
-                Intent logoutIntent = new Intent(CustomerActivity.this,
-                        CustomerRegistrationActivity.class);
-                startActivity(logoutIntent);
+                if (!InternetConnectivity.isDeviceConnected(this)) {
+                    Toast.makeText(this, R.string.internet_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    logCustomerOut();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -131,5 +145,56 @@ public class CustomerActivity extends AppCompatActivity
                 .saved_customer_email_address), "");
 
         customerHeaderEmailView.setText(email);
+    }
+
+    private void logCustomerOut() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        final CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<CustomerLogout> agent = customerService.logCustomerOut
+                ("tPTpR4PIYtoFSiblO1P9Xn0ttGsWE9wS", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
+                        getCustomerEmail(), getCustomerToken());
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<CustomerLogout>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(CustomerLogout customerLogout) {
+                        if (customerLogout.getStatus() == 1) {
+                            clearCustomerData();
+                            Intent logoutIntent = new Intent(CustomerActivity.this,
+                                    CustomerRegistrationActivity.class);
+                            startActivity(logoutIntent);
+                        } else {
+                            Toast.makeText(CustomerActivity.this, "Logout unsuccessful. Please " +
+                                    "try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private String getCustomerEmail() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_email_address), "");
+    }
+
+    private String getCustomerToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_auth_token), "");
     }
 }

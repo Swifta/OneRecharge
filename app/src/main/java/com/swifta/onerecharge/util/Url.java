@@ -75,4 +75,7 @@ public class Url {
 
     // Customer Signup
     public static final String CUSTOMER_TOPUP_URL = "api/customer/wallet";
+
+    // Logout
+    public static final String CUSTOMER_LOGOUT_URL = "api/customer/logout/{email}/{token}";
 }
