@@ -23,6 +23,7 @@ import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
 import com.swifta.onerecharge.customer.customerregistration.CustomerRegistrationActivity;
+import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
@@ -89,6 +90,11 @@ public class CustomerActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_privacy_policy:
+                Intent privacyPolicyIntent = new Intent(CustomerActivity.this, PrivacyPolicyActivity
+                        .class);
+                startActivity(privacyPolicyIntent);
+                return true;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(CustomerActivity.this, ProfileActivity.class);
                 startActivity(settingsIntent);
@@ -180,6 +186,7 @@ public class CustomerActivity extends AppCompatActivity
                             Intent logoutIntent = new Intent(CustomerActivity.this,
                                     CustomerRegistrationActivity.class);
                             startActivity(logoutIntent);
+                            finish();
                         } else {
                             Toast.makeText(CustomerActivity.this, "Logout unsuccessful. Please " +
                                     "try again", Toast.LENGTH_SHORT).show();
