@@ -2,6 +2,7 @@ package com.swifta.onerecharge.util;
 
 import com.swifta.onerecharge.agent.agentapikey.AgentApiKeyResponse;
 import com.swifta.onerecharge.agent.agentdashboard.AgentSummary;
+import com.swifta.onerecharge.agent.agentlogout.AgentLogout;
 import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargerequestmodel.QuickRechargeRequest;
 import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargeresponsemodel.QuickRechargeResponse;
 import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTransactionHistory;
@@ -81,4 +82,8 @@ public interface AgentService {
                                                                                         rowCount, @Query
                                                                                         (Url.SEARCH_PHRASE)
                                                                                         String searchPhrase);
+
+    @GET(Url.AGENT_LOGOUT_URL)
+    Observable<AgentLogout> logAgentOut(@Path(Url.EMAIL_PATH) String email, @Path(Url.TOKEN_PATH)
+            String token);
 }

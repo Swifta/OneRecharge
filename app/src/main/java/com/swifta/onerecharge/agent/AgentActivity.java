@@ -28,16 +28,18 @@ import com.swifta.onerecharge.agent.agentdashboard.AgentSummary;
 import com.swifta.onerecharge.agent.agentdashboard.PagerAdapter;
 import com.swifta.onerecharge.agent.agentdashboard.ProfileRulesFragment;
 import com.swifta.onerecharge.agent.agentdashboard.ProfileSummaryFragment;
+import com.swifta.onerecharge.agent.agentlogout.AgentLogout;
 import com.swifta.onerecharge.agent.agentquickrecharge.QuickRechargeFragment;
 import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTransactionHistoryFragment;
 import com.swifta.onerecharge.agent.agentregistration.AgentRegistrationActivity;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
+import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.networklist.NetworkListResponse;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
-import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.util.AgentService;
+import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
@@ -184,11 +186,11 @@ public class AgentActivity extends AppCompatActivity
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_logout:
-                clearAgentData();
-                Intent logoutIntent = new Intent(AgentActivity.this, AgentRegistrationActivity
-                        .class);
-                startActivity(logoutIntent);
-                finish();
+                if (!InternetConnectivity.isDeviceConnected(this)) {
+                    Toast.makeText(this, R.string.internet_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    logAgentOut();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -554,5 +556,46 @@ public class AgentActivity extends AppCompatActivity
         editor.putString(getResources().getString(R.string.saved_agent_api_key), agentApiKey);
 
         editor.apply();
+    }
+
+    private void logAgentOut() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        final AgentService agentService = retrofit.create(AgentService.class);
+        final Observable<AgentLogout> agent = agentService.logAgentOut(getEmailAddress
+                (), getToken());
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<AgentLogout>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(AgentLogout agentLogout) {
+                        if (agentLogout.getStatus() == 1) {
+                            clearAgentData();
+                            Intent logoutIntent = new Intent(AgentActivity.this, AgentRegistrationActivity
+                                    .class);
+                            startActivity(logoutIntent);
+                            finish();
+                        } else {
+                            Toast.makeText(AgentActivity.this, agentLogout.getData(), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                });
     }
 }

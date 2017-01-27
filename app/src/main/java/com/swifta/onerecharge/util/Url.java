@@ -24,7 +24,6 @@ public class Url {
     /**
      * Agents
      **/
-
     // Login
     public static final String AGENT_LOGIN_URL = "api/auth/{email}/{password}";
 
@@ -60,6 +59,9 @@ public class Url {
     public static final String AGENT_SCHEDULED_TRANSACTION_HISTORY =
             "api/schedule/query/{network}/{recipient}/{gateway}/{status}/{date_from}/{date_to" +
                     "}/{agent_email}";
+
+    // Logout
+    public static final String AGENT_LOGOUT_URL = "api/logout/{email}/{token}";
 
     /**
      * Customers
