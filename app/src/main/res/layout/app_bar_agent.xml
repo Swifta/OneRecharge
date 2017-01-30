@@ -32,30 +32,53 @@
 
     </FrameLayout>
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="gone"
+        app:layout_anchor="@+id/dashboard_app_bar_layout"
+        app:layout_anchorGravity="bottom"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:visibility="gone"
+        app:layout_anchor="@+id/dashboard_app_bar_layout"
+        app:layout_anchorGravity="bottom"
+        app:tabGravity="fill"
+        app:tabMode="fixed"/>
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/dashboard_app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:visibility="gone">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
-            app:expandedTitleGravity="center_horizontal"
-            app:expandedTitleMarginTop="50dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Display3"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="center"
+            app:expandedTitleMarginTop="@dimen/expandedTitleMarginTop"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="@dimen/expandedTitleMarginTop"
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/current_balance"
                 android:textColor="@color/materialLightBlue300"
@@ -64,26 +87,10 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_dashboard"
                 android:layout_width="match_parent"
-                android:layout_height="112dp"
-                android:layout_gravity="top"
-                android:minHeight="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleMarginBottom="56dp"/>
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"/>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </android.support.design.widget.CoordinatorLayout>
 

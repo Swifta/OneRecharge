@@ -152,12 +152,6 @@ public class AgentActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        displayFragmentDashboard();
-    }
-
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -239,6 +233,7 @@ public class AgentActivity extends AppCompatActivity
         activityContainerFrame.setVisibility(View.GONE);
 
         dashboardAppBarLayout.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.VISIBLE);
         viewPager.setVisibility(View.VISIBLE);
 
         setSupportActionBar(toolbarDashboard);
@@ -258,6 +253,7 @@ public class AgentActivity extends AppCompatActivity
 
     private void displayFragment(Fragment fragment) {
         dashboardAppBarLayout.setVisibility(View.GONE);
+        tabLayout.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
 
         appBarLayout.setVisibility(View.VISIBLE);
@@ -297,7 +293,6 @@ public class AgentActivity extends AppCompatActivity
                 (R.string.profile_rules)));
         tabLayout.addTab(tabLayout.newTab().setText(getResources().getString
                 (R.string.profile_summary)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     private void setUpCollapsingToolbarWithCurrentValue() {
