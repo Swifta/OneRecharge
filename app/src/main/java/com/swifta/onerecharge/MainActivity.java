@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchAgentActivity() {
-        Intent customerIntent = new Intent(MainActivity.this,
+        Intent agentIntent = new Intent(MainActivity.this,
                 AgentRegistrationActivity
                         .class);
-        startActivity(customerIntent);
+        startActivity(agentIntent);
     }
 }
