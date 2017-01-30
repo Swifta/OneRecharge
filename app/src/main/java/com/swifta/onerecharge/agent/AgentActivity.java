@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.swifta.onerecharge.MainActivity;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentapikey.AgentApiKeyResponse;
 import com.swifta.onerecharge.agent.agentdashboard.AgentSummary;
@@ -31,7 +32,6 @@ import com.swifta.onerecharge.agent.agentdashboard.ProfileSummaryFragment;
 import com.swifta.onerecharge.agent.agentlogout.AgentLogout;
 import com.swifta.onerecharge.agent.agentquickrecharge.QuickRechargeFragment;
 import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTransactionHistoryFragment;
-import com.swifta.onerecharge.agent.agentregistration.AgentRegistrationActivity;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
@@ -582,7 +582,7 @@ public class AgentActivity extends AppCompatActivity
                     public void onNext(AgentLogout agentLogout) {
                         if (agentLogout.getStatus() == 1) {
                             clearAgentData();
-                            Intent logoutIntent = new Intent(AgentActivity.this, AgentRegistrationActivity
+                            Intent logoutIntent = new Intent(AgentActivity.this, MainActivity
                                     .class);
                             startActivity(logoutIntent);
                             finish();

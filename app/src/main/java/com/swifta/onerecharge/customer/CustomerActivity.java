@@ -18,11 +18,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.swifta.onerecharge.MainActivity;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
-import com.swifta.onerecharge.customer.customerregistration.CustomerRegistrationActivity;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
@@ -183,8 +183,8 @@ public class CustomerActivity extends AppCompatActivity
                     public void onNext(CustomerLogout customerLogout) {
                         if (customerLogout.getStatus() == 1) {
                             clearCustomerData();
-                            Intent logoutIntent = new Intent(CustomerActivity.this,
-                                    CustomerRegistrationActivity.class);
+                            Intent logoutIntent = new Intent(CustomerActivity.this, MainActivity
+                                    .class);
                             startActivity(logoutIntent);
                             finish();
                         } else {
