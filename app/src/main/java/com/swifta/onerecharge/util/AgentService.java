@@ -12,9 +12,10 @@ import com.swifta.onerecharge.agent.agentregistration.registerresponsemodel.Agen
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistory;
-import com.swifta.onerecharge.networklist.NetworkListResponse;
 import com.swifta.onerecharge.agent.resetagentpassword.AgentPassword;
 import com.swifta.onerecharge.agent.resetagentpassword.RequestPasswordData;
+import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
+import com.swifta.onerecharge.networklist.NetworkListResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -42,6 +43,9 @@ public interface AgentService {
     @GET(Url.AGENT_SUMMARY_URL)
     Observable<AgentSummary> getSummary(@Path(Url.EMAIL_PATH) String email, @Path(Url.TOKEN_PATH)
             String token);
+
+    @GET(Url.AVAILABLE_COUNTRIES)
+    Observable<AvailableCountriesResponse> getAvailableCountries();
 
     @GET(Url.AGENT_NETWORKS)
     Observable<NetworkListResponse> getNetworkList();

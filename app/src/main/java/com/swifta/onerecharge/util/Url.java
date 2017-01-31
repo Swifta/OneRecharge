@@ -22,6 +22,12 @@ public class Url {
     public static final String BASE_URL = "http://40.117.36.121:3001/";
 
     /**
+     * General
+     **/
+    // Available Countries
+    public static final String AVAILABLE_COUNTRIES = "api/countries/available.json";
+
+    /**
      * Agents
      **/
     // Login

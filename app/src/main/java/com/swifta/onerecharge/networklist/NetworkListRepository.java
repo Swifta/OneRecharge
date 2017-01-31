@@ -8,13 +8,13 @@ import java.util.List;
 
 public class NetworkListRepository {
 
-    private static List<String> networkList;
+    private static List<List<String>> countryNetworkList;
 
-    public static List<String> getNetworkList() {
-        return networkList;
+    public static List<List<String>> getNetworkList() {
+        return countryNetworkList;
     }
 
-    public static void setNetworkList(List<String> newNetworkList) {
-        networkList = newNetworkList;
+    public static void setNetworkList(List<List<String>> newNetworkList) {
+        countryNetworkList = newNetworkList;
     }
 }

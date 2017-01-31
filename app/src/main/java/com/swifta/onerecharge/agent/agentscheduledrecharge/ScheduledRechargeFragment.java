@@ -38,7 +38,6 @@ import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.Schedule;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
-import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.PhoneNumberConverter;
@@ -143,17 +142,21 @@ public class ScheduledRechargeFragment extends Fragment {
         datePickerFragment.setSelectedDateListener(date1 -> setDateButtonText(date1));
 
         ArrayAdapter<String> adapter;
-        if (NetworkListRepository.getNetworkList() != null) {
-            List<String> networkList = NetworkListRepository.getNetworkList();
-            String[] networks = networkList.toArray(new String[networkList.size()]);
+//        if (NetworkListRepository.getNetworkList() != null) {
+//            List<String> networkList = NetworkListRepository.getNetworkList();
+//            String[] networks = networkList.toArray(new String[networkList.size()]);
+//
+//            adapter = new ArrayAdapter<>(getActivity(), android
+//                    .R.layout.simple_spinner_item, networks);
+//        } else {
+//            String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
+//            adapter = new ArrayAdapter<>(getActivity(), android
+//                    .R.layout.simple_spinner_item, networks);
+//        }
 
-            adapter = new ArrayAdapter<>(getActivity(), android
-                    .R.layout.simple_spinner_item, networks);
-        } else {
-            String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
-            adapter = new ArrayAdapter<>(getActivity(), android
-                    .R.layout.simple_spinner_item, networks);
-        }
+        String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
+        adapter = new ArrayAdapter<>(getActivity(), android
+                .R.layout.simple_spinner_item, networks);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         networkChoiceSpinner.setAdapter(adapter);

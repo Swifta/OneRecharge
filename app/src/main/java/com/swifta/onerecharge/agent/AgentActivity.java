@@ -35,12 +35,17 @@ import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTrans
 import com.swifta.onerecharge.agent.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
+import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
+import com.swifta.onerecharge.countryinfo.CountryListRepository;
+import com.swifta.onerecharge.countryinfo.Data;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
-import com.swifta.onerecharge.networklist.NetworkListResponse;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,7 +153,7 @@ public class AgentActivity extends AppCompatActivity
 
         getAgentApiKey();
 
-        getNetworkList();
+        getAvailableCountries();
     }
 
     @Override
@@ -477,21 +482,20 @@ public class AgentActivity extends AppCompatActivity
                 });
     }
 
-    private void getNetworkList() {
+    private void getAvailableCountries() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Url.BASE_URL)
                 .build();
 
-        final AgentService agentService = retrofit
-                .create(AgentService.class);
-        final Observable<NetworkListResponse> agent = agentService.getNetworkList();
+        final AgentService agentService = retrofit.create(AgentService.class);
+        final Observable<AvailableCountriesResponse> agent = agentService.getAvailableCountries();
 
         agent.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<NetworkListResponse>() {
+                .subscribe(new Subscriber<AvailableCountriesResponse>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -503,9 +507,19 @@ public class AgentActivity extends AppCompatActivity
                     }
 
                     @Override
-                    public void onNext(NetworkListResponse networkListResponse) {
-                        if (networkListResponse.getStatus() == 1) {
-                            NetworkListRepository.setNetworkList(networkListResponse.getData());
+                    public void onNext(AvailableCountriesResponse availableCountriesResponse) {
+                        if (availableCountriesResponse.getStatus() == 1) {
+
+                            List<String> countryList = new ArrayList<String>();
+                            List<List<String>> countryNetworkList = new ArrayList<List<String>>();
+
+                            for (Data data : availableCountriesResponse.getData()) {
+                                countryList.add(data.getName());
+                                countryNetworkList.add(data.getNetworks());
+                            }
+
+                            CountryListRepository.setCountryList(countryList);
+                            NetworkListRepository.setNetworkList(countryNetworkList);
                         }
                     }
                 });
