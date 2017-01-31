@@ -1,21 +1,22 @@
 package com.swifta.onerecharge.customer.customertopup;
 
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
@@ -31,7 +32,10 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TopUpActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class CustomerWalletTopUpFragment extends Fragment {
 
     @BindView(R.id.amount)
     TextInputEditText amountField;
@@ -56,18 +60,26 @@ public class TopUpActivity extends AppCompatActivity {
     String description;
 
     private SharedPreferences sharedPreferences;
+    RechargeResponseFragment successfulFragment;
+
+    private static final int TRANSACTION_FAILED = 0;
+    private static final int TRANSACTION_SUCCESSFUL = 1;
+
+    public CustomerWalletTopUpFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_up);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_customer_wallet_top_up, container, false);
 
-        ButterKnife.bind(this);
-
-        sharedPreferences = getSharedPreferences(getString(R.string
+        ButterKnife.bind(this, view);
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string
                 .customer_shared_preference_name), Context.MODE_PRIVATE);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        return view;
     }
 
     @OnClick(R.id.top_wallet_up_button)
@@ -106,27 +118,13 @@ public class TopUpActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if (!InternetConnectivity.isDeviceConnected(getApplicationContext
-                    ())) {
-                Snackbar.make(topUpView, R.string.internet_error, Snackbar
-                        .LENGTH_SHORT).show();
+            if (!InternetConnectivity.isDeviceConnected(getActivity())) {
+                Snackbar.make(topUpView, R.string.internet_error, Snackbar.LENGTH_SHORT).show();
             } else {
                 topUpView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 topWalletUp();
             }
-        }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                switchToCustomerActivity();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -155,27 +153,36 @@ public class TopUpActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         progressBar.setVisibility(View.GONE);
                         topUpView.setVisibility(View.VISIBLE);
-
-                        Snackbar.make(topUpView, R.string.customer_topup_error, Snackbar
-                                .LENGTH_SHORT).show();
+                        showResultDialog(getString(R.string.customer_topup_error), TRANSACTION_FAILED);
                     }
 
                     @Override
                     public void onNext(CustomerTopUpResponse customerTopUpResponse) {
-                        if (customerTopUpResponse.getStatus() == 1) {
-                            Toast.makeText(TopUpActivity.this, "Wallet credited with " + amount + "!",
-                                    Toast.LENGTH_SHORT).show();
-                            updateWallet(customerTopUpResponse.getData().getWallet());
-                            switchToCustomerActivity();
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            topUpView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        topUpView.setVisibility(View.VISIBLE);
 
-                            Snackbar.make(topUpView, customerTopUpResponse.getData().getMessage()
-                                    , Snackbar.LENGTH_SHORT).show();
+                        if (customerTopUpResponse.getStatus() == 1) {
+                            updateWallet(customerTopUpResponse.getData().getWallet());
+                            clearInputFields();
+                            showResultDialog("Wallet credited with ₦" + amount + "!", TRANSACTION_SUCCESSFUL);
+                        } else {
+                            showResultDialog(customerTopUpResponse.getData().getMessage(),
+                                    TRANSACTION_FAILED);
                         }
                     }
                 });
+    }
+
+    private void showResultDialog(String message, int status) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        successfulFragment = RechargeResponseFragment.newInstance(message, status);
+        successfulFragment.show(fragmentManager, "");
+    }
+
+    private void clearInputFields() {
+        amountField.setText("");
+        referenceField.setText("");
+        descriptionField.setText("");
     }
 
     private String getCustomerEmail() {
@@ -199,8 +206,4 @@ public class TopUpActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void switchToCustomerActivity() {
-        Intent i = new Intent(TopUpActivity.this, CustomerActivity.class);
-        startActivity(i);
-    }
 }

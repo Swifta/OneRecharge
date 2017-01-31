@@ -50,8 +50,6 @@
             android:label="@string/title_activity_customer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".customer.customertopup.TopUpActivity">
-        </activity>
         <activity
             android:name=".privacypolicy.PrivacyPolicyActivity"
             android:label="@string/privacy_policy"

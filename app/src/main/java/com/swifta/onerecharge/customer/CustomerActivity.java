@@ -23,6 +23,7 @@ import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
+import com.swifta.onerecharge.customer.customertopup.CustomerWalletTopUpFragment;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
@@ -121,17 +122,11 @@ public class CustomerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        if (id == R.id.nav_dashboard) {
+            displayFragment(new CustomerDashboardFragment());
+        } else if (id == R.id.nav_wallet_topup) {
+            displayFragment(new CustomerWalletTopUpFragment());
+        } else if (id == R.id.nav_quick_recharge) {
 
         }
 

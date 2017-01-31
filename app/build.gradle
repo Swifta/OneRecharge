@@ -72,5 +72,6 @@ dependencies {
     androidTestCompile "com.android.support.test:rules:$rootProject.ext.espressoRunnerVersion"
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    compile 'com.android.support:support-v4:25.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

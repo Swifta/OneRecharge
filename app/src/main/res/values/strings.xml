@@ -97,7 +97,7 @@
     <string name="user_signup_error">Your sign up attempt was unsuccessful. Please try again
         with another email address.</string>
 
-    <!-- TopUpActivity -->
+    <!-- Customer TopUpActivity -->
     <string name="promo">Promo</string>
     <string name="discounts">Discounts</string>
     <string name="recharged">Recharged</string>
@@ -264,6 +264,10 @@
         numbers directly from their contacts, which may include information about you. For example, when other users you know use our Services, they may provide your phone number from their mobile address book (just as you may provide theirs).</string>
     <string name="privacy_policy_info_how_we_use">How We Use the Information</string>
     <string name="privacy_policy_info_how_we_use_content">We make it easier for you to populate fields requiring a phone number by allowing you select contacts from your address book directly.\n\nWe do not store your contacts locally, neither do we share it with third-party applications.</string>
+
+    <!-- CustomerActivity Drawer -->
+    <string name="wallet_topup">Wallet Topup</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

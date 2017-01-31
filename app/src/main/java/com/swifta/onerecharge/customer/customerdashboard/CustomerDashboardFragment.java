@@ -1,7 +1,6 @@
 package com.swifta.onerecharge.customer.customerdashboard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.swifta.onerecharge.R;
-import com.swifta.onerecharge.customer.customertopup.TopUpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,11 +63,6 @@ public class CustomerDashboardFragment extends Fragment {
         super.onResume();
     }
 
-    @OnClick(R.id.wallet_topup_button)
-    void fundWallet() {
-        switchToTopUpActivity();
-    }
-
     private String getWalletBalance() {
         String balance = String.valueOf(sharedPreferences.getInt(getResources().getString(R.string
                 .saved_customer_balance), 0));
@@ -105,10 +97,5 @@ public class CustomerDashboardFragment extends Fragment {
     private void setUpUiWithDefaultValues() {
         walletBalanceText.setText(getResources().getString(R.string
                 .wallet_balance, getWalletBalance()));
-    }
-
-    private void switchToTopUpActivity() {
-        Intent i = new Intent(getActivity(), TopUpActivity.class);
-        startActivity(i);
     }
 }
