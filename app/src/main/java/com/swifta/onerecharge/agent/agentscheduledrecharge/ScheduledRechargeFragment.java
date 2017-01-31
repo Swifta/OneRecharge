@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -38,6 +39,8 @@ import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.Schedule;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
+import com.swifta.onerecharge.countryinfo.CountryListRepository;
+import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.PhoneNumberConverter;
@@ -72,6 +75,8 @@ public class ScheduledRechargeFragment extends Fragment {
     TextInputEditText scheduledRechargePhoneText;
     @BindView(R.id.scheduled_recharge_phone_layout)
     TextInputLayout scheduledRechargePhoneLayout;
+    @BindView(R.id.country_spinner)
+    Spinner countryChoiceSpinner;
     @BindView(R.id.network_spinner)
     Spinner networkChoiceSpinner;
 
@@ -123,6 +128,8 @@ public class ScheduledRechargeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ArrayAdapter<String> adapter;
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scheduled_recharge,
                 container, false);
@@ -141,27 +148,52 @@ public class ScheduledRechargeFragment extends Fragment {
         datePickerFragment = DatePickerFragment.getInstance();
         datePickerFragment.setSelectedDateListener(date1 -> setDateButtonText(date1));
 
-        ArrayAdapter<String> adapter;
-//        if (NetworkListRepository.getNetworkList() != null) {
-//            List<String> networkList = NetworkListRepository.getNetworkList();
-//            String[] networks = networkList.toArray(new String[networkList.size()]);
-//
-//            adapter = new ArrayAdapter<>(getActivity(), android
-//                    .R.layout.simple_spinner_item, networks);
-//        } else {
-//            String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
-//            adapter = new ArrayAdapter<>(getActivity(), android
-//                    .R.layout.simple_spinner_item, networks);
-//        }
 
-        String[] networks = {"Airtel", "Etisalat", "Glo", "MTN"};
-        adapter = new ArrayAdapter<>(getActivity(), android
-                .R.layout.simple_spinner_item, networks);
+        if (CountryListRepository.getCountryList() != null) {
+            List<String> countryList = CountryListRepository.getCountryList();
+            String[] countries = countryList.toArray(new String[countryList.size()]);
+
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
+                    countries);
+        } else {
+            String[] countries = {"Nigeria", "Ghana"};
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout
+                    .simple_spinner_item, countries);
+        }
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        networkChoiceSpinner.setAdapter(adapter);
+        countryChoiceSpinner.setAdapter(adapter);
+        countryChoiceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    setNetworkAdapter(position);
+                } else if (position == 1) {
+                    setNetworkAdapter(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                setNetworkAdapter(0);
+            }
+        });
 
         return view;
+    }
+
+    private void setNetworkAdapter(int countryChoiceSpinnerPosition) {
+        ArrayAdapter<String> networkAdapter;
+        List<List<String>> networkList = NetworkListRepository.getNetworkList();
+
+        String[] networks = networkList.get(countryChoiceSpinnerPosition).toArray(new
+                String[networkList.get(countryChoiceSpinnerPosition).size()]);
+        networkAdapter = new ArrayAdapter<>(getActivity(), android
+                .R.layout.simple_spinner_item, networks);
+
+        networkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        networkChoiceSpinner.setAdapter(networkAdapter);
     }
 
     @OnTouch(R.id.scheduled_recharge_phone_text)
