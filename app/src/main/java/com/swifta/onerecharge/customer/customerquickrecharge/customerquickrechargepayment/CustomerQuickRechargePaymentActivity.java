@@ -125,6 +125,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
             expiryDateMonthLayout.setError("Enter a valid expiry month");
             focusView = expiryDateMonthLayout;
             cancel = true;
+        } else if (Integer.valueOf(monthValue) > 12) {
+            expiryDateMonthLayout.setError("Enter a valid expiry month");
         } else {
             expiryDateMonthLayout.setError(null);
         }
