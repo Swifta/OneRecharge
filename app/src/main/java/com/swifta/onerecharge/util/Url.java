@@ -20,6 +20,7 @@ public class Url {
     public static final String PASSWORD_PATH = "password";
 
     public static final String BASE_URL = "http://40.117.36.121:3001/";
+    public static final String MFISA_BASE_URL = "https://mfisa.com/mfisa/global/";
 
     /**
      * General
@@ -87,4 +88,14 @@ public class Url {
 
     // Logout
     public static final String CUSTOMER_LOGOUT_URL = "api/customer/logout/{email}/{token}";
+
+    /**
+     * Mfisa
+     **/
+
+    // Pay with card
+    public static final String MFISA_PAY_WITH_CARD = "v1/pay";
+
+    // Authorize with OTPa
+    public static final String MFISA_AUTHORIZE_WITH_OTP = "v1/authorize";
 }

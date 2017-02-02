@@ -1,6 +1,9 @@
 package com.swifta.onerecharge.util;
 
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentRequest;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentResponse;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpRequest;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
 import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
 import com.swifta.onerecharge.customer.customertopup.CustomerTopUpResponse;
@@ -48,4 +51,9 @@ public interface CustomerService {
             (@Header("Authorization") String authorization, @Header("Key") String key, @Body
                     CustomerQuickRechargeRequest walletQuickRechargeRequest);
 
+    @POST(Url.MFISA_PAY_WITH_CARD)
+    Observable<PaymentResponse> performCardTransaction(@Body PaymentRequest paymentRequest);
+
+    @POST(Url.MFISA_AUTHORIZE_WITH_OTP)
+    Observable<PaymentResponse> authorizeWithOtp(@Body OtpRequest otpRequest);
 }

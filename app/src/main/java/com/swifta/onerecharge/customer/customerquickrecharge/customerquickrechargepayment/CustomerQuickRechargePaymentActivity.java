@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,10 @@ import android.widget.ProgressBar;
 
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.ChargeObject;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentRequest;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentResponse;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.util.CustomerService;
@@ -69,6 +74,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
     static final boolean IS_CARD_TRANSACTION = true;
     private static final int TRANSACTION_FAILED = 0;
     private static final int TRANSACTION_SUCCESSFUL = 1;
+    private static final String PAYMENT_METHOD_ID = "1";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
             "successfully!";
     private static final String TRANSACTION_ERROR_MESSAGE = "Transaction " +
@@ -89,7 +95,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
         networkProvider = getIntent().getStringExtra("network_provider");
         email = getIntent().getStringExtra("email");
 
-        quickRechargeButton.setText("Pay " + getCountryCode(country) + " " + amount);
+        quickRechargeButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
     }
 
     @OnClick(R.id.quick_recharge_payment_button)
@@ -188,7 +194,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String getCountryCode(String countryName) {
+    private String getCountryCurrencyCode(String countryName) {
         String shortCode = "";
         switch (countryName) {
             case "Nigeria":
@@ -205,6 +211,115 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
         cardPaymentContainer.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
+        ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
+                cardPin);
+        String referenceId = phoneNumber + "|" + email;
+        String amountToString = String.valueOf(amount);
+
+        PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
+                PAYMENT_METHOD_ID, getCountryCurrencyCode(country), referenceId);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.MFISA_BASE_URL)
+                .build();
+
+        CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<PaymentResponse> processCardTransaction = customerService
+                .performCardTransaction(paymentRequest);
+
+        processCardTransaction.
+                subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<PaymentResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressBar.setVisibility(View.GONE);
+//                        cardPaymentContainer.setVisibility(View.VISIBLE);
+//                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
+                        displayOtpDialog("");
+                    }
+
+                    @Override
+                    public void onNext(PaymentResponse paymentResponse) {
+                        progressBar.setVisibility(View.GONE);
+                        displayOtpDialog(paymentResponse.getDetails().getOtpref());
+                    }
+                });
+    }
+
+    private void displayOtpDialog(String otpRef) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerQuickRechargePaymentActivity
+                .this);
+        dialog.setCancelable(false)
+                .setTitle("Please enter OTP")
+                .setMessage("Transaction initiated successfully. Please enter the OTP sent to " +
+                        "your phone to complete the transaction.")
+                .setPositiveButton("Send OTP", (dialog1, id) -> {
+                    if (!InternetConnectivity.isDeviceConnected(this)) {
+                        Snackbar.make(cardNumberLayout, R.string.internet_error,
+                                Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        //  performOtpTransaction(otpRef, otp);
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog12, which) -> {
+                    dialog12.dismiss();
+                    cardPaymentContainer.setVisibility(View.VISIBLE);
+                });
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
+    }
+
+    private void performOtpTransaction(String otpRef, String otp) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp
+                .ChargeObject chargeObject = new com.swifta.onerecharge.customer
+                .customerquickrecharge.customerquickrechargepayment.otp.ChargeObject(otpRef, otp);
+
+        OtpRequest otpRequest = new OtpRequest(chargeObject, PAYMENT_METHOD_ID);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.MFISA_BASE_URL)
+                .build();
+
+        CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<PaymentResponse> authorizeOtp = customerService.authorizeWithOtp
+                (otpRequest);
+
+        authorizeOtp.
+                subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<PaymentResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressBar.setVisibility(View.GONE);
+                        cardPaymentContainer.setVisibility(View.VISIBLE);
+                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
+                    }
+
+                    @Override
+                    public void onNext(PaymentResponse paymentResponse) {
+                        performQuickRecharge();
+                    }
+                });
     }
 
     private void performQuickRecharge() {
