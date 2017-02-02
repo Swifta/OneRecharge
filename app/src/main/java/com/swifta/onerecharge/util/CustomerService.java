@@ -4,7 +4,10 @@ import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
 import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
 import com.swifta.onerecharge.customer.customertopup.CustomerTopUpResponse;
+import com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargerequestmodel.CustomerWalletQuickRechargeRequest;
+import com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargeresponsemodel.CustomerWalletQuickRechargeResponse;
 
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -39,4 +42,10 @@ public interface CustomerService {
     Observable<CustomerLogout> logCustomerOut(@Header("Authorization") String authorization,
                                               @Header("Key") String key, @Path(Url.EMAIL_PATH)
                                                       String email, @Path(Url.TOKEN_PATH) String token);
+
+    @POST(Url.CUSTOMER_WALLET_QUICK_RECHARGE)
+    Observable<CustomerWalletQuickRechargeResponse> performCustomerQuickRechargeFromWallet
+            (@Header("Authorization") String authorization, @Header("Key") String key, @Body
+                    CustomerWalletQuickRechargeRequest walletQuickRechargeRequest);
+
 }

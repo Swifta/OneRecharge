@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,13 +22,23 @@ import android.widget.Toast;
 import com.swifta.onerecharge.MainActivity;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
+import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
+import com.swifta.onerecharge.countryinfo.CountryListRepository;
+import com.swifta.onerecharge.countryinfo.Data;
+import com.swifta.onerecharge.customer.customercardquickrecharge.CustomerCardQuickRechargeFragment;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
 import com.swifta.onerecharge.customer.customertopup.CustomerWalletTopUpFragment;
+import com.swifta.onerecharge.customer.customerwalletquickrecharge.CustomerWalletQuickRechargeFragment;
+import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
+import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -69,6 +80,8 @@ public class CustomerActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         customerHeaderEmailView = (TextView) headerView.findViewById(R.id.customer_header_email);
         setHeaderViewText();
+
+        getAvailableCountries();
     }
 
     @Override
@@ -127,7 +140,7 @@ public class CustomerActivity extends AppCompatActivity
         } else if (id == R.id.nav_wallet_topup) {
             displayFragment(new CustomerWalletTopUpFragment());
         } else if (id == R.id.nav_quick_recharge) {
-
+            displayQuickRechargeOptionsDialog();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,11 +154,69 @@ public class CustomerActivity extends AppCompatActivity
                 .commit();
     }
 
+    private void displayQuickRechargeOptionsDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerActivity.this);
+        dialog.setCancelable(false)
+                .setTitle("How do you want to recharge?")
+                .setMessage("Please go through my...")
+                .setPositiveButton("Wallet", (dialog1, id) -> {
+                    displayFragment(new CustomerWalletQuickRechargeFragment());
+                })
+                .setNegativeButton("Card", (dialog12, which) -> displayFragment(new
+                        CustomerCardQuickRechargeFragment()));
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
+    }
+
     private void setHeaderViewText() {
         String email = sharedPreferences.getString(getResources().getString(R.string
                 .saved_customer_email_address), "");
 
         customerHeaderEmailView.setText(email);
+    }
+
+    private void getAvailableCountries() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        final AgentService agentService = retrofit.create(AgentService.class);
+        final Observable<AvailableCountriesResponse> agent = agentService.getAvailableCountries();
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<AvailableCountriesResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(AvailableCountriesResponse availableCountriesResponse) {
+                        if (availableCountriesResponse.getStatus() == 1) {
+
+                            List<String> countryList = new ArrayList<String>();
+                            List<List<String>> countryNetworkList = new ArrayList<List<String>>();
+
+                            for (Data data : availableCountriesResponse.getData()) {
+                                countryList.add(data.getName());
+                                countryNetworkList.add(data.getNetworks());
+                            }
+
+                            CountryListRepository.setCountryList(countryList);
+                            NetworkListRepository.setNetworkList(countryNetworkList);
+                        }
+                    }
+                });
     }
 
     private void logCustomerOut() {

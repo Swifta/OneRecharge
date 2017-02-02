@@ -82,6 +82,9 @@ public class Url {
     // Customer Signup
     public static final String CUSTOMER_TOPUP_URL = "api/customer/wallet";
 
+    // Customer Quick Recharge from wallet
+    public static final String CUSTOMER_WALLET_QUICK_RECHARGE = "api/recharge/new";
+
     // Logout
     public static final String CUSTOMER_LOGOUT_URL = "api/customer/logout/{email}/{token}";
 }

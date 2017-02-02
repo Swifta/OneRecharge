@@ -135,8 +135,7 @@ public class CustomerWalletTopUpFragment extends Fragment {
                 .baseUrl(Url.BASE_URL)
                 .build();
 
-        CustomerService customerService = retrofit
-                .create(CustomerService.class);
+        CustomerService customerService = retrofit.create(CustomerService.class);
         final Observable<CustomerTopUpResponse> customer = customerService.topWalletUp
                 ("tPTpR4PIYtoFSiblO1P9Xn0ttGsWE9wS", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
                         getCustomerEmail(), getCustomerToken(), amount, reference, description);
