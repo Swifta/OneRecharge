@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customerwalletquickrecharge;
+package com.swifta.onerecharge.customer.customerquickrecharge;
 
 
 import android.Manifest;
@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,8 +38,8 @@ import android.widget.Toast;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
-import com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargerequestmodel.CustomerWalletQuickRechargeRequest;
-import com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargeresponsemodel.CustomerWalletQuickRechargeResponse;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
@@ -62,7 +63,7 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CustomerWalletQuickRechargeFragment extends Fragment {
+public class CustomerQuickRechargeFragment extends Fragment {
     @BindView(R.id.quick_recharge_phone_text)
     TextInputEditText quickRechargePhoneText;
     @BindView(R.id.quick_recharge_phone_layout)
@@ -97,7 +98,7 @@ public class CustomerWalletQuickRechargeFragment extends Fragment {
     private static final int CONTACT_PICKER_RESULT = 200;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 201;
 
-    public CustomerWalletQuickRechargeFragment() {
+    public CustomerQuickRechargeFragment() {
         // Required empty public constructor
     }
 
@@ -299,12 +300,7 @@ public class CustomerWalletQuickRechargeFragment extends Fragment {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if (!InternetConnectivity.isDeviceConnected(getActivity())) {
-                Snackbar.make(quickRechargeAmountLayout, R.string.internet_error,
-                        Snackbar.LENGTH_SHORT).show();
-            } else {
-                performQuickRecharge();
-            }
+            displayQuickRechargeOptionsDialog();
         }
     }
 
@@ -320,13 +316,33 @@ public class CustomerWalletQuickRechargeFragment extends Fragment {
         startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
     }
 
-    private void performQuickRecharge() {
+    private void displayQuickRechargeOptionsDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setCancelable(false)
+                .setTitle("Recharge Options")
+                .setMessage("Please select your preferred payment method.")
+                .setPositiveButton("Wallet", (dialog1, id) -> {
+                    if (!InternetConnectivity.isDeviceConnected(getActivity())) {
+                        Snackbar.make(quickRechargeAmountLayout, R.string.internet_error,
+                                Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        boolean isCardTransaction = false;
+                        performQuickRecharge(isCardTransaction);
+                    }
+                })
+                .setNegativeButton("Card", (dialog12, which) -> {});
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
+    }
+
+    private void performQuickRecharge(boolean isCardTransaction) {
         quickRechargeContainer.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        CustomerWalletQuickRechargeRequest walletQuickRechargeRequest = new
-                CustomerWalletQuickRechargeRequest(phoneNumber, amount, networkProvider, false,
-                getCustomerEmail());
+        CustomerQuickRechargeRequest walletQuickRechargeRequest = new
+                CustomerQuickRechargeRequest(phoneNumber, amount, networkProvider,
+                isCardTransaction, getCustomerEmail());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -335,15 +351,15 @@ public class CustomerWalletQuickRechargeFragment extends Fragment {
                 .build();
 
         CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<CustomerWalletQuickRechargeResponse> quickRecharge =
+        final Observable<CustomerQuickRechargeResponse> quickRecharge =
                 customerService.performCustomerQuickRechargeFromWallet
                         ("sMHuflOVZYEuCvXW1SGWmIMoj0aV5q1D", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
-                        walletQuickRechargeRequest);
+                                walletQuickRechargeRequest);
 
         quickRecharge.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<CustomerWalletQuickRechargeResponse>() {
+                .subscribe(new Subscriber<CustomerQuickRechargeResponse>() {
 
                     @Override
                     public void onCompleted() {
@@ -357,7 +373,7 @@ public class CustomerWalletQuickRechargeFragment extends Fragment {
                     }
 
                     @Override
-                    public void onNext(CustomerWalletQuickRechargeResponse quickRechargeResponse) {
+                    public void onNext(CustomerQuickRechargeResponse quickRechargeResponse) {
 
                         if (quickRechargeResponse.getStatus() == 1) {
                             showResultDialog(TRANSACTION_SUCCESSFUL_MESSAGE, TRANSACTION_SUCCESSFUL);

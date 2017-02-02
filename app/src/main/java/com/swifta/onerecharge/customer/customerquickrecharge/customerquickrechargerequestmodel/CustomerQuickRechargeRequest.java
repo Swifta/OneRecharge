@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargerequestmodel;
+package com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by moyinoluwa on 2/2/17.
  */
 
-public class CustomerWalletQuickRechargeRequest {
+public class CustomerQuickRechargeRequest {
 
     @SerializedName("recipient")
     @Expose
@@ -25,8 +25,8 @@ public class CustomerWalletQuickRechargeRequest {
     @Expose
     private String email;
 
-    public CustomerWalletQuickRechargeRequest(String recipient, Integer amount, String network,
-                                              Boolean isCardTransaction, String email) {
+    public CustomerQuickRechargeRequest(String recipient, Integer amount, String network,
+                                        Boolean isCardTransaction, String email) {
         this.recipient = recipient;
         this.amount = amount;
         this.network = network;

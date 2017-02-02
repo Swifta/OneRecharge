@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,11 +24,10 @@ import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
 import com.swifta.onerecharge.countryinfo.Data;
-import com.swifta.onerecharge.customer.customercardquickrecharge.CustomerCardQuickRechargeFragment;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
+import com.swifta.onerecharge.customer.customerquickrecharge.CustomerQuickRechargeFragment;
 import com.swifta.onerecharge.customer.customertopup.CustomerWalletTopUpFragment;
-import com.swifta.onerecharge.customer.customerwalletquickrecharge.CustomerWalletQuickRechargeFragment;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.AgentService;
@@ -140,7 +138,7 @@ public class CustomerActivity extends AppCompatActivity
         } else if (id == R.id.nav_wallet_topup) {
             displayFragment(new CustomerWalletTopUpFragment());
         } else if (id == R.id.nav_quick_recharge) {
-            displayQuickRechargeOptionsDialog();
+            displayFragment(new CustomerQuickRechargeFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,21 +150,6 @@ public class CustomerActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.customer_container, fragment)
                 .commit();
-    }
-
-    private void displayQuickRechargeOptionsDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerActivity.this);
-        dialog.setCancelable(false)
-                .setTitle("How do you want to recharge?")
-                .setMessage("Please go through my...")
-                .setPositiveButton("Wallet", (dialog1, id) -> {
-                    displayFragment(new CustomerWalletQuickRechargeFragment());
-                })
-                .setNegativeButton("Card", (dialog12, which) -> displayFragment(new
-                        CustomerCardQuickRechargeFragment()));
-
-        final AlertDialog alert = dialog.create();
-        alert.show();
     }
 
     private void setHeaderViewText() {

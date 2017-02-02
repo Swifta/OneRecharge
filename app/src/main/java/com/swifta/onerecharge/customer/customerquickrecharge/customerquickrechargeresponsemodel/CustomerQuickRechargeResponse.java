@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customerwalletquickrecharge.walletquickrechargeresponsemodel;
+package com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by moyinoluwa on 2/2/17.
  */
 
-public class CustomerWalletQuickRechargeResponse {
+public class CustomerQuickRechargeResponse {
 
     @SerializedName("status")
     @Expose
