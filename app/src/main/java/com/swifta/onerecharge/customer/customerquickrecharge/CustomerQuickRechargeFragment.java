@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.CustomerQuickRechargePaymentActivity;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
@@ -115,7 +116,7 @@ public class CustomerQuickRechargeFragment extends Fragment {
         ArrayAdapter<String> adapter;
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_customer_wallet_quick_recharge, container,
+        View view = inflater.inflate(R.layout.fragment_customer_quick_recharge, container,
                 false);
 
         ButterKnife.bind(this, view);
@@ -274,20 +275,6 @@ public class CustomerQuickRechargeFragment extends Fragment {
             amount = Integer.valueOf(quickRechargeAmountText.getText().toString());
             quickRechargeAmountLayout.setError(null);
         }
-/** This block of code was commented out because I was only initially working with the Nigerian
- * usecase where the length of a telephone number is 11 digits. This might not hold again now
- * that we have Ghanaian numbers too **/
-//        if (phoneNumber.isEmpty()) {
-//            quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
-//            focusView = quickRechargePhoneLayout;
-//            cancel = true;
-//        } else if (phoneNumber.length() != 11) {
-//            quickRechargePhoneLayout.setError(getString(R.string.phone_length_error));
-//            focusView = quickRechargePhoneLayout;
-//            cancel = true;
-//        } else {
-//            quickRechargePhoneLayout.setError(null);
-//        }
 
         if (phoneNumber.isEmpty()) {
             quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
@@ -330,10 +317,25 @@ public class CustomerQuickRechargeFragment extends Fragment {
                         performQuickRecharge(isCardTransaction);
                     }
                 })
-                .setNegativeButton("Card", (dialog12, which) -> {});
+                .setNegativeButton("Card", (dialog12, which) -> {
+                    switchToPaymentActivity();
+                });
 
         final AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    private void switchToPaymentActivity() {
+        Intent paymentActivityIntent = new Intent(getActivity(),
+                CustomerQuickRechargePaymentActivity.class);
+
+        paymentActivityIntent.putExtra("phone_number", phoneNumber);
+        paymentActivityIntent.putExtra("amount", amount);
+        paymentActivityIntent.putExtra("country", countryChoiceSpinner.getSelectedItem().toString
+                ());
+        paymentActivityIntent.putExtra("network_provider", networkProvider);
+        paymentActivityIntent.putExtra("email", getCustomerEmail());
+        startActivity(paymentActivityIntent);
     }
 
     private void performQuickRecharge(boolean isCardTransaction) {

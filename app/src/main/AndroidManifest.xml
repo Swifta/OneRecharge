@@ -58,6 +58,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".agent.AgentActivity"/>
         </activity>
+        <activity
+            android:name=".customer.customerquickrecharge.customerquickrechargepayment.CustomerQuickRechargePaymentActivity"
+            android:label="@string/payment">
+        </activity>
     </application>
 
 </manifest>
