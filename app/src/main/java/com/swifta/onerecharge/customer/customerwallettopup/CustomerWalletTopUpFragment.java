@@ -54,7 +54,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
 
     String amount;
     String reference;
-    String description;
 
     private SharedPreferences sharedPreferences;
     RechargeResponseFragment successfulFragment;
@@ -108,10 +107,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
         boolean cancel = false;
         View focusView = null;
 
-        if (description.isEmpty()) {
-            description = "None";
-        }
-
         if (reference.isEmpty()) {
             referenceLayout.setError(getString(R.string.reference_empty_error));
             focusView = referenceLayout;
@@ -134,8 +129,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
             if (!InternetConnectivity.isDeviceConnected(getActivity())) {
                 Snackbar.make(topUpView, R.string.internet_error, Snackbar.LENGTH_SHORT).show();
             } else {
-                topUpView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
                 switchToPaymentActivity();
             }
         }
@@ -145,7 +138,7 @@ public class CustomerWalletTopUpFragment extends Fragment {
         Intent paymentActivityIntent = new Intent(getActivity(),
                 CustomerWalletTopUpPaymentActivity.class);
 
-        paymentActivityIntent.putExtra("amount", amount);
+        paymentActivityIntent.putExtra("amount", Integer.valueOf(amount));
         paymentActivityIntent.putExtra("reference_id", reference);
         paymentActivityIntent.putExtra("customer_token", getCustomerToken());
         paymentActivityIntent.putExtra("email", getCustomerEmail());

@@ -66,6 +66,10 @@
             android:name=".agent.agentwallettopup.agentwallettopuppayment.AgentWalletTopUpPaymentActivity"
             android:label="@string/payment">
         </activity>
+        <activity
+            android:name=".customer.customerwallettopup.customerwallettopuppayment.CustomerWalletTopUpPaymentActivity"
+            android:label="@string/payment">
+        </activity>
     </application>
 
 </manifest>
