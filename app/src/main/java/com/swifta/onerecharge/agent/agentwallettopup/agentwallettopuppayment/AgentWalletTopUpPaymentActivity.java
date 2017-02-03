@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuprequestmodel.AgentWalletTopUpRequest;
-import com.swifta.onerecharge.agent.agentwallettopup.customerwallettopupresponsemodel.AgentWalletTopUpResponse;
+import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopupresponsemodel.AgentWalletTopUpResponse;
 import com.swifta.onerecharge.cardpayment.card.requestmodel.ChargeObject;
 import com.swifta.onerecharge.cardpayment.card.requestmodel.PaymentRequest;
 import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;

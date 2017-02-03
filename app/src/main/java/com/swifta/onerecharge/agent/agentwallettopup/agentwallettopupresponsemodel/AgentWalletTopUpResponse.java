@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.agent.agentwallettopup.customerwallettopupresponsemodel;
+package com.swifta.onerecharge.agent.agentwallettopup.agentwallettopupresponsemodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

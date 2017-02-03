@@ -13,7 +13,7 @@ import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequ
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistory;
 import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuprequestmodel.AgentWalletTopUpRequest;
-import com.swifta.onerecharge.agent.agentwallettopup.customerwallettopupresponsemodel.AgentWalletTopUpResponse;
+import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopupresponsemodel.AgentWalletTopUpResponse;
 import com.swifta.onerecharge.agent.resetagentpassword.AgentPassword;
 import com.swifta.onerecharge.agent.resetagentpassword.RequestPasswordData;
 import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
