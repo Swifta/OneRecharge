@@ -62,6 +62,10 @@
             android:name=".customer.customerquickrecharge.customerquickrechargepayment.CustomerQuickRechargePaymentActivity"
             android:label="@string/payment">
         </activity>
+        <activity
+            android:name=".agent.agentwallettopup.agentwallettopuppayment.AgentWalletTopUpPaymentActivity"
+            android:label="@string/payment">
+        </activity>
     </application>
 
 </manifest>

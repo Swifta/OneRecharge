@@ -156,7 +156,7 @@ public class AgentWalletTopUpFragment extends Fragment {
         Intent paymentActivityIntent = new Intent(getActivity(),
                 AgentWalletTopUpPaymentActivity.class);
 
-        paymentActivityIntent.putExtra("amount", amount);
+        paymentActivityIntent.putExtra("amount", Integer.valueOf(amount));
         paymentActivityIntent.putExtra("reference_id", reference);
         paymentActivityIntent.putExtra("agent_token", getToken());
         paymentActivityIntent.putExtra("email", getEmailAddress());
