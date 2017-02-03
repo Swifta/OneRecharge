@@ -268,7 +268,7 @@
     <!-- CustomerActivity Drawer -->
     <string name="wallet_topup">Wallet Topup</string>
 
-    <!-- CustomerQuickRechargePaymentActivity -->
+    <!-- CustomerWalletTopUpPaymentActivity -->
     <string name="payment">Payment</string>
     <string name="card_number">Card Number</string>
     <string name="expiry_date">MM/YY</string>

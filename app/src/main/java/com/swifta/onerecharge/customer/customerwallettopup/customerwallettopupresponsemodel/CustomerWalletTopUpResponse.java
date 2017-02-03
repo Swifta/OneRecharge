@@ -1,13 +1,14 @@
-package com.swifta.onerecharge.customer.customerwallettopup;
+package com.swifta.onerecharge.customer.customerwallettopup.customerwallettopupresponsemodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by moyinoluwa on 11/10/16.
+ * Created by moyinoluwa on 2/3/17.
  */
 
-public class CustomerTopUpResponse {
+public class CustomerWalletTopUpResponse {
+
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -15,39 +16,20 @@ public class CustomerTopUpResponse {
     @Expose
     private Data data;
 
-    /**
-     *
-     * @return
-     * The status
-     */
     public Integer getStatus() {
         return status;
     }
 
-    /**
-     *
-     * @param status
-     * The status
-     */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
-    /**
-     *
-     * @return
-     * The data
-     */
     public Data getData() {
         return data;
     }
 
-    /**
-     *
-     * @param data
-     * The data
-     */
     public void setData(Data data) {
         this.data = data;
     }
+
 }

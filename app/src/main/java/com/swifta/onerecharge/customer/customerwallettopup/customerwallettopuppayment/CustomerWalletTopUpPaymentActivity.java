@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment;
+package com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuppayment;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -23,8 +23,8 @@ import com.swifta.onerecharge.cardpayment.card.requestmodel.PaymentRequest;
 import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;
 import com.swifta.onerecharge.cardpayment.otp.requestmodel.OtpRequest;
 import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
+import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuprequestmodel.CustomerWalletTopUpRequest;
+import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopupresponsemodel.CustomerWalletTopUpResponse;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.Url;
@@ -40,7 +40,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
+public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -71,7 +71,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
     RechargeResponseFragment successfulFragment;
 
-    String phoneNumber, country, networkProvider, email;
+    String phoneNumber, email, referenceId, customerToken, country;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
@@ -94,11 +94,12 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        phoneNumber = getIntent().getStringExtra("phone_number");
+        phoneNumber = getIntent().getStringExtra("customer_telephone");
         amount = getIntent().getIntExtra("amount", 0);
-        country = getIntent().getStringExtra("country");
-        networkProvider = getIntent().getStringExtra("network_provider");
         email = getIntent().getStringExtra("email");
+        referenceId = getIntent().getStringExtra("customer_token");
+        customerToken = getIntent().getStringExtra("reference_id");
+        country = getIntent().getStringExtra("country");
 
         quickRechargeButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
     }
@@ -268,12 +269,12 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
     private void displayOtpDialog(String description, String otpRef) {
 
-        final EditText input = new EditText(CustomerQuickRechargePaymentActivity.this);
+        final EditText input = new EditText(CustomerWalletTopUpPaymentActivity.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
                 .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerQuickRechargePaymentActivity
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerWalletTopUpPaymentActivity
                 .this);
         dialog.setCancelable(false)
                 .setTitle("Please enter OTP")
@@ -311,8 +312,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
     private void performOtpTransaction(String otpRef, String otp) {
         progressBar.setVisibility(View.VISIBLE);
 
-        com.swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject chargeObject = new
-                com.swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject(otpRef, otp);
+        com.swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject chargeObject = new com
+                .swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject(otpRef, otp);
 
         OtpRequest otpRequest = new OtpRequest(chargeObject, PAYMENT_METHOD_ID);
 
@@ -338,6 +339,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        //performWalletTopUp("", "", false);
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
@@ -346,8 +348,10 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                     @Override
                     public void onNext(OtpResponse otpResponse) {
                         if (otpResponse.getStatus().equals("01")) {
-                            performQuickRecharge();
+                            performWalletTopUp(otpResponse.getDescription(), otpResponse
+                                    .getDetails().getMfisaTxnId(), true);
                         } else {
+                            //  performWalletTopUp("", "", false);
                             progressBar.setVisibility(View.GONE);
                             cardPaymentContainer.setVisibility(View.VISIBLE);
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
@@ -356,11 +360,12 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                 });
     }
 
-    private void performQuickRecharge() {
+    private void performWalletTopUp(String description, String transactionId, boolean
+            isSuccessful) {
 
-        CustomerQuickRechargeRequest walletQuickRechargeRequest = new
-                CustomerQuickRechargeRequest(phoneNumber, amount, networkProvider,
-                IS_CARD_TRANSACTION, email);
+        CustomerWalletTopUpRequest walletTopUpRequest = new CustomerWalletTopUpRequest("mFISA",
+                amount, customerToken, description, isSuccessful, transactionId, referenceId,
+                email);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -369,15 +374,13 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                 .build();
 
         CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<CustomerQuickRechargeResponse> quickRecharge =
-                customerService.performCustomerQuickRechargeFromWallet
-                        ("sMHuflOVZYEuCvXW1SGWmIMoj0aV5q1D", "oZFLQVYpRO9Ur8i6H8Q1J5c3RMgt0fb0",
-                                walletQuickRechargeRequest);
+        final Observable<CustomerWalletTopUpResponse> quickRecharge = customerService.topWalletUp
+                (walletTopUpRequest);
 
         quickRecharge.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<CustomerQuickRechargeResponse>() {
+                .subscribe(new Subscriber<CustomerWalletTopUpResponse>() {
 
                     @Override
                     public void onCompleted() {
@@ -391,12 +394,12 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(CustomerQuickRechargeResponse quickRechargeResponse) {
+                    public void onNext(CustomerWalletTopUpResponse walletTopUpResponse) {
 
-                        if (quickRechargeResponse.getStatus() == 1) {
+                        if (walletTopUpResponse.getStatus() == 1) {
                             showRechargeSuccessfulDialog();
                         } else {
-                            showResultDialog(quickRechargeResponse.getData().getMessage(),
+                            showResultDialog(walletTopUpResponse.getData().getMessage(),
                                     TRANSACTION_FAILED);
                         }
                     }
@@ -411,13 +414,13 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
     private void showRechargeSuccessfulDialog() {
 
-        final ImageView imageView = new ImageView(CustomerQuickRechargePaymentActivity.this);
+        final ImageView imageView = new ImageView(CustomerWalletTopUpPaymentActivity.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
                 .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         imageView.setLayoutParams(lp);
         imageView.setBackgroundResource(R.drawable.ic_check_circle_green_700_36dp);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerQuickRechargePaymentActivity
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerWalletTopUpPaymentActivity
                 .this);
         dialog.setCancelable(false)
                 .setTitle("Recharge Successful!")

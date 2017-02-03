@@ -1,15 +1,16 @@
 package com.swifta.onerecharge.util;
 
+import com.swifta.onerecharge.cardpayment.card.requestmodel.PaymentRequest;
+import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;
+import com.swifta.onerecharge.cardpayment.otp.requestmodel.OtpRequest;
+import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentRequest;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentResponse;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpRequest;
-import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpResponse;
-import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
-import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
-import com.swifta.onerecharge.customer.customerwallettopup.CustomerTopUpResponse;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
+import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
+import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
+import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuprequestmodel.CustomerWalletTopUpRequest;
+import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopupresponsemodel.CustomerWalletTopUpResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -17,7 +18,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -37,10 +37,9 @@ public interface CustomerService {
     @POST(Url.CUSTOMER_SIGNUP_URL)
     Observable<CustomerSignUpResponse> signCustomerUp(@Header("Authorization") String authorization, @Header("Key") String key, @Field("customer_fullname") String customerFullname, @Field("customer_email") String customerEmail, @Field("customer_telephone") String customerTelephone, @Field("customer_password") String customerPassword);
 
-    @FormUrlEncoded
-    @PUT(Url.CUSTOMER_TOPUP_URL)
-    Observable<CustomerTopUpResponse> topWalletUp(@Header("Authorization") String authorization, @Header("Key")
-            String key, @Field("customer_email") String customerEmail, @Field("customer_token") String customerToken, @Field("amount") String amount, @Field("reference") String reference, @Field("description") String description);
+    @POST(Url.CUSTOMER_WALLET_TOPUP_URL)
+    Observable<CustomerWalletTopUpResponse> topWalletUp(@Body CustomerWalletTopUpRequest
+                                                          walletTopUpRequest);
 
     @GET(Url.CUSTOMER_LOGOUT_URL)
     Observable<CustomerLogout> logCustomerOut(@Header("Authorization") String authorization,

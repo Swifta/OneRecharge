@@ -10,6 +10,7 @@
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
     android:paddingStart="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_margin"
     tools:context=".customer.customerwallettopup.CustomerWalletTopUpFragment">
 
     <ProgressBar
@@ -54,19 +55,19 @@
                 android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/description_layout"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
+            android:fontFamily="sans-serif"
+            android:text="@string/select_country"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/top_up_button_text_size"/>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/description"
-                android:inputType="text"/>
-        </android.support.design.widget.TextInputLayout>
+        <Spinner
+            android:id="@+id/country_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin"/>
 
         <Button
             android:id="@+id/top_wallet_up_button"
@@ -75,7 +76,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/activity_margin"
             android:background="@drawable/blue_button_selector"
-            android:text="@string/submit"
+            android:text="@string/button.next"
             android:textColor="@android:color/white"/>
 
     </LinearLayout>

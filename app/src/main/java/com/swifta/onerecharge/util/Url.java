@@ -80,8 +80,8 @@ public class Url {
     // Customer Signup
     public static final String CUSTOMER_SIGNUP_URL = "api/customer/signup/API";
 
-    // Customer Signup
-    public static final String CUSTOMER_TOPUP_URL = "api/customer/wallet";
+    // Customer Wallet Top Up
+    public static final String CUSTOMER_WALLET_TOPUP_URL = "api/customer/wallet/fund";
 
     // Customer Quick Recharge from wallet
     public static final String CUSTOMER_WALLET_QUICK_RECHARGE = "api/recharge/new";

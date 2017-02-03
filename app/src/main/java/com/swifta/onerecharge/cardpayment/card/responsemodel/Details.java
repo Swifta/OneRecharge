@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card;
+package com.swifta.onerecharge.cardpayment.card.responsemodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,13 +1,13 @@
-package com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card;
+package com.swifta.onerecharge.cardpayment.otp.responsemodel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by moyinoluwa on 2/2/17.
+ * Created by moyinoluwa on 2/3/17.
  */
 
-public class PaymentResponse {
+public class OtpResponse {
     @SerializedName("status")
     @Expose
     private String status;
