@@ -1,4 +1,4 @@
-package com.swifta.onerecharge.customer.customertopup;
+package com.swifta.onerecharge.customer.customerwallettopup;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

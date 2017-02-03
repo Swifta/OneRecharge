@@ -7,7 +7,7 @@ import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechar
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpResponse;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
 import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
-import com.swifta.onerecharge.customer.customertopup.CustomerTopUpResponse;
+import com.swifta.onerecharge.customer.customerwallettopup.CustomerTopUpResponse;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 

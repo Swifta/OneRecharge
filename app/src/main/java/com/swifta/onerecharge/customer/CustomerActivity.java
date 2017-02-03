@@ -27,7 +27,7 @@ import com.swifta.onerecharge.countryinfo.Data;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
 import com.swifta.onerecharge.customer.customerquickrecharge.CustomerQuickRechargeFragment;
-import com.swifta.onerecharge.customer.customertopup.CustomerWalletTopUpFragment;
+import com.swifta.onerecharge.customer.customerwallettopup.CustomerWalletTopUpFragment;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
 import com.swifta.onerecharge.util.AgentService;

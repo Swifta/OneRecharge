@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
     android:paddingStart="@dimen/activity_vertical_margin"
-    tools:context=".customer.customertopup.TopUpActivity">
+    tools:context=".customer.customerwallettopup.TopUpActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
