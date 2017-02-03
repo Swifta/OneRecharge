@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
@@ -19,6 +22,7 @@ import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechar
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.card.PaymentResponse;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpRequest;
+import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.otp.OtpResponse;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.util.CustomerService;
@@ -74,7 +78,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
     static final boolean IS_CARD_TRANSACTION = true;
     private static final int TRANSACTION_FAILED = 0;
     private static final int TRANSACTION_SUCCESSFUL = 1;
-    private static final String PAYMENT_METHOD_ID = "1";
+    private static final String PAYMENT_METHOD_ID = "2";
+    private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
             "successfully!";
     private static final String TRANSACTION_ERROR_MESSAGE = "Transaction " +
@@ -227,7 +232,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
         CustomerService customerService = retrofit.create(CustomerService.class);
         final Observable<PaymentResponse> processCardTransaction = customerService
-                .performCardTransaction(paymentRequest);
+                .performCardTransaction(AUTHORIZATION, paymentRequest);
 
         processCardTransaction.
                 subscribeOn(Schedulers.io())
@@ -242,32 +247,56 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         progressBar.setVisibility(View.GONE);
-//                        cardPaymentContainer.setVisibility(View.VISIBLE);
-//                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
-                        displayOtpDialog("");
+                        cardPaymentContainer.setVisibility(View.VISIBLE);
+                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
                     @Override
                     public void onNext(PaymentResponse paymentResponse) {
                         progressBar.setVisibility(View.GONE);
-                        displayOtpDialog(paymentResponse.getDetails().getOtpref());
+
+                        if (paymentResponse.getStatus().equals("02")) {
+                            displayOtpDialog(paymentResponse.getDescription(), paymentResponse
+                                    .getDetails().getOtpref());
+                        } else {
+                            cardPaymentContainer.setVisibility(View.VISIBLE);
+                            showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
+                        }
                     }
                 });
     }
 
-    private void displayOtpDialog(String otpRef) {
+    private void displayOtpDialog(String description, String otpRef) {
+
+        final EditText input = new EditText(CustomerQuickRechargePaymentActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
+                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+
         AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerQuickRechargePaymentActivity
                 .this);
         dialog.setCancelable(false)
                 .setTitle("Please enter OTP")
-                .setMessage("Transaction initiated successfully. Please enter the OTP sent to " +
-                        "your phone to complete the transaction.")
+                .setMessage(description)
+                .setView(input)
                 .setPositiveButton("Send OTP", (dialog1, id) -> {
-                    if (!InternetConnectivity.isDeviceConnected(this)) {
-                        Snackbar.make(cardNumberLayout, R.string.internet_error,
-                                Snackbar.LENGTH_SHORT).show();
+                    final String otp = input.getText().toString();
+                    if (otp.isEmpty()) {
+                        displayOtpDialog(description, otpRef);
+                        Toast.makeText(this, "Please enter an OTP", Toast.LENGTH_SHORT).show();
+                    } else if (otp.length() != 6) {
+                        displayOtpDialog(description, otpRef);
+                        input.setText(otp);
+                        Toast.makeText(this, "Please enter a valid OTP", Toast.LENGTH_SHORT).show();
                     } else {
-                        //  performOtpTransaction(otpRef, otp);
+                        if (!InternetConnectivity.isDeviceConnected(this)) {
+                            displayOtpDialog(description, otpRef);
+                            input.setText(otp);
+                            Snackbar.make(cardNumberLayout, R.string.internet_error,
+                                    Snackbar.LENGTH_SHORT).show();
+                        } else {
+                            performOtpTransaction(otpRef, otp);
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", (dialog12, which) -> {
@@ -295,14 +324,14 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                 .build();
 
         CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<PaymentResponse> authorizeOtp = customerService.authorizeWithOtp
-                (otpRequest);
+        final Observable<OtpResponse> authorizeOtp = customerService.authorizeWithOtp
+                (AUTHORIZATION, otpRequest);
 
         authorizeOtp.
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<PaymentResponse>() {
+                .subscribe(new Subscriber<OtpResponse>() {
 
                     @Override
                     public void onCompleted() {
@@ -316,8 +345,14 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(PaymentResponse paymentResponse) {
-                        performQuickRecharge();
+                    public void onNext(OtpResponse otpResponse) {
+                        if (otpResponse.getStatus().equals("01")) {
+                            performQuickRecharge();
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            cardPaymentContainer.setVisibility(View.VISIBLE);
+                            showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
+                        }
                     }
                 });
     }
@@ -360,10 +395,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                     public void onNext(CustomerQuickRechargeResponse quickRechargeResponse) {
 
                         if (quickRechargeResponse.getStatus() == 1) {
-                            showResultDialog(TRANSACTION_SUCCESSFUL_MESSAGE, TRANSACTION_SUCCESSFUL);
-                            clearInputFields();
-                            finish();
-                        } else if (quickRechargeResponse.getStatus() == 0) {
+                            showRechargeSuccessfulDialog();
+                        } else {
                             showResultDialog(quickRechargeResponse.getData().getMessage(),
                                     TRANSACTION_FAILED);
                         }
@@ -377,11 +410,25 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
         successfulFragment.show(fragmentManager, "");
     }
 
-    private void clearInputFields() {
-        cardNumberText.setText("");
-        expiryDateMonthText.setText("");
-        expiryDateYearText.setText("");
-        cvvText.setText("");
-        cardPinText.setText("");
+    private void showRechargeSuccessfulDialog() {
+
+        final ImageView imageView = new ImageView(CustomerQuickRechargePaymentActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
+                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        imageView.setLayoutParams(lp);
+        imageView.setBackgroundResource(R.drawable.ic_check_circle_green_700_36dp);
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerQuickRechargePaymentActivity
+                .this);
+        dialog.setCancelable(false)
+                .setTitle("Recharge Successful!")
+                .setMessage(TRANSACTION_SUCCESSFUL_MESSAGE)
+                .setView(imageView)
+                .setPositiveButton("OK", (dialog1, id) -> {
+                    finish();
+                });
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
     }
 }

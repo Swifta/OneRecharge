@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Details {
+
     @SerializedName("otpref")
     @Expose
     private String otpref;
