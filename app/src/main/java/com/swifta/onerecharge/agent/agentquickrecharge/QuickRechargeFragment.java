@@ -270,20 +270,6 @@ public class QuickRechargeFragment extends Fragment {
             amount = Integer.valueOf(quickRechargeAmountText.getText().toString());
             quickRechargeAmountLayout.setError(null);
         }
-/** This block of code was commented out because I was only initially working with the Nigerian
- * usecase where the length of a telephone number is 11 digits. This might not hold again now
- * that we have Ghanaian numbers too **/
-//        if (phoneNumber.isEmpty()) {
-//            quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
-//            focusView = quickRechargePhoneLayout;
-//            cancel = true;
-//        } else if (phoneNumber.length() != 11) {
-//            quickRechargePhoneLayout.setError(getString(R.string.phone_length_error));
-//            focusView = quickRechargePhoneLayout;
-//            cancel = true;
-//        } else {
-//            quickRechargePhoneLayout.setError(null);
-//        }
 
         if (phoneNumber.isEmpty()) {
             quickRechargePhoneLayout.setError(getString(R.string.phone_empty_error));
