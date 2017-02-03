@@ -12,6 +12,8 @@ import com.swifta.onerecharge.agent.agentregistration.registerresponsemodel.Agen
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargeresponsemodel.ScheduledRechargeResponse;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistory;
+import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuprequestmodel.AgentWalletTopUpRequest;
+import com.swifta.onerecharge.agent.agentwallettopup.customerwallettopupresponsemodel.AgentWalletTopUpResponse;
 import com.swifta.onerecharge.agent.resetagentpassword.AgentPassword;
 import com.swifta.onerecharge.agent.resetagentpassword.RequestPasswordData;
 import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
@@ -53,6 +55,10 @@ public interface AgentService {
     @GET(Url.AGENT_API_KEY)
     Observable<AgentApiKeyResponse> getAgentApiKey(@Path(Url.EMAIL_PATH) String email, @Path(Url
             .TOKEN_PATH) String token);
+
+    @POST(Url.AGENT_WALLET_TOPUP_URL)
+    Observable<AgentWalletTopUpResponse> topWalletUp(@Body AgentWalletTopUpRequest
+                                                             walletTopUpRequest);
 
     @POST(Url.AGENT_QUICK_RECHARGE)
     Observable<QuickRechargeResponse> performAgentQuickRecharge(@Header("Authorization") String

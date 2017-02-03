@@ -34,6 +34,7 @@ import com.swifta.onerecharge.agent.agentquickrecharge.QuickRechargeFragment;
 import com.swifta.onerecharge.agent.agentquicktransactionhistory.AgentQuickTransactionHistoryFragment;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.ScheduledRechargeFragment;
 import com.swifta.onerecharge.agent.agentscheduledtransactionhistory.AgentScheduledTransactionHistoryFragment;
+import com.swifta.onerecharge.agent.agentwallettopup.AgentWalletTopUpFragment;
 import com.swifta.onerecharge.agent.resetagentpassword.ProfileActivity;
 import com.swifta.onerecharge.countryinfo.AvailableCountriesResponse;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
@@ -120,6 +121,9 @@ public class AgentActivity extends AppCompatActivity
                     break;
                 case "dashboard":
                     displayFragmentDashboard();
+                    break;
+                case "agent_wallet_topup":
+                    displayFragment(new AgentWalletTopUpFragment());
                     break;
                 case "nav_quick_recharge":
                     displayFragment(new QuickRechargeFragment());
@@ -214,6 +218,9 @@ public class AgentActivity extends AppCompatActivity
 
         if (id == R.id.nav_dashboard) {
             displayFragmentDashboard();
+        } else if (id == R.id.nav_wallet_topup) {
+            currentDisplayedView = "agent_wallet_topup";
+            displayFragment(new AgentWalletTopUpFragment());
         } else if (id == R.id.nav_quick_recharge) {
             currentDisplayedView = "nav_quick_recharge";
             displayFragment(new QuickRechargeFragment());

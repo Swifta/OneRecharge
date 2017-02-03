@@ -8,6 +8,10 @@
             android:icon="@drawable/ic_dashboard_grey_500_24dp"
             android:title="@string/dashboard"/>
         <item
+            android:id="@+id/nav_wallet_topup"
+            android:icon="@drawable/ic_system_update_alt_grey_500_24dp"
+            android:title="@string/wallet_topup"/>
+        <item
             android:id="@+id/nav_quick_recharge"
             android:icon="@drawable/ic_done_all_grey_500_24dp"
             android:title="@string/quick_recharge"/>

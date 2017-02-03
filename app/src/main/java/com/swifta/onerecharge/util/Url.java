@@ -51,6 +51,9 @@ public class Url {
     // Agent API Key
     public static final String AGENT_API_KEY = "api/agents/key/{email}/{token}";
 
+    // Agent Wallet Top Up
+    public static final String AGENT_WALLET_TOPUP_URL = "api/agent/wallet/fund";
+
     // Agent Quick Recharge
     public static final String AGENT_QUICK_RECHARGE = "api/recharge/new";
 
