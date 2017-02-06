@@ -75,7 +75,6 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
-    static final boolean IS_CARD_TRANSACTION = true;
     private static final int TRANSACTION_FAILED = 0;
     private static final int TRANSACTION_SUCCESSFUL = 1;
     private static final String PAYMENT_METHOD_ID = "2";
@@ -97,8 +96,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         phoneNumber = getIntent().getStringExtra("customer_telephone");
         amount = getIntent().getIntExtra("amount", 0);
         email = getIntent().getStringExtra("email");
-        referenceId = getIntent().getStringExtra("customer_token");
-        customerToken = getIntent().getStringExtra("reference_id");
+        customerToken = getIntent().getStringExtra("customer_token");
+        referenceId = getIntent().getStringExtra("reference_id");
         country = getIntent().getStringExtra("country");
 
         quickRechargeButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);

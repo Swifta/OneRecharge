@@ -160,6 +160,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
 
     private String getCustomerPhoneNumber() {
         return sharedPreferences.getString(getResources().getString(R.string
-                .saved_customer_telephone), "");
+                .saved_customer_auth_token), "");
     }
 }
