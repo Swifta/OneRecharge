@@ -124,24 +124,39 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        List<Row> list;
         switch (item.getItemId()) {
             case R.id.sort_by_date:
-                quickRechargeHistoryAdapter.swapItems(QuickRechargeHistoryRepository.getHistoryListSortedByDate());
+                list = QuickRechargeHistoryRepository.getHistoryListSortedByDate();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_recipient:
-                quickRechargeHistoryAdapter.swapItems(QuickRechargeHistoryRepository.getHistoryListSortedByRecipient());
+                list = QuickRechargeHistoryRepository.getHistoryListSortedByRecipient();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_network:
-                quickRechargeHistoryAdapter.swapItems(QuickRechargeHistoryRepository.getHistoryListSortedByNetwork());
+                list = QuickRechargeHistoryRepository.getHistoryListSortedByNetwork();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_amount:
-                quickRechargeHistoryAdapter.swapItems(QuickRechargeHistoryRepository.getHistoryListSortedByAmount());
+                list = QuickRechargeHistoryRepository.getHistoryListSortedByAmount();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_status:
-                quickRechargeHistoryAdapter.swapItems(QuickRechargeHistoryRepository.getHistoryListSortedByStatus());
+                list = QuickRechargeHistoryRepository.getHistoryListSortedByStatus();
+                swapAdapterItems(list);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void swapAdapterItems(List<Row> list) {
+        if (list.size() == 0 || quickRechargeHistoryAdapter == null) {
+            Toast.makeText(getActivity(), "The list is currently empty. Please try again later.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            quickRechargeHistoryAdapter.swapItems(list);
+        }
     }
 
     @Override

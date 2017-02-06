@@ -203,10 +203,7 @@ public class AgentActivity extends AppCompatActivity
     private void clearAgentData() {
         sharedPreferences.edit().clear().apply();
 
-        realm.beginTransaction();
-        if (!realm.isClosed() && !realm.isEmpty()) {
-            realm.deleteAll();
-        }
+        realm.executeTransaction(realm -> realm.deleteAll());
         realm.close();
     }
 

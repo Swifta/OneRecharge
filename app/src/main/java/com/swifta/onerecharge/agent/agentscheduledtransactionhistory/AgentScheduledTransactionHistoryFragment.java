@@ -125,24 +125,40 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        List<RealmRow> list;
+
         switch (item.getItemId()) {
             case R.id.sort_by_date:
-                scheduledRechargeHistoryAdapter.swapItems(ScheduledRechargeHistoryRepository.getHistoryListSortedByDate());
+                list = ScheduledRechargeHistoryRepository.getHistoryListSortedByDate();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_recipient:
-                scheduledRechargeHistoryAdapter.swapItems(ScheduledRechargeHistoryRepository.getHistoryListSortedByRecipient());
+                list = ScheduledRechargeHistoryRepository.getHistoryListSortedByRecipient();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_network:
-                scheduledRechargeHistoryAdapter.swapItems(ScheduledRechargeHistoryRepository.getHistoryListSortedByNetwork());
+                list = ScheduledRechargeHistoryRepository.getHistoryListSortedByNetwork();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_amount:
-                scheduledRechargeHistoryAdapter.swapItems(ScheduledRechargeHistoryRepository.getHistoryListSortedByAmount());
+                list = ScheduledRechargeHistoryRepository.getHistoryListSortedByAmount();
+                swapAdapterItems(list);
                 return true;
             case R.id.sort_by_status:
-                scheduledRechargeHistoryAdapter.swapItems(ScheduledRechargeHistoryRepository.getHistoryListSortedByStatus());
+                list = ScheduledRechargeHistoryRepository.getHistoryListSortedByStatus();
+                swapAdapterItems(list);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void swapAdapterItems(List<RealmRow> list) {
+        if (list.size() == 0 || scheduledRechargeHistoryAdapter == null) {
+            Toast.makeText(getActivity(), "The list is currently empty. Please try again later.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            scheduledRechargeHistoryAdapter.swapItems(list);
+        }
     }
 
     @Override
@@ -174,8 +190,10 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(getActivity(), e.getLocalizedMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        if (isAdded()) {
+                            Toast.makeText(getActivity(), e.getLocalizedMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
