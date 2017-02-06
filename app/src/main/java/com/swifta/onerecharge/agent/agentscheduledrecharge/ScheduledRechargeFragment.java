@@ -167,11 +167,7 @@ public class ScheduledRechargeFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    setNetworkAdapter(position);
-                } else if (position == 1) {
-                    setNetworkAdapter(position);
-                }
+                setNetworkAdapter(position);
             }
 
             @Override
@@ -187,10 +183,14 @@ public class ScheduledRechargeFragment extends Fragment {
         ArrayAdapter<String> networkAdapter;
         List<List<String>> networkList = NetworkListRepository.getNetworkList();
 
-        String[] networks = networkList.get(countryChoiceSpinnerPosition).toArray(new
-                String[networkList.get(countryChoiceSpinnerPosition).size()]);
-        networkAdapter = new ArrayAdapter<>(getActivity(), android
-                .R.layout.simple_spinner_item, networks);
+        int networkListSize = networkList.get(countryChoiceSpinnerPosition).size();
+
+        String[] networkChoiceSpinnerArray = new String[networkListSize];
+
+        String[] networks = networkList.get(countryChoiceSpinnerPosition).toArray
+                (networkChoiceSpinnerArray);
+        networkAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
+                networks);
 
         networkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         networkChoiceSpinner.setAdapter(networkAdapter);
