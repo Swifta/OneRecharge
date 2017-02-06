@@ -382,11 +382,6 @@ public class AgentActivity extends AppCompatActivity
         editor.apply();
     }
 
-    private void setUpWalletWithCurrentValue(String walletBalance) {
-        collapsingToolbarLayout.setTitle(getResources().getString(R.string
-                .wallet_balance, walletBalance));
-    }
-
     private void getAgentSummary() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -464,8 +459,6 @@ public class AgentActivity extends AppCompatActivity
                             String lastFailedDescription = agentSummary
                                     .getData().getLastFailedDescription();
 
-                            setUpWalletWithCurrentValue(walletBalance);
-
                             saveProfileRulesResult(walletBalance,
                                     msisdnPurchaseLimit,
                                     minimumWalletBalance,
@@ -481,9 +474,25 @@ public class AgentActivity extends AppCompatActivity
                                     totalFailedTransactions,
                                     totalFailedTransactionAmount,
                                     lastFailedAmount, lastFailedTime, lastFailedDescription);
+
+                            setUpWalletWithCurrentValue(walletBalance);
+                            setUpTabFragmentsWithCurrentValue();
                         }
                     }
                 });
+    }
+
+    private void setUpWalletWithCurrentValue(String walletBalance) {
+        collapsingToolbarLayout.setTitle(getResources().getString(R.string
+                .wallet_balance, walletBalance));
+    }
+
+    private void setUpTabFragmentsWithCurrentValue() {
+        initTabInstances();
+        tabLayout.setupWithViewPager(viewPager);
+
+        currentDisplayedView = "dashboard";
+        setupViewPager(viewPager, getSupportFragmentManager());
     }
 
     private void getAvailableCountries() {
