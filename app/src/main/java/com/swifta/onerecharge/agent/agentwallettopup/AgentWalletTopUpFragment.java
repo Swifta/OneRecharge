@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -92,6 +93,9 @@ public class AgentWalletTopUpFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string
                 .agent_shared_preference_name), Context.MODE_PRIVATE);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
+                (getResources().getString(R.string.wallet_topup));
+
         if (CountryListRepository.getCountryList() != null) {
             List<String> countryList = CountryListRepository.getCountryList();
             String[] countries = countryList.toArray(new String[countryList.size()]);
@@ -154,8 +158,6 @@ public class AgentWalletTopUpFragment extends Fragment {
             if (!InternetConnectivity.isDeviceConnected(getActivity())) {
                 Snackbar.make(topUpView, R.string.internet_error, Snackbar.LENGTH_SHORT).show();
             } else {
-                topUpView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
                 switchToPaymentActivity();
             }
         }
@@ -182,12 +184,11 @@ public class AgentWalletTopUpFragment extends Fragment {
     }
 
     private String getEmailAddress() {
-        return sharedPreferences.getString(getResources().getString(R.string
-                .saved_email_address), "");
+        return sharedPreferences.getString(getResources().getString(R.string.saved_email_address)
+                , "");
     }
 
     private String getToken() {
-        return sharedPreferences.getString(getResources().getString(R.string
-                .saved_auth_token), "");
+        return sharedPreferences.getString(getResources().getString(R.string.saved_auth_token), "");
     }
 }

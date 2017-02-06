@@ -26,8 +26,8 @@ import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;
 import com.swifta.onerecharge.cardpayment.otp.requestmodel.OtpRequest;
 import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
 import com.swifta.onerecharge.util.AgentService;
-import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
+import com.swifta.onerecharge.util.MfisaService;
 import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
@@ -72,7 +72,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
     RechargeResponseFragment successfulFragment;
 
-    String phoneNumber, email, referenceId, customerToken, country;
+    String phoneNumber, email, referenceId, agentToken, country;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
@@ -98,8 +98,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         phoneNumber = getIntent().getStringExtra("agent_telephone");
         amount = getIntent().getIntExtra("amount", 0);
         email = getIntent().getStringExtra("email");
-        referenceId = getIntent().getStringExtra("agent_token");
-        customerToken = getIntent().getStringExtra("reference_id");
+        agentToken = getIntent().getStringExtra("agent_token");
+        referenceId = getIntent().getStringExtra("reference_id");
         country = getIntent().getStringExtra("country");
 
         agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
@@ -232,8 +232,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 .baseUrl(Url.MFISA_BASE_URL)
                 .build();
 
-        CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<PaymentResponse> processCardTransaction = customerService
+        MfisaService mfisaService = retrofit.create(MfisaService.class);
+        final Observable<PaymentResponse> processCardTransaction = mfisaService
                 .performCardTransaction(AUTHORIZATION, paymentRequest);
 
         processCardTransaction.
@@ -324,8 +324,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 .baseUrl(Url.MFISA_BASE_URL)
                 .build();
 
-        CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<OtpResponse> authorizeOtp = customerService.authorizeWithOtp
+        MfisaService mfisaService = retrofit.create(MfisaService.class);
+        final Observable<OtpResponse> authorizeOtp = mfisaService.authorizeWithOtp
                 (AUTHORIZATION, otpRequest);
 
         authorizeOtp.
@@ -362,7 +362,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     private void performWalletTopUp(String description, String transactionId) {
 
         AgentWalletTopUpRequest walletTopUpRequest = new AgentWalletTopUpRequest(amount,
-                customerToken, description, transactionId, referenceId, email);
+                agentToken, description, transactionId, referenceId, email);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -392,7 +392,6 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(AgentWalletTopUpResponse walletTopUpResponse) {
-
                         if (walletTopUpResponse.getStatus() == 1) {
                             showRechargeSuccessfulDialog();
                         } else {
@@ -417,8 +416,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         imageView.setLayoutParams(lp);
         imageView.setBackgroundResource(R.drawable.ic_check_circle_green_700_36dp);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(AgentWalletTopUpPaymentActivity
-                .this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AgentWalletTopUpPaymentActivity.this);
         dialog.setCancelable(false)
                 .setTitle("Recharge Successful!")
                 .setMessage(TRANSACTION_SUCCESSFUL_MESSAGE)
