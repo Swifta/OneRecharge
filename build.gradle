@@ -35,7 +35,7 @@ ext {
     junitVersion = '4.12'
 
     // dependencies versions
-    supportLibraryVersion = '25.1.0'
+    supportLibraryVersion = '25.1.1'
     butterKnifeVersion = '8.3.0'
     retrofitVersion = '2.1.0'
     converterGsonVersion = '2.0.0'

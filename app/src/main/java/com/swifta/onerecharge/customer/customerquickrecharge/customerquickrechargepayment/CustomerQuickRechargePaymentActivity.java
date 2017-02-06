@@ -27,6 +27,7 @@ import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechar
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
+import com.swifta.onerecharge.util.MfisaService;
 import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
@@ -230,8 +231,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                 .baseUrl(Url.MFISA_BASE_URL)
                 .build();
 
-        CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<PaymentResponse> processCardTransaction = customerService
+        MfisaService mfisaService = retrofit.create(MfisaService.class);
+        final Observable<PaymentResponse> processCardTransaction = mfisaService
                 .performCardTransaction(AUTHORIZATION, paymentRequest);
 
         processCardTransaction.
@@ -322,8 +323,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
                 .baseUrl(Url.MFISA_BASE_URL)
                 .build();
 
-        CustomerService customerService = retrofit.create(CustomerService.class);
-        final Observable<OtpResponse> authorizeOtp = customerService.authorizeWithOtp
+        MfisaService mfisaService = retrofit.create(MfisaService.class);
+        final Observable<OtpResponse> authorizeOtp = mfisaService.authorizeWithOtp
                 (AUTHORIZATION, otpRequest);
 
         authorizeOtp.
