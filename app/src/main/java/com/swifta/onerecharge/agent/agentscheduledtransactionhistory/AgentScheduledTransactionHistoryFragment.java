@@ -203,28 +203,24 @@ public class AgentScheduledTransactionHistoryFragment extends Fragment {
                                 realmRowList.add(realmRow);
                             }
 
-                            displayTransactions(realmRowList);
                             clearPreviousRealmData();
                             saveDataToRealm(realmRowList);
+                            displayTransactions(realmRowList);
                         }
                     }
                 });
     }
 
     private void clearPreviousRealmData() {
-        realm.beginTransaction();
-        realm.delete(RealmRow.class);
-        realm.commitTransaction();
+        realm.executeTransaction(realm -> realm.delete(RealmRow.class));
     }
 
     private void saveDataToRealm(List<RealmRow> rowList) {
-        realm.beginTransaction();
-
-        for (RealmRow realmRow : rowList) {
-            realm.copyToRealm(realmRow);
-        }
-
-        realm.commitTransaction();
+        realm.executeTransaction(realm -> {
+            for (RealmRow realmRow : rowList) {
+                realm.copyToRealm(realmRow);
+            }
+        });
     }
 
     private void populateViewWithSavedData() {

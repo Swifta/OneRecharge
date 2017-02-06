@@ -191,19 +191,15 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     }
 
     private void clearPreviousRealmData() {
-        realm.beginTransaction();
-        realm.delete(Row.class);
-        realm.commitTransaction();
+        realm.executeTransaction(realm -> realm.delete(Row.class));
     }
 
     private void saveDataToRealm(List<Row> rowList) {
-        realm.beginTransaction();
-
-        for (Row row : rowList) {
-            realm.copyToRealm(row);
-        }
-
-        realm.commitTransaction();
+        realm.executeTransaction(realm -> {
+            for (Row row : rowList) {
+                realm.copyToRealm(row);
+            }
+        });
     }
 
     private void populateViewWithSavedData() {
