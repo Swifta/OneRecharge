@@ -14,7 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.robinhood.spark.SparkView;
@@ -47,8 +47,9 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.sparkview)
     SparkView sparkView;
-    @BindView(R.id.progress_bar)
-    ProgressBar progressBar;
+    @BindView(R.id.empty_recharge_list_layout)
+    LinearLayout emptyRechargeListLayout;
+
 
     private SharedPreferences sharedPreferences;
     private QuickRechargeHistoryAdapter quickRechargeHistoryAdapter;
@@ -242,7 +243,7 @@ public class AgentQuickTransactionHistoryFragment extends Fragment {
     private void displayTransactions(List<Row> row) {
         QuickRechargeHistoryRepository.setOriginalHistoryList(row);
 
-        progressBar.setVisibility(View.GONE);
+        emptyRechargeListLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         sparkView.setVisibility(View.VISIBLE);
 

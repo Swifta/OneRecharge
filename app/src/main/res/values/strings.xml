@@ -280,5 +280,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_customer">CustomerActivity</string>
+    <string name="nothing_to_show">There\'s nothing to show here.</string>
+    <string name="you_ll_get_updates">Not to worry, you\'ll see updates once we get data.</string>
 
 </resources>
