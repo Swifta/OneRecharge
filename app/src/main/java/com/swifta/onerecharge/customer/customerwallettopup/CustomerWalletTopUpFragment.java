@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,8 +75,13 @@ public class CustomerWalletTopUpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customer_wallet_top_up, container, false);
 
         ButterKnife.bind(this, view);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
+                (getResources().getString(R.string.wallet_topup));
+
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string
-                .customer_shared_preference_name), Context.MODE_PRIVATE);
+                .customer_shared_preference_name), Context
+                .MODE_PRIVATE);
 
         if (CountryListRepository.getCountryList() != null) {
             List<String> countryList = CountryListRepository.getCountryList();
