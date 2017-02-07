@@ -1,19 +1,28 @@
 package com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuppayment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
@@ -69,7 +78,22 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     @BindView(R.id.quick_recharge_payment_button)
     Button agentWalletPaymentButton;
     @BindView(R.id.card_payment_container)
-    LinearLayout cardPaymentContainer;
+    HorizontalScrollView cardPaymentContainer;
+    @BindView(R.id.credit_card_layout)
+    LinearLayout creditCardLayout;
+
+    @BindView(R.id.image_view)
+    ImageView imageView;
+    @BindView(R.id.credit_card_image)
+    ImageView creditCardTypeImage;
+    @BindView(R.id.credit_card_number_text)
+    TextView creditCardNumberText;
+    @BindView(R.id.credit_card_month)
+    TextView creditCardMonthText;
+    @BindView(R.id.credit_card_year)
+    TextView creditCardYearText;
+    @BindView(R.id.credit_card_cvv)
+    TextView creditCardCvvText;
 
     RechargeResponseFragment successfulFragment;
 
@@ -99,9 +123,142 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         agentToken = getIntent().getStringExtra("agent_token");
         country = getIntent().getStringExtra("country");
 
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.credit_card_bg);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        dr.setCornerRadius(15);
+        imageView.setImageDrawable(dr);
+
         referenceId = RandomNumberGenerator.getRandomString(12);
 
         agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
+
+        cardNumberText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardNumberText.setText("XXXX  XXXX  XXXX  XXXX  XXXX");
+
+                } else {
+                    creditCardNumberText.setText("");
+                    setCreditCardTypeImage(String.valueOf(s));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                creditCardTypeImage.setVisibility(View.VISIBLE);
+
+                if (s.length() == 0) {
+                    creditCardNumberText.setText("XXXX  XXXX  XXXX  XXXX  XXXX");
+                } else {
+                    String displayedCreditCardNumber = "";
+
+                    for (int i = 0; i < s.length(); i++) {
+
+                        if (i % 4 == 0) {
+                            displayedCreditCardNumber += "  ";
+                        }
+
+                        displayedCreditCardNumber += s.charAt(i);
+                    }
+
+                    creditCardNumberText.setText(displayedCreditCardNumber);
+                    setCreditCardTypeImage(String.valueOf(s));
+                }
+            }
+        });
+
+        expiryDateMonthText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardMonthText.setText("MM");
+                } else {
+                    creditCardMonthText.setText("");
+                    creditCardMonthText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        expiryDateYearText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardYearText.setText("YY");
+                } else {
+                    creditCardYearText.setText("");
+                    creditCardYearText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        cvvText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardCvvText.setText("CVV");
+                } else {
+                    creditCardCvvText.setText("");
+                    creditCardCvvText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void setCreditCardTypeImage(String creditCardNumber) {
+
+        String visa = "^4[0-9]*";
+        String masterCard = "^5[1-5][0-9]*";
+        String amex = "^3[47][0-9]*";
+
+        if (creditCardNumber.matches(visa)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (AgentWalletTopUpPaymentActivity.this, R.drawable.visa));
+        } else if (creditCardNumber.matches(masterCard)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (AgentWalletTopUpPaymentActivity.this, R.drawable.mastercard));
+        } else if (creditCardNumber.matches(amex)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (AgentWalletTopUpPaymentActivity.this, R.drawable.amex));
+        } else {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (AgentWalletTopUpPaymentActivity.this, R.drawable.ic_credit_card_grey_300_48dp));
+        }
     }
 
     @OnClick(R.id.quick_recharge_payment_button)
@@ -215,6 +372,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
     private void performCardTransaction() {
         cardPaymentContainer.setVisibility(View.GONE);
+        creditCardLayout.setVisibility(View.GONE);
+        agentWalletPaymentButton.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
@@ -248,6 +407,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -260,6 +421,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                                     .getDetails().getOtpref());
                         } else {
                             cardPaymentContainer.setVisibility(View.VISIBLE);
+                            creditCardLayout.setVisibility(View.VISIBLE);
+                            agentWalletPaymentButton.setVisibility(View.VISIBLE);
                             showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -302,6 +465,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", (dialog12, which) -> {
                     dialog12.dismiss();
                     cardPaymentContainer.setVisibility(View.VISIBLE);
+                    creditCardLayout.setVisibility(View.VISIBLE);
+                    agentWalletPaymentButton.setVisibility(View.VISIBLE);
                 });
 
         final AlertDialog alert = dialog.create();
@@ -340,6 +505,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -351,6 +518,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                         } else {
                             progressBar.setVisibility(View.GONE);
                             cardPaymentContainer.setVisibility(View.VISIBLE);
+                            creditCardLayout.setVisibility(View.VISIBLE);
+                            agentWalletPaymentButton.setVisibility(View.VISIBLE);
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -381,6 +550,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onCompleted() {
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
                     }
 
                     @Override
