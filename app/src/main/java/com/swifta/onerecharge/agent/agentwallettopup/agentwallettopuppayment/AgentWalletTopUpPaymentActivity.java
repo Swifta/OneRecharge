@@ -1,5 +1,6 @@
 package com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuppayment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.agent.AgentActivity;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuprequestmodel.AgentWalletTopUpRequest;
 import com.swifta.onerecharge.agent.agentwallettopup.agentwallettopupresponsemodel.AgentWalletTopUpResponse;
@@ -584,6 +586,9 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 .setMessage(TRANSACTION_SUCCESSFUL_MESSAGE)
                 .setView(imageView)
                 .setPositiveButton("OK", (dialog1, id) -> {
+                    Intent dashboardIntent = new Intent(AgentWalletTopUpPaymentActivity.this,
+                            AgentActivity.class);
+                    startActivity(dashboardIntent);
                     finish();
                 });
 
