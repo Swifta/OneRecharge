@@ -28,6 +28,7 @@ import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
 import com.swifta.onerecharge.util.AgentService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.MfisaService;
+import com.swifta.onerecharge.util.RandomNumberGenerator;
 import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
@@ -76,9 +77,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
-    static final boolean IS_CARD_TRANSACTION = true;
     private static final int TRANSACTION_FAILED = 0;
-    private static final int TRANSACTION_SUCCESSFUL = 1;
     private static final String PAYMENT_METHOD_ID = "2";
     private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
@@ -98,8 +97,9 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         amount = getIntent().getIntExtra("amount", 0);
         email = getIntent().getStringExtra("email");
         agentToken = getIntent().getStringExtra("agent_token");
-        referenceId = getIntent().getStringExtra("reference_id");
         country = getIntent().getStringExtra("country");
+
+        referenceId = RandomNumberGenerator.getRandomString(12);
 
         agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
     }
@@ -219,7 +219,6 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
                 cardPin);
-        String referenceId = email;
         String amountToString = String.valueOf(amount);
 
         PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
