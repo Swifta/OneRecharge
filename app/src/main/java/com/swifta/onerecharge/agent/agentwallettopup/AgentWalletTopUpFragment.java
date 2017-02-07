@@ -55,15 +55,12 @@ public class AgentWalletTopUpFragment extends Fragment {
     TextInputLayout amountFieldLayout;
     @BindView(R.id.reference_layout)
     TextInputLayout referenceLayout;
-    @BindView(R.id.agent_phone_layout)
-    TextInputLayout phoneLayout;
 
     @BindView(R.id.topUpView)
     LinearLayout topUpView;
 
     String amount;
     String reference;
-    String phoneNumber;
 
     private SharedPreferences sharedPreferences;
     RechargeResponseFragment successfulFragment;
@@ -119,22 +116,12 @@ public class AgentWalletTopUpFragment extends Fragment {
 
         amountFieldLayout.setError(null);
         referenceLayout.setError(null);
-        phoneLayout.setError(null);
 
         amount = amountField.getText().toString();
         reference = referenceField.getText().toString();
-        phoneNumber = phoneNumberField.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        if (phoneNumber.isEmpty()) {
-            phoneLayout.setError(getString(R.string.phone_number_empty_error));
-            focusView = phoneLayout;
-            cancel = true;
-        } else {
-            phoneLayout.setError(null);
-        }
 
         if (reference.isEmpty()) {
             referenceLayout.setError(getString(R.string.reference_empty_error));
@@ -171,7 +158,6 @@ public class AgentWalletTopUpFragment extends Fragment {
         paymentActivityIntent.putExtra("reference_id", reference);
         paymentActivityIntent.putExtra("agent_token", getToken());
         paymentActivityIntent.putExtra("email", getEmailAddress());
-        paymentActivityIntent.putExtra("agent_telephone", phoneNumber);
         paymentActivityIntent.putExtra("country", countryChoiceSpinner.getSelectedItem().toString
                 ());
         startActivity(paymentActivityIntent);

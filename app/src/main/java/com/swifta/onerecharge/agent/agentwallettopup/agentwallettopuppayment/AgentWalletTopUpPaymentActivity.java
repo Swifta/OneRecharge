@@ -72,7 +72,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
     RechargeResponseFragment successfulFragment;
 
-    String phoneNumber, email, referenceId, agentToken, country;
+    String email, referenceId, agentToken, country;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
@@ -95,7 +95,6 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        phoneNumber = getIntent().getStringExtra("agent_telephone");
         amount = getIntent().getIntExtra("amount", 0);
         email = getIntent().getStringExtra("email");
         agentToken = getIntent().getStringExtra("agent_token");
@@ -220,7 +219,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
                 cardPin);
-        String referenceId = phoneNumber + "|" + email;
+        String referenceId = email;
         String amountToString = String.valueOf(amount);
 
         PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
