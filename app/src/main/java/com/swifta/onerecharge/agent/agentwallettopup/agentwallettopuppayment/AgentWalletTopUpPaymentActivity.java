@@ -140,13 +140,6 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) {
-                    creditCardNumberText.setText("XXXX  XXXX  XXXX  XXXX  XXXX");
-
-                } else {
-                    creditCardNumberText.setText("");
-                    setCreditCardTypeImage(String.valueOf(s));
-                }
             }
 
             @Override
@@ -160,7 +153,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     for (int i = 0; i < s.length(); i++) {
 
-                        if (i % 4 == 0) {
+                        if (i % 4 == 0 && i != 0) {
                             displayedCreditCardNumber += "  ";
                         }
 
