@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -574,22 +575,21 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
     private void showRechargeSuccessfulDialog() {
 
-        final ImageView imageView = new ImageView(AgentWalletTopUpPaymentActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
-                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        imageView.setLayoutParams(lp);
-        imageView.setBackgroundResource(R.drawable.ic_check_circle_green_700_36dp);
-
         AlertDialog.Builder dialog = new AlertDialog.Builder(AgentWalletTopUpPaymentActivity.this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
+
+        TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
+        textView.setText(TRANSACTION_SUCCESSFUL_MESSAGE);
+
         dialog.setCancelable(false)
-                .setTitle("Recharge Successful!")
-                .setMessage(TRANSACTION_SUCCESSFUL_MESSAGE)
-                .setView(imageView)
+                .setView(dialogView)
                 .setPositiveButton("OK", (dialog1, id) -> {
+                    finish();
                     Intent dashboardIntent = new Intent(AgentWalletTopUpPaymentActivity.this,
                             AgentActivity.class);
                     startActivity(dashboardIntent);
-                    finish();
                 });
 
         final AlertDialog alert = dialog.create();
