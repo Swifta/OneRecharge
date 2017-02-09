@@ -180,7 +180,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/mm"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="2"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -194,7 +195,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/yy"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="2"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -208,7 +210,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/cvv"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:maxLength="4"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -224,7 +227,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/card_pin"
-                        android:inputType="numberPassword"/>
+                        android:inputType="numberPassword"
+                        android:maxLength="4"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </HorizontalScrollView>
