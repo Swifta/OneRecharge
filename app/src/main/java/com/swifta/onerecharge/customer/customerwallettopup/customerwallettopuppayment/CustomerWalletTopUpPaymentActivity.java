@@ -1,6 +1,8 @@
 package com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuppayment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -100,6 +102,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
     RechargeResponseFragment successfulFragment;
 
+    private SharedPreferences sharedPreferences;
+
     String email, referenceId, customerToken, country;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
@@ -121,6 +125,9 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
+
+        sharedPreferences = getSharedPreferences(getString(R.string
+                .customer_shared_preference_name), Context.MODE_PRIVATE);
 
         getDataFromBundle();
 
@@ -565,6 +572,7 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideLoading();
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -572,6 +580,7 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onNext(CustomerWalletTopUpResponse walletTopUpResponse) {
 
                         if (walletTopUpResponse.getStatus() == 1) {
+                            updateSavedCustomerBalance(walletTopUpResponse.getCustomerBalance());
                             showRechargeSuccessfulDialog();
                         } else {
                             showResultDialog(walletTopUpResponse.getData().getMessage(),
@@ -609,6 +618,16 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
         final AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    private void updateSavedCustomerBalance(Double balance) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Integer walletBalanceAsInteger = balance.intValue();
+
+        editor.putInt(getResources().getString(R.string.saved_customer_balance),
+                walletBalanceAsInteger);
+        editor.apply();
     }
 
     private void showLoading() {

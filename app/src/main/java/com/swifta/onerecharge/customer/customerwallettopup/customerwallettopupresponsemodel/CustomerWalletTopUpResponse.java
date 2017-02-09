@@ -15,6 +15,9 @@ public class CustomerWalletTopUpResponse {
     @SerializedName("data")
     @Expose
     private Data data;
+    @SerializedName("customer_balance")
+    @Expose
+    public Double customerBalance;
 
     public Integer getStatus() {
         return status;
@@ -32,4 +35,11 @@ public class CustomerWalletTopUpResponse {
         this.data = data;
     }
 
+    public Double getCustomerBalance() {
+        return customerBalance;
+    }
+
+    public void setCustomerBalance(Double customerBalance) {
+        this.customerBalance = customerBalance;
+    }
 }
