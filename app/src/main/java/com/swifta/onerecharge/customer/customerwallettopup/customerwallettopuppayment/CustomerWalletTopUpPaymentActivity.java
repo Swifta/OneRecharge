@@ -1,19 +1,30 @@
 package com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuppayment;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
@@ -23,11 +34,13 @@ import com.swifta.onerecharge.cardpayment.card.requestmodel.PaymentRequest;
 import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;
 import com.swifta.onerecharge.cardpayment.otp.requestmodel.OtpRequest;
 import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
+import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuprequestmodel.CustomerWalletTopUpRequest;
 import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopupresponsemodel.CustomerWalletTopUpResponse;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
 import com.swifta.onerecharge.util.MfisaService;
+import com.swifta.onerecharge.util.RandomNumberGenerator;
 import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
@@ -66,18 +79,33 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     @BindView(R.id.card_pin_layout)
     TextInputLayout cardPinLayout;
     @BindView(R.id.quick_recharge_payment_button)
-    Button quickRechargeButton;
+    Button customerWalletPaymentButton;
     @BindView(R.id.card_payment_container)
-    LinearLayout cardPaymentContainer;
+    HorizontalScrollView cardPaymentContainer;
+    @BindView(R.id.credit_card_layout)
+    LinearLayout creditCardLayout;
+
+    @BindView(R.id.image_view)
+    ImageView imageView;
+    @BindView(R.id.credit_card_image)
+    ImageView creditCardTypeImage;
+    @BindView(R.id.credit_card_number_text)
+    TextView creditCardNumberText;
+    @BindView(R.id.credit_card_month)
+    TextView creditCardMonthText;
+    @BindView(R.id.credit_card_year)
+    TextView creditCardYearText;
+    @BindView(R.id.credit_card_cvv)
+    TextView creditCardCvvText;
 
     RechargeResponseFragment successfulFragment;
 
-    String phoneNumber, email, referenceId, customerToken, country;
+    String email, referenceId, customerToken, country;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
+    private static final String CREDIT_CARD_DEFAULT_TEXT = "XXXX  XXXX  XXXX  XXXX  XXXX";
     private static final int TRANSACTION_FAILED = 0;
-    private static final int TRANSACTION_SUCCESSFUL = 1;
     private static final String PAYMENT_METHOD_ID = "2";
     private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
@@ -94,14 +122,167 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        phoneNumber = getIntent().getStringExtra("customer_telephone");
+        getDataFromBundle();
+
+        imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
+
+        referenceId = RandomNumberGenerator.getRandomString(12);
+
+        customerWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " +
+                amount);
+
+        addCardNumberTextChangedListener();
+
+        addExpiryDateMonthTextChangedListener();
+
+        addExpiryDateYearTextChangedListener();
+
+        addCvvTextChangedListener();
+    }
+
+    private void getDataFromBundle() {
         amount = getIntent().getIntExtra("amount", 0);
         email = getIntent().getStringExtra("email");
         customerToken = getIntent().getStringExtra("customer_token");
-        referenceId = getIntent().getStringExtra("reference_id");
         country = getIntent().getStringExtra("country");
+    }
 
-        quickRechargeButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
+    private RoundedBitmapDrawable getCreditCardBackgroundBitmapDrawable() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.credit_card_bg);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        dr.setCornerRadius(15);
+
+        return dr;
+    }
+
+    private void addCardNumberTextChangedListener() {
+        cardNumberText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                creditCardTypeImage.setVisibility(View.VISIBLE);
+
+                if (s.length() == 0) {
+                    creditCardNumberText.setText(CREDIT_CARD_DEFAULT_TEXT);
+                } else {
+                    String displayedCreditCardNumber = "";
+
+                    for (int i = 0; i < s.length(); i++) {
+
+                        if (i % 4 == 0 && i != 0) {
+                            displayedCreditCardNumber += "  ";
+                        }
+
+                        displayedCreditCardNumber += s.charAt(i);
+                    }
+
+                    creditCardNumberText.setText(displayedCreditCardNumber);
+                    setCreditCardTypeImage(String.valueOf(s));
+                }
+            }
+        });
+    }
+
+    private void addExpiryDateMonthTextChangedListener() {
+        expiryDateMonthText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardMonthText.setText("MM");
+                } else {
+                    creditCardMonthText.setText("");
+                    creditCardMonthText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void addExpiryDateYearTextChangedListener() {
+        expiryDateYearText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardYearText.setText("YY");
+                } else {
+                    creditCardYearText.setText("");
+                    creditCardYearText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void addCvvTextChangedListener() {
+        cvvText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    creditCardCvvText.setText("CVV");
+                } else {
+                    creditCardCvvText.setText("");
+                    creditCardCvvText.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void setCreditCardTypeImage(String creditCardNumber) {
+
+        String visa = "^4[0-9]*";
+        String masterCard = "^5[1-5][0-9]*";
+        String amex = "^3[47][0-9]*";
+
+        if (creditCardNumber.matches(visa)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (CustomerWalletTopUpPaymentActivity.this, R.drawable.visa));
+        } else if (creditCardNumber.matches(masterCard)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (CustomerWalletTopUpPaymentActivity.this, R.drawable.mastercard));
+        } else if (creditCardNumber.matches(amex)) {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (CustomerWalletTopUpPaymentActivity.this, R.drawable.amex));
+        } else {
+            creditCardTypeImage.setImageDrawable(ContextCompat.getDrawable
+                    (CustomerWalletTopUpPaymentActivity.this, R.drawable
+                            .ic_credit_card_grey_300_48dp));
+        }
     }
 
     @OnClick(R.id.quick_recharge_payment_button)
@@ -215,11 +396,12 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
     private void performCardTransaction() {
         cardPaymentContainer.setVisibility(View.GONE);
+        creditCardLayout.setVisibility(View.GONE);
+        customerWalletPaymentButton.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
                 cardPin);
-        String referenceId = phoneNumber + "|" + email;
         String amountToString = String.valueOf(amount);
 
         PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
@@ -249,6 +431,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        customerWalletPaymentButton.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -261,6 +445,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                                     .getDetails().getOtpref());
                         } else {
                             cardPaymentContainer.setVisibility(View.VISIBLE);
+                            creditCardLayout.setVisibility(View.VISIBLE);
+                            customerWalletPaymentButton.setVisibility(View.VISIBLE);
                             showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -303,6 +489,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", (dialog12, which) -> {
                     dialog12.dismiss();
                     cardPaymentContainer.setVisibility(View.VISIBLE);
+                    creditCardLayout.setVisibility(View.VISIBLE);
+                    customerWalletPaymentButton.setVisibility(View.VISIBLE);
                 });
 
         final AlertDialog alert = dialog.create();
@@ -342,6 +530,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                         //performWalletTopUp("", "", false);
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        customerWalletPaymentButton.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -352,8 +542,9 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                                     .getDetails().getMfisaTxnId(), true);
                         } else {
                             //  performWalletTopUp("", "", false);
-                            progressBar.setVisibility(View.GONE);
                             cardPaymentContainer.setVisibility(View.VISIBLE);
+                            creditCardLayout.setVisibility(View.VISIBLE);
+                            customerWalletPaymentButton.setVisibility(View.VISIBLE);
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -386,6 +577,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onCompleted() {
                         progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        customerWalletPaymentButton.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -414,20 +607,22 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
     private void showRechargeSuccessfulDialog() {
 
-        final ImageView imageView = new ImageView(CustomerWalletTopUpPaymentActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
-                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        imageView.setLayoutParams(lp);
-        imageView.setBackgroundResource(R.drawable.ic_check_circle_green_700_36dp);
-
         AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerWalletTopUpPaymentActivity
                 .this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
+
+        TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
+        textView.setText(TRANSACTION_SUCCESSFUL_MESSAGE);
+
         dialog.setCancelable(false)
-                .setTitle("Recharge Successful!")
-                .setMessage(TRANSACTION_SUCCESSFUL_MESSAGE)
-                .setView(imageView)
+                .setView(dialogView)
                 .setPositiveButton("OK", (dialog1, id) -> {
                     finish();
+                    Intent dashboardIntent = new Intent(CustomerWalletTopUpPaymentActivity.this,
+                            CustomerActivity.class);
+                    startActivity(dashboardIntent);
                 });
 
         final AlertDialog alert = dialog.create();
