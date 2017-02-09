@@ -22,7 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.swifta.onerecharge.R;
-import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
 import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuppayment.CustomerWalletTopUpPaymentActivity;
 import com.swifta.onerecharge.util.InternetConnectivity;
@@ -40,8 +39,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
 
     @BindView(R.id.amount)
     TextInputEditText amountField;
-    @BindView(R.id.reference)
-    TextInputEditText referenceField;
     @BindView(R.id.country_spinner)
     Spinner countryChoiceSpinner;
 
@@ -50,20 +47,13 @@ public class CustomerWalletTopUpFragment extends Fragment {
 
     @BindView(R.id.amount_layout)
     TextInputLayout amountFieldLayout;
-    @BindView(R.id.reference_layout)
-    TextInputLayout referenceLayout;
 
     @BindView(R.id.topUpView)
     LinearLayout topUpView;
 
     String amount;
-    String reference;
 
     private SharedPreferences sharedPreferences;
-    RechargeResponseFragment successfulFragment;
-
-    private static final int TRANSACTION_FAILED = 0;
-    private static final int TRANSACTION_SUCCESSFUL = 1;
 
     public CustomerWalletTopUpFragment() {
         // Required empty public constructor
@@ -114,21 +104,11 @@ public class CustomerWalletTopUpFragment extends Fragment {
     void fundWallet() {
 
         amountFieldLayout.setError(null);
-        referenceLayout.setError(null);
 
         amount = amountField.getText().toString();
-        reference = referenceField.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        if (reference.isEmpty()) {
-            referenceLayout.setError(getString(R.string.reference_empty_error));
-            focusView = referenceLayout;
-            cancel = true;
-        } else {
-            referenceLayout.setError(null);
-        }
 
         if (amount.isEmpty()) {
             amountFieldLayout.setError(getString(R.string.amount_empty_error));
@@ -160,10 +140,8 @@ public class CustomerWalletTopUpFragment extends Fragment {
                 CustomerWalletTopUpPaymentActivity.class);
 
         paymentActivityIntent.putExtra("amount", Integer.valueOf(amount));
-        paymentActivityIntent.putExtra("reference_id", reference);
         paymentActivityIntent.putExtra("customer_token", getCustomerToken());
         paymentActivityIntent.putExtra("email", getCustomerEmail());
-        paymentActivityIntent.putExtra("customer_telephone", getCustomerPhoneNumber());
         paymentActivityIntent.putExtra("country", countryChoiceSpinner.getSelectedItem().toString
                 ());
         startActivity(paymentActivityIntent);
@@ -175,11 +153,6 @@ public class CustomerWalletTopUpFragment extends Fragment {
     }
 
     private String getCustomerToken() {
-        return sharedPreferences.getString(getResources().getString(R.string
-                .saved_customer_auth_token), "");
-    }
-
-    private String getCustomerPhoneNumber() {
         return sharedPreferences.getString(getResources().getString(R.string
                 .saved_customer_auth_token), "");
     }
