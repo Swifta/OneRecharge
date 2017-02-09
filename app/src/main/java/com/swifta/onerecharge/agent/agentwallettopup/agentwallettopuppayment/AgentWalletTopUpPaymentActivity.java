@@ -104,6 +104,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
+    private static final String CREDIT_CARD_DEFAULT_TEXT = "XXXX  XXXX  XXXX  XXXX  XXXX";
     private static final int TRANSACTION_FAILED = 0;
     private static final String PAYMENT_METHOD_ID = "2";
     private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
@@ -121,20 +122,39 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        amount = getIntent().getIntExtra("amount", 0);
-        email = getIntent().getStringExtra("email");
-        agentToken = getIntent().getStringExtra("agent_token");
-        country = getIntent().getStringExtra("country");
+        getDataFromBundle();
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.credit_card_bg);
-        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-        dr.setCornerRadius(15);
-        imageView.setImageDrawable(dr);
+        imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
 
         referenceId = RandomNumberGenerator.getRandomString(12);
 
         agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
 
+        addCardNumberTextChangedListener();
+
+        addExpiryDateMonthTextChangedListener();
+
+        addExpiryDateYearTextChangedListener();
+
+        addCvvTextChangedListener();
+    }
+
+    private void getDataFromBundle() {
+        amount = getIntent().getIntExtra("amount", 0);
+        email = getIntent().getStringExtra("email");
+        agentToken = getIntent().getStringExtra("agent_token");
+        country = getIntent().getStringExtra("country");
+    }
+
+    private RoundedBitmapDrawable getCreditCardBackgroundBitmapDrawable() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.credit_card_bg);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        dr.setCornerRadius(15);
+
+        return dr;
+    }
+
+    private void addCardNumberTextChangedListener() {
         cardNumberText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -150,7 +170,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 creditCardTypeImage.setVisibility(View.VISIBLE);
 
                 if (s.length() == 0) {
-                    creditCardNumberText.setText("XXXX  XXXX  XXXX  XXXX  XXXX");
+                    creditCardNumberText.setText(CREDIT_CARD_DEFAULT_TEXT);
                 } else {
                     String displayedCreditCardNumber = "";
 
@@ -168,7 +188,9 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void addExpiryDateMonthTextChangedListener() {
         expiryDateMonthText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -190,7 +212,9 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void addExpiryDateYearTextChangedListener() {
         expiryDateYearText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -212,7 +236,9 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void addCvvTextChangedListener() {
         cvvText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
