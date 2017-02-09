@@ -393,10 +393,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     }
 
     private void performCardTransaction() {
-        cardPaymentContainer.setVisibility(View.GONE);
-        creditCardLayout.setVisibility(View.GONE);
-        agentWalletPaymentButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        showLoading();
 
         ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
                 cardPin);
@@ -427,10 +424,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        progressBar.setVisibility(View.GONE);
-                        cardPaymentContainer.setVisibility(View.VISIBLE);
-                        creditCardLayout.setVisibility(View.VISIBLE);
-                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                        hideLoading();
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -442,9 +436,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                             displayOtpDialog(paymentResponse.getDescription(), paymentResponse
                                     .getDetails().getOtpref());
                         } else {
-                            cardPaymentContainer.setVisibility(View.VISIBLE);
-                            creditCardLayout.setVisibility(View.VISIBLE);
-                            agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                            hideLoading();
                             showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -486,9 +478,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", (dialog12, which) -> {
                     dialog12.dismiss();
-                    cardPaymentContainer.setVisibility(View.VISIBLE);
-                    creditCardLayout.setVisibility(View.VISIBLE);
-                    agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                    hideLoading();
                 });
 
         final AlertDialog alert = dialog.create();
@@ -525,10 +515,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        progressBar.setVisibility(View.GONE);
-                        cardPaymentContainer.setVisibility(View.VISIBLE);
-                        creditCardLayout.setVisibility(View.VISIBLE);
-                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                        hideLoading();
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -538,10 +525,7 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                             performWalletTopUp(otpResponse.getDescription(), otpResponse
                                     .getDetails().getMfisaTxnId());
                         } else {
-                            progressBar.setVisibility(View.GONE);
-                            cardPaymentContainer.setVisibility(View.VISIBLE);
-                            creditCardLayout.setVisibility(View.VISIBLE);
-                            agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                            hideLoading();
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -570,14 +554,12 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onCompleted() {
-                        progressBar.setVisibility(View.GONE);
-                        cardPaymentContainer.setVisibility(View.VISIBLE);
-                        creditCardLayout.setVisibility(View.VISIBLE);
-                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
+                        hideLoading();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        hideLoading();
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -620,5 +602,19 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         final AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    private void showLoading() {
+        cardPaymentContainer.setVisibility(View.GONE);
+        creditCardLayout.setVisibility(View.GONE);
+        agentWalletPaymentButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+        cardPaymentContainer.setVisibility(View.VISIBLE);
+        creditCardLayout.setVisibility(View.VISIBLE);
+        agentWalletPaymentButton.setVisibility(View.VISIBLE);
     }
 }
