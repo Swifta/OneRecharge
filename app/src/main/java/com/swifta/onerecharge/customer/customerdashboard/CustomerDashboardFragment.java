@@ -11,9 +11,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.customer.customerwalletbalance.balancerequestmodel.CustomerWalletBalanceRequest;
+import com.swifta.onerecharge.customer.customerwalletbalance.balanceresponsemodel.CustomerWalletBalanceResponse;
+import com.swifta.onerecharge.util.CustomerService;
+import com.swifta.onerecharge.util.InternetConnectivity;
+import com.swifta.onerecharge.util.Url;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,19 +73,31 @@ public class CustomerDashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        setUpUi();
     }
 
     private String getWalletBalance() {
+
         String balance = String.valueOf(sharedPreferences.getInt(getResources().getString(R.string
                 .saved_customer_balance), 0));
 
         return (balance.equals("0")) ? "0.00" : balance;
     }
 
+    private void setUpUiWithDefaultValues() {
+        walletBalanceText.setText(getResources().getString(R.string
+                .wallet_balance, getWalletBalance()));
+    }
+
     private void setUpUi() {
         promoTextView.setText(getPromo());
         discountsTextView.setText(getDiscounts());
         rechargedTextView.setText(getRecharged());
+
+        if (InternetConnectivity.isDeviceConnected(getActivity())) {
+            getNewWalletBalance();
+        }
     }
 
     private String getPromo() {
@@ -94,8 +118,58 @@ public class CustomerDashboardFragment extends Fragment {
         return recharged;
     }
 
-    private void setUpUiWithDefaultValues() {
-        walletBalanceText.setText(getResources().getString(R.string
-                .wallet_balance, getWalletBalance()));
+    private void getNewWalletBalance() {
+
+        CustomerWalletBalanceRequest walletBalanceRequest = new CustomerWalletBalanceRequest
+                ("sMHuflOVZYEuCvXW1SGWmIMoj0aV5q1D", getCustomerEmail());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<CustomerWalletBalanceResponse> walletBalanceResponse =
+                customerService.getWalletBallance(walletBalanceRequest);
+
+        walletBalanceResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<CustomerWalletBalanceResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(CustomerWalletBalanceResponse walletBalanceResponse) {
+
+                        if (walletBalanceResponse.getStatus() == 1) {
+                            updateSavedCustomerBalance(walletBalanceResponse.getData().getBalance
+                                    ());
+                            setUpUiWithDefaultValues();
+                        }
+                    }
+                });
+    }
+
+    private String getCustomerEmail() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_email_address), "");
+    }
+
+    private void updateSavedCustomerBalance(Double balance) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Integer walletBalanceAsInteger = balance.intValue();
+
+        editor.putInt(getResources().getString(R.string.saved_customer_balance),
+                walletBalanceAsInteger);
+        editor.apply();
     }
 }

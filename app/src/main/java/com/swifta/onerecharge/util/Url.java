@@ -86,6 +86,9 @@ public class Url {
     // Customer Wallet Top Up
     public static final String CUSTOMER_WALLET_TOPUP_URL = "api/customer/wallet/fund";
 
+    // Customer Wallet Balance
+    public static final String CUSTOMER_WALLET_BALANCE_URL = "api/customer/wallet/balance";
+
     // Customer Quick Recharge from wallet
     public static final String CUSTOMER_WALLET_QUICK_RECHARGE = "api/recharge/new";
 

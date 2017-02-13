@@ -5,6 +5,8 @@ import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechar
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
 import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
+import com.swifta.onerecharge.customer.customerwalletbalance.balanceresponsemodel.CustomerWalletBalanceResponse;
+import com.swifta.onerecharge.customer.customerwalletbalance.balancerequestmodel.CustomerWalletBalanceRequest;
 import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopuprequestmodel.CustomerWalletTopUpRequest;
 import com.swifta.onerecharge.customer.customerwallettopup.customerwallettopupresponsemodel.CustomerWalletTopUpResponse;
 
@@ -46,4 +48,9 @@ public interface CustomerService {
     Observable<CustomerQuickRechargeResponse> performCustomerQuickRechargeFromWallet
             (@Header("Authorization") String authorization, @Header("Key") String key, @Body
                     CustomerQuickRechargeRequest walletQuickRechargeRequest);
+
+    @POST(Url.CUSTOMER_WALLET_BALANCE_URL)
+    Observable<CustomerWalletBalanceResponse> getWalletBallance(@Body CustomerWalletBalanceRequest
+                                                                walletBalanceRequest);
+
 }

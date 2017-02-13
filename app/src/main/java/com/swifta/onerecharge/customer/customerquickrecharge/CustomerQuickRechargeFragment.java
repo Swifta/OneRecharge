@@ -33,11 +33,13 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
+import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.CustomerQuickRechargePaymentActivity;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
@@ -378,7 +380,7 @@ public class CustomerQuickRechargeFragment extends Fragment {
                     public void onNext(CustomerQuickRechargeResponse quickRechargeResponse) {
 
                         if (quickRechargeResponse.getStatus() == 1) {
-                            showResultDialog(TRANSACTION_SUCCESSFUL_MESSAGE, TRANSACTION_SUCCESSFUL);
+                            showRechargeSuccessfulDialog();
                             clearInputFields();
                         } else if (quickRechargeResponse.getStatus() == 0) {
                             showResultDialog(quickRechargeResponse.getData().getMessage(),
@@ -397,6 +399,27 @@ public class CustomerQuickRechargeFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         successfulFragment = RechargeResponseFragment.newInstance(message, status);
         successfulFragment.show(fragmentManager, "");
+    }
+
+    private void showRechargeSuccessfulDialog() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
+
+        TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
+        textView.setText(TRANSACTION_SUCCESSFUL_MESSAGE);
+
+        dialog.setCancelable(false)
+                .setView(dialogView)
+                .setPositiveButton("OK", (dialog1, id) -> {
+                    Intent dashboardIntent = new Intent(getActivity(), CustomerActivity.class);
+                    startActivity(dashboardIntent);
+                });
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
     }
 
     private void clearInputFields() {
