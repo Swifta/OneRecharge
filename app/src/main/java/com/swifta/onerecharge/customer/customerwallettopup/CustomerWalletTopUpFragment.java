@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,9 +52,13 @@ public class CustomerWalletTopUpFragment extends Fragment {
     @BindView(R.id.topUpView)
     LinearLayout topUpView;
 
-    String amount;
+    @BindView(R.id.activity_top_up)
+    LinearLayout walletContainer;
 
     private SharedPreferences sharedPreferences;
+    FragmentManager fragmentManager;
+
+    String amount;
 
     public CustomerWalletTopUpFragment() {
         // Required empty public constructor
@@ -70,17 +75,22 @@ public class CustomerWalletTopUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         ArrayAdapter<String> adapter;
 
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string
+                .customer_shared_preference_name), Context.MODE_PRIVATE);
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_customer_wallet_top_up, container, false);
 
         ButterKnife.bind(this, view);
 
+        fragmentManager = getChildFragmentManager();
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
                 (getResources().getString(R.string.wallet_topup));
-
-        sharedPreferences = getActivity().getSharedPreferences(getString(R.string
-                .customer_shared_preference_name), Context
-                .MODE_PRIVATE);
 
         if (CountryListRepository.getCountryList() != null) {
             List<String> countryList = CountryListRepository.getCountryList();
@@ -98,6 +108,26 @@ public class CustomerWalletTopUpFragment extends Fragment {
         countryChoiceSpinner.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
+    }
+
+    private boolean isOtpTransaction() {
+        return sharedPreferences.getBoolean(getResources().getString(R.string
+                .saved_customer_wallet_otp_status), false);
+    }
+
+    private void switchToOtpView() {
+        Intent paymentActivityIntent = new Intent(getActivity(),
+                CustomerWalletTopUpPaymentActivity.class);
+        startActivity(paymentActivityIntent);
     }
 
     @OnClick(R.id.top_wallet_up_button)

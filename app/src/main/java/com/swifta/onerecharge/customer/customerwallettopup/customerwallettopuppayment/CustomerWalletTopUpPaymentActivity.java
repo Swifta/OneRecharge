@@ -21,19 +21,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
-import com.swifta.onerecharge.cardpayment.card.requestmodel.ChargeObject;
-import com.swifta.onerecharge.cardpayment.card.requestmodel.PaymentRequest;
-import com.swifta.onerecharge.cardpayment.card.responsemodel.PaymentResponse;
 import com.swifta.onerecharge.cardpayment.otp.requestmodel.OtpRequest;
 import com.swifta.onerecharge.cardpayment.otp.responsemodel.OtpResponse;
 import com.swifta.onerecharge.customer.CustomerActivity;
@@ -57,6 +53,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
+
+    @BindView(R.id.otp_message)
+    TextView otpMessage;
+    @BindView(R.id.otp_text)
+    TextInputEditText otpText;
+    @BindView(R.id.otp_text_layout)
+    TextInputLayout otpTextLayout;
+    @BindView(R.id.otp_container)
+    LinearLayout otpContainer;
+    @BindView(R.id.otp_progress_bar)
+    ProgressBar otpProgressBar;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -100,20 +107,29 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     @BindView(R.id.credit_card_cvv)
     TextView creditCardCvvText;
 
+    @BindView(R.id.activity_customer_quick_recharge)
+    ScrollView scrollView;
+
+    @BindView(R.id.layout_content)
+    LinearLayout linearLayoutContainer;
+
     RechargeResponseFragment successfulFragment;
+
+    FragmentManager fragmentManager;
 
     private SharedPreferences sharedPreferences;
 
-    String email, referenceId, customerToken, country;
+    String email, referenceId, customerToken, country, otpValue;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
     private static final String CREDIT_CARD_DEFAULT_TEXT = "XXXX  XXXX  XXXX  XXXX  XXXX";
+
     private static final int TRANSACTION_FAILED = 0;
-    private static final String PAYMENT_METHOD_ID = "2";
     private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
             "successfully!";
+    private static final String PAYMENT_METHOD_ID = "2";
     private static final String TRANSACTION_ERROR_MESSAGE = "Transaction " +
             "unsuccessful. Please try again.";
 
@@ -126,25 +142,31 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        fragmentManager = getSupportFragmentManager();
+
         sharedPreferences = getSharedPreferences(getString(R.string
                 .customer_shared_preference_name), Context.MODE_PRIVATE);
 
         getDataFromBundle();
 
-        imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        } else {
+            imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
 
-        referenceId = RandomNumberGenerator.getRandomString(12);
+            referenceId = RandomNumberGenerator.getRandomString(12);
 
-        customerWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " +
-                amount);
+            customerWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " +
+                    amount);
 
-        addCardNumberTextChangedListener();
+            addCardNumberTextChangedListener();
 
-        addExpiryDateMonthTextChangedListener();
+            addExpiryDateMonthTextChangedListener();
 
-        addExpiryDateYearTextChangedListener();
+            addExpiryDateYearTextChangedListener();
 
-        addCvvTextChangedListener();
+            addCvvTextChangedListener();
+        }
     }
 
     private void getDataFromBundle() {
@@ -152,6 +174,22 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         customerToken = getIntent().getStringExtra("customer_token");
         country = getIntent().getStringExtra("country");
+    }
+
+    private boolean isOtpTransaction() {
+        return sharedPreferences.getBoolean(getResources().getString(R.string
+                .saved_customer_wallet_otp_status), false);
+    }
+
+    private void switchToOtpView() {
+        scrollView.setVisibility(View.GONE);
+        otpContainer.setVisibility(View.VISIBLE);
+        otpMessage.setText(getOtpDescription());
+    }
+
+    private String getOtpDescription() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_wallet_otp_description), "");
     }
 
     private RoundedBitmapDrawable getCreditCardBackgroundBitmapDrawable() {
@@ -404,98 +442,98 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     private void performCardTransaction() {
         showLoading();
 
-        ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
-                cardPin);
-        String amountToString = String.valueOf(amount);
+        progressBar.setVisibility(View.GONE);
+        saveCurrentOtpStatus();
+        saveCurrentOtpValues("paymentResponse.getDescription()", "paymentResponse.getDetails()" +
+                ".getOtpref()");
+        saveWalletTopUpValues();
+        switchToOtpView();
 
-        PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
-                PAYMENT_METHOD_ID, getCountryCurrencyCode(country), referenceId);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Url.MFISA_BASE_URL)
-                .build();
-
-        MfisaService mfisaService = retrofit.create(MfisaService.class);
-        final Observable<PaymentResponse> processCardTransaction = mfisaService
-                .performCardTransaction(AUTHORIZATION, paymentRequest);
-
-        processCardTransaction.
-                subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<PaymentResponse>() {
-
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        hideLoading();
-                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
-                    }
-
-                    @Override
-                    public void onNext(PaymentResponse paymentResponse) {
-                        progressBar.setVisibility(View.GONE);
-
-                        if (paymentResponse.getStatus().equals("02")) {
-                            displayOtpDialog(paymentResponse.getDescription(), paymentResponse
-                                    .getDetails().getOtpref());
-                        } else {
-                            hideLoading();
-                            showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
-                        }
-                    }
-                });
+//        ChargeObject chargeObject = new ChargeObject(cardNumber, monthValue, yearValue, cvv,
+//                cardPin);
+//        String amountToString = String.valueOf(amount);
+//
+//        PaymentRequest paymentRequest = new PaymentRequest(chargeObject, amountToString,
+//                PAYMENT_METHOD_ID, getCountryCurrencyCode(country), referenceId);
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .baseUrl(Url.MFISA_BASE_URL)
+//                .build();
+//
+//        MfisaService mfisaService = retrofit.create(MfisaService.class);
+//        final Observable<PaymentResponse> processCardTransaction = mfisaService
+//                .performCardTransaction(AUTHORIZATION, paymentRequest);
+//
+//        processCardTransaction.
+//                subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .unsubscribeOn(Schedulers.io())
+//                .subscribe(new Subscriber<PaymentResponse>() {
+//
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        hideLoading();
+//                        showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
+//                    }
+//
+//                    @Override
+//                    public void onNext(PaymentResponse paymentResponse) {
+//                        progressBar.setVisibility(View.GONE);
+//
+//                        if (paymentResponse.getStatus().equals("02")) {
+//                            saveCurrentOtpStatus();
+//                            saveCurrentOtpValues(paymentResponse.getDescription(), paymentResponse
+//                                    .getDetails().getOtpref());
+//                            saveWalletTopUpValues();
+//                            finish();
+//                        } else {
+//                            hideLoading();
+//                            showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
+//                        }
+//                    }
+//                });
     }
 
-    private void displayOtpDialog(String description, String otpRef) {
+    @OnClick(R.id.otp_button)
+    void processOtp() {
+        otpValue = otpText.getText().toString();
 
-        final EditText input = new EditText(CustomerWalletTopUpPaymentActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
-                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
+        boolean cancel = false;
+        View focusView = null;
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerWalletTopUpPaymentActivity
-                .this);
-        dialog.setCancelable(false)
-                .setTitle("Please enter OTP")
-                .setMessage(description)
-                .setView(input)
-                .setPositiveButton("Send OTP", (dialog1, id) -> {
-                    final String otp = input.getText().toString();
-                    if (otp.isEmpty()) {
-                        displayOtpDialog(description, otpRef);
-                        Toast.makeText(this, "Please enter an OTP", Toast.LENGTH_SHORT).show();
-                    } else if (otp.length() != 6) {
-                        displayOtpDialog(description, otpRef);
-                        input.setText(otp);
-                        Toast.makeText(this, "Please enter a valid OTP", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (!InternetConnectivity.isDeviceConnected(this)) {
-                            displayOtpDialog(description, otpRef);
-                            input.setText(otp);
-                            Snackbar.make(cardNumberLayout, R.string.internet_error,
-                                    Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            performOtpTransaction(otpRef, otp);
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", (dialog12, which) -> {
-                    dialog12.dismiss();
-                    hideLoading();
-                });
+        if (otpValue.isEmpty()) {
+            otpTextLayout.setError("Enter a 6 digit PIN");
+            focusView = otpTextLayout;
+            cancel = true;
+        } else if (otpText.length() != 6) {
+            otpTextLayout.setError("Enter a valid OTP number");
+            focusView = otpTextLayout;
+            cancel = true;
+        } else {
+            otpTextLayout.setError(null);
+        }
 
-        final AlertDialog alert = dialog.create();
-        alert.show();
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            if (!InternetConnectivity.isDeviceConnected(this)) {
+                Snackbar.make(otpTextLayout, R.string.internet_error, Snackbar.LENGTH_SHORT).show();
+            } else {
+                performOtpTransaction(getOtpRef(), otpValue);
+            }
+        }
     }
 
     private void performOtpTransaction(String otpRef, String otp) {
-        progressBar.setVisibility(View.VISIBLE);
+        otpProgressBar.setVisibility(View.VISIBLE);
+        otpContainer.setVisibility(View.GONE);
 
         com.swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject chargeObject = new com
                 .swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject(otpRef, otp);
@@ -525,7 +563,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         //performWalletTopUp("", "", false);
-                        hideLoading();
+                        otpProgressBar.setVisibility(View.GONE);
+                        otpContainer.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -536,7 +575,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                                     .getDetails().getMfisaTxnId(), true);
                         } else {
                             //  performWalletTopUp("", "", false);
-                            hideLoading();
+                            otpProgressBar.setVisibility(View.GONE);
+                            otpContainer.setVisibility(View.VISIBLE);
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -547,8 +587,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
             isSuccessful) {
 
         CustomerWalletTopUpRequest walletTopUpRequest = new CustomerWalletTopUpRequest("mFISA",
-                amount, customerToken, description, isSuccessful, transactionId, referenceId,
-                email);
+                getWalletAmount(), getCustomerToken(), description, isSuccessful, transactionId,
+                getReferenceId(), getEmail());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -580,6 +620,7 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                     public void onNext(CustomerWalletTopUpResponse walletTopUpResponse) {
 
                         if (walletTopUpResponse.getStatus() == 1) {
+                            updateSavedCustomerOtpStatus();
                             updateSavedCustomerBalance(walletTopUpResponse.getCustomerBalance());
                             showRechargeSuccessfulDialog();
                         } else {
@@ -590,10 +631,62 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
                 });
     }
 
-    private void showResultDialog(String message, int status) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        successfulFragment = RechargeResponseFragment.newInstance(message, status);
-        successfulFragment.show(fragmentManager, "");
+    private String getOtpRef() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_wallet_otp_ref), "");
+    }
+
+    private void saveCurrentOtpStatus() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string.saved_customer_wallet_otp_status),
+                true);
+        editor.apply();
+    }
+
+    private void saveCurrentOtpValues(String description, String otpRef) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getResources().getString(R.string.saved_customer_wallet_otp_description),
+                description);
+        editor.putString(getResources().getString(R.string.saved_customer_wallet_otp_ref), otpRef);
+        editor.apply();
+    }
+
+    private void saveWalletTopUpValues() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(getResources().getString(R.string.saved_customer_wallet_otp_amount), amount);
+        editor.putString(getResources().getString(R.string
+                .saved_customer_wallet_otp_customer_token), customerToken);
+        editor.putString(getResources().getString(R.string
+                .saved_customer_wallet_otp_reference_id), referenceId);
+        editor.putString(getResources().getString(R.string.saved_customer_wallet_otp_email), email);
+        editor.apply();
+    }
+
+    private void showLoading() {
+        cardPaymentContainer.setVisibility(View.GONE);
+        creditCardLayout.setVisibility(View.GONE);
+        customerWalletPaymentButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private Integer getWalletAmount() {
+        return sharedPreferences.getInt(getResources().getString(R.string
+                .saved_customer_wallet_otp_amount), 0);
+    }
+
+    private String getReferenceId() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_wallet_otp_reference_id), "");
+    }
+
+    private String getCustomerToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_wallet_otp_customer_token), "");
+    }
+
+    private String getEmail() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_wallet_otp_email), "");
     }
 
     private void showRechargeSuccessfulDialog() {
@@ -601,7 +694,7 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(CustomerWalletTopUpPaymentActivity
                 .this);
 
-        LayoutInflater inflater = this.getLayoutInflater();
+        LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
 
         TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
@@ -610,7 +703,6 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         dialog.setCancelable(false)
                 .setView(dialogView)
                 .setPositiveButton("OK", (dialog1, id) -> {
-                    finish();
                     Intent dashboardIntent = new Intent(CustomerWalletTopUpPaymentActivity.this,
                             CustomerActivity.class);
                     startActivity(dashboardIntent);
@@ -618,6 +710,13 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
         final AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    private void updateSavedCustomerOtpStatus() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string.saved_customer_wallet_otp_status),
+                false);
+        editor.apply();
     }
 
     private void updateSavedCustomerBalance(Double balance) {
@@ -630,17 +729,13 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void showLoading() {
-        cardPaymentContainer.setVisibility(View.GONE);
-        creditCardLayout.setVisibility(View.GONE);
-        customerWalletPaymentButton.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+    private void showResultDialog(String message, int status) {
+        successfulFragment = RechargeResponseFragment.newInstance(message, status);
+        successfulFragment.show(fragmentManager, "");
     }
 
     private void hideLoading() {
         progressBar.setVisibility(View.GONE);
-        cardPaymentContainer.setVisibility(View.VISIBLE);
-        creditCardLayout.setVisibility(View.VISIBLE);
-        customerWalletPaymentButton.setVisibility(View.VISIBLE);
+        linearLayoutContainer.setVisibility(View.VISIBLE);
     }
 }

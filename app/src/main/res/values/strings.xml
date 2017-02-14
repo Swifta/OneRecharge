@@ -154,7 +154,13 @@
     <string name="saved_customer_recharged">saved_customer_recharged</string>
     <string name="saved_customer_balance">saved_customer_balance</string>
     <string name="saved_customer_created">saved_customer_created</string>
-
+    <string name="saved_customer_wallet_otp_status">saved_customer_wallet_otp_status</string>
+    <string name="saved_customer_wallet_otp_description">saved_customer_wallet_otp_description</string>
+    <string name="saved_customer_wallet_otp_ref">saved_customer_wallet_otp_ref</string>
+    <string name="saved_customer_wallet_otp_amount">saved_customer_wallet_otp_amount</string>
+    <string name="saved_customer_wallet_otp_customer_token">saved_customer_wallet_otp_customer_token</string>
+    <string name="saved_customer_wallet_otp_reference_id">saved_customer_wallet_otp_reference_id</string>
+    <string name="saved_customer_wallet_otp_email">saved_customer_wallet_otp_email</string>
 
     <string name="title_activity_agent"/>
 
