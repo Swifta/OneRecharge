@@ -271,7 +271,7 @@
             android:visibility="gone"/>
 
         <LinearLayout
-            android:id="@+id/layout_content"
+            android:id="@+id/otp_layout_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

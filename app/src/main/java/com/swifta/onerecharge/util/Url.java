@@ -100,8 +100,8 @@ public class Url {
      **/
 
     // Pay with card
-    public static final String MFISA_PAY_WITH_CARD = "v1/pay";
+    public static final String MFISA_PAY_WITH_CARD = "v1/card/pay";
 
     // Authorize with OTPa
-    public static final String MFISA_AUTHORIZE_WITH_OTP = "v1/authorize";
+    public static final String MFISA_AUTHORIZE_WITH_OTP = "v1/card/authorize";
 }
