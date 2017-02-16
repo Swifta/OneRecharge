@@ -67,6 +67,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     LinearLayout otpContainer;
     @BindView(R.id.otp_progress_bar)
     ProgressBar otpProgressBar;
+    @BindView(R.id.otp_layout_content)
+    LinearLayout otpLayoutContent;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -113,13 +115,8 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     @BindView(R.id.activity_customer_quick_recharge)
     ScrollView scrollView;
 
-    @BindView(R.id.otp_layout_content)
-    LinearLayout otpLayoutContent;
-
     RechargeResponseFragment successfulFragment;
-
     FragmentManager fragmentManager;
-
     private SharedPreferences sharedPreferences;
 
     String email, referenceId, customerToken, country, otpValue;
@@ -127,7 +124,6 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
     private static final String CREDIT_CARD_DEFAULT_TEXT = "XXXX  XXXX  XXXX  XXXX  XXXX";
-
     private static final int TRANSACTION_FAILED = 0;
     private static final String AUTHORIZATION = "Bearer 755187d4-11bb-3eea-96ca-440884367b9c";
     private static final String TRANSACTION_SUCCESSFUL_MESSAGE = "Transaction request sent " +
@@ -514,11 +510,10 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        progressBar.setVisibility(View.GONE);
                         cardPaymentContainer.setVisibility(View.VISIBLE);
                         creditCardLayout.setVisibility(View.VISIBLE);
                         customerWalletPaymentButton.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -778,9 +773,4 @@ public class CustomerWalletTopUpPaymentActivity extends AppCompatActivity {
         successfulFragment = RechargeResponseFragment.newInstance(message, status);
         successfulFragment.show(fragmentManager, "");
     }
-
-//    private void hideLoading() {
-//        progressBar.setVisibility(View.GONE);
-//        linearLayoutContainer.setVisibility(View.VISIBLE);
-//    }
 }
