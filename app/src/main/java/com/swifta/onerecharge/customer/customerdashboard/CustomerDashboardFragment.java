@@ -121,7 +121,7 @@ public class CustomerDashboardFragment extends Fragment {
     private void getNewWalletBalance() {
 
         CustomerWalletBalanceRequest walletBalanceRequest = new CustomerWalletBalanceRequest
-                ("sMHuflOVZYEuCvXW1SGWmIMoj0aV5q1D", getCustomerEmail());
+                (getCustomerToken(), getCustomerEmail());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -161,6 +161,11 @@ public class CustomerDashboardFragment extends Fragment {
     private String getCustomerEmail() {
         return sharedPreferences.getString(getResources().getString(R.string
                 .saved_customer_email_address), "");
+    }
+
+    private String getCustomerToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_auth_token), "");
     }
 
     private void updateSavedCustomerBalance(Double balance) {
