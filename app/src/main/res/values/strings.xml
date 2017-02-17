@@ -141,6 +141,7 @@
 
     <!-- Shared Preferences Customers -->
     <string name="customer_shared_preference_name">customer_shared_pref</string>
+    <string name="is_customer_logged_in">is_customer_logged_in</string>
     <string name="saved_customer_auth_token">saved_customer_auth_token</string>
     <string name="saved_customer_id">saved_customer_id</string>
     <string name="saved_customer_fullname">saved_customer_fullname</string>

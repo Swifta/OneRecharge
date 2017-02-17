@@ -211,8 +211,8 @@ public class AgentRegistrationActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(getString(R
                 .string.agent_shared_preference_name), Context.MODE_PRIVATE);
-        isAgentLoggedIn = sharedPreferences.getBoolean(getString(R.string
-                .is_agent_logged_in), false);
+        isAgentLoggedIn = sharedPreferences.getBoolean(getString(R.string.is_agent_logged_in),
+                false);
 
         if (isAgentLoggedIn) {
             switchToAgentActivity();

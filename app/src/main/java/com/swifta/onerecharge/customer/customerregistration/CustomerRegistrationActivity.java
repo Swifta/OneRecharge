@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.CustomerRegistration;
 import com.swifta.onerecharge.customer.customerregistration.loginresponsemodel.Data;
 import com.swifta.onerecharge.customer.customerregistration.registerresponsemodel.CustomerSignUpResponse;
@@ -81,15 +81,23 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     String signupPhoneNumber;
 
     private SharedPreferences sharedPreferences;
+    private boolean isCustomerLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_registration);
 
-        ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences(getString(R.string
                 .customer_shared_preference_name), Context.MODE_PRIVATE);
+        isCustomerLoggedIn = sharedPreferences.getBoolean(getString(R.string
+                .is_customer_logged_in), false);
+
+        if (isCustomerLoggedIn) {
+            switchToCustomerActivity();
+        }
+
+        setContentView(R.layout.activity_customer_registration);
+        ButterKnife.bind(this);
 
         getSupportActionBar().hide();
     }
@@ -257,6 +265,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                     public void onNext(CustomerRegistration customerRegistration) {
                         if (customerRegistration.getStatus() == 1) {
                             saveCustomerLoginResult(customerRegistration.getData());
+                            saveCustomerState();
                             switchToCustomerActivity();
                         } else {
                             loginProgress.setVisibility(View.GONE);
@@ -343,6 +352,12 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         editor.putString(getResources().getString(R.string.saved_customer_created), data
                 .getProfile().getCustomerCreated());
 
+        editor.apply();
+    }
+
+    private void saveCustomerState() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.is_customer_logged_in), true);
         editor.apply();
     }
 
