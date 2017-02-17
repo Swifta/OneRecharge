@@ -161,6 +161,13 @@
     <string name="saved_customer_wallet_otp_customer_token">saved_customer_wallet_otp_customer_token</string>
     <string name="saved_customer_wallet_otp_reference_id">saved_customer_wallet_otp_reference_id</string>
     <string name="saved_customer_wallet_otp_email">saved_customer_wallet_otp_email</string>
+    <string name="saved_customer_quick_recharge_otp_status">saved_customer_quick_recharge_otp_status</string>
+    <string name="saved_customer_quick_recharge_otp_description">saved_customer_quick_recharge_otp_description</string>
+    <string name="saved_customer_quick_recharge_otp_ref">saved_customer_quick_recharge_otp_ref</string>
+    <string name="saved_customer_quick_recharge_otp_phone_no">saved_customer_quick_recharge_otp_phone_no</string>
+    <string name="saved_customer_quick_recharge_otp_amount">saved_customer_quick_recharge_otp_amount</string>
+    <string name="saved_customer_quick_recharge_otp_network_provider">saved_customer_quick_recharge_otp_network_provider</string>
+    <string name="saved_customer_quick_recharge_otp_email">saved_customer_quick_recharge_otp_email</string>
 
     <string name="title_activity_agent"/>
 
