@@ -422,10 +422,53 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
+                performOtpBackAction();
                 finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performOtpBackAction() {
+        if (isOtpTransaction()) {
+            createOtpBackButtonDialog();
+        } else {
+            finish();
+        }
+    }
+
+    private void createOtpBackButtonDialog() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder
+                (CustomerQuickRechargePaymentActivity.this);
+
+        alertBuilder.setCancelable(false)
+                .setTitle("Are you sure you want to go back?")
+                .setMessage("This transaction will be cancelled and you'll be returned to the " +
+                        "dashboard.")
+                .setPositiveButton("Cancel Otp Transaction", (dialog, which) -> {
+                    setSavedOtpTransactionValueToFalse();
+                    returnToDashboard();
+                })
+                .setNegativeButton("Remain here", (dialog, which) -> {
+                    dialog.cancel();
+                });
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+    }
+
+    private void setSavedOtpTransactionValueToFalse() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string
+                .saved_customer_quick_recharge_otp_status), false);
+        editor.apply();
+    }
+
+    private void returnToDashboard() {
+        Intent intent = new Intent(CustomerQuickRechargePaymentActivity.this, CustomerActivity
+                .class);
+        startActivity(intent);
+        finish();
     }
 
     private String getCountryCurrencyCode(String countryName) {
