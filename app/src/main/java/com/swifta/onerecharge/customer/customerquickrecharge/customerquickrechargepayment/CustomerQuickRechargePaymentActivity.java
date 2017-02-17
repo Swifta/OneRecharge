@@ -423,7 +423,6 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 performOtpBackAction();
-                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
