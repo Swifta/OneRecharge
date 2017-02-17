@@ -71,12 +71,17 @@ public class AgentWalletTopUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         ArrayAdapter<String> adapter;
 
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string
+                .agent_shared_preference_name), Context.MODE_PRIVATE);
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_agent_wallet_top_up, container, false);
 
         ButterKnife.bind(this, view);
-        sharedPreferences = getActivity().getSharedPreferences(getString(R.string
-                .agent_shared_preference_name), Context.MODE_PRIVATE);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
                 (getResources().getString(R.string.wallet_topup));
@@ -97,6 +102,26 @@ public class AgentWalletTopUpFragment extends Fragment {
         countryChoiceSpinner.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
+    }
+
+    private boolean isOtpTransaction() {
+        return sharedPreferences.getBoolean(getResources().getString(R.string
+                .saved_agent_wallet_otp_status), false);
+    }
+
+    private void switchToOtpView() {
+        Intent paymentActivityIntent = new Intent(getActivity(),
+                AgentWalletTopUpPaymentActivity.class);
+        startActivity(paymentActivityIntent);
     }
 
     @OnClick(R.id.top_wallet_up_button)

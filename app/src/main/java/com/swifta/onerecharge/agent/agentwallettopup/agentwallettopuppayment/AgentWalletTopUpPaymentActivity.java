@@ -1,6 +1,8 @@
 package com.swifta.onerecharge.agent.agentwallettopup.agentwallettopuppayment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,13 +21,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
 import com.swifta.onerecharge.agent.AgentActivity;
@@ -55,6 +56,19 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
+
+    @BindView(R.id.otp_message)
+    TextView otpMessage;
+    @BindView(R.id.otp_text)
+    TextInputEditText otpText;
+    @BindView(R.id.otp_text_layout)
+    TextInputLayout otpTextLayout;
+    @BindView(R.id.otp_container)
+    LinearLayout otpContainer;
+    @BindView(R.id.otp_progress_bar)
+    ProgressBar otpProgressBar;
+    @BindView(R.id.otp_layout_content)
+    LinearLayout otpLayoutContent;
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
@@ -98,9 +112,14 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
     @BindView(R.id.credit_card_cvv)
     TextView creditCardCvvText;
 
-    RechargeResponseFragment successfulFragment;
+    @BindView(R.id.activity_customer_quick_recharge)
+    ScrollView scrollView;
 
-    String email, referenceId, agentToken, country;
+    RechargeResponseFragment successfulFragment;
+    FragmentManager fragmentManager;
+    private SharedPreferences sharedPreferences;
+
+    String email, referenceId, agentToken, country, otpValue;
     int amount;
     String cardNumber, monthValue, yearValue, cvv, cardPin;
 
@@ -122,21 +141,30 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        fragmentManager = getSupportFragmentManager();
+
+        sharedPreferences = getSharedPreferences(getString(R.string.agent_shared_preference_name)
+                , Context.MODE_PRIVATE);
+
         getDataFromBundle();
 
-        imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        } else {
+            imageView.setImageDrawable(getCreditCardBackgroundBitmapDrawable());
 
-        referenceId = RandomNumberGenerator.getRandomString(12);
+            referenceId = RandomNumberGenerator.getRandomString(12);
 
-        agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
+            agentWalletPaymentButton.setText("Pay " + getCountryCurrencyCode(country) + " " + amount);
 
-        addCardNumberTextChangedListener();
+            addCardNumberTextChangedListener();
 
-        addExpiryDateMonthTextChangedListener();
+            addExpiryDateMonthTextChangedListener();
 
-        addExpiryDateYearTextChangedListener();
+            addExpiryDateYearTextChangedListener();
 
-        addCvvTextChangedListener();
+            addCvvTextChangedListener();
+        }
     }
 
     private void getDataFromBundle() {
@@ -144,6 +172,22 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         agentToken = getIntent().getStringExtra("agent_token");
         country = getIntent().getStringExtra("country");
+    }
+
+    private boolean isOtpTransaction() {
+        return sharedPreferences.getBoolean(getResources().getString(R.string
+                .saved_agent_wallet_otp_status), false);
+    }
+
+    private void switchToOtpView() {
+        scrollView.setVisibility(View.GONE);
+        otpContainer.setVisibility(View.VISIBLE);
+        otpMessage.setText(getOtpDescription());
+    }
+
+    private String getOtpDescription() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_agent_wallet_otp_description), "");
     }
 
     private RoundedBitmapDrawable getCreditCardBackgroundBitmapDrawable() {
@@ -373,10 +417,51 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                performOtpBackAction();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performOtpBackAction() {
+        if (isOtpTransaction()) {
+            createOtpBackButtonDialog();
+        } else {
+            finish();
+        }
+    }
+
+    private void createOtpBackButtonDialog() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder
+                (AgentWalletTopUpPaymentActivity.this);
+
+        alertBuilder.setCancelable(false)
+                .setTitle("Are you sure you want to go back?")
+                .setMessage("This transaction will be cancelled and you'll be returned to the " +
+                        "dashboard.")
+                .setPositiveButton("Cancel Otp Transaction", (dialog, which) -> {
+                    setSavedOtpTransactionValueToFalse();
+                    returnToDashboard();
+                })
+                .setNegativeButton("Remain here", (dialog, which) -> {
+                    dialog.cancel();
+                });
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+    }
+
+
+    private void setSavedOtpTransactionValueToFalse() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string.saved_agent_wallet_otp_status), false);
+        editor.apply();
+    }
+
+    private void returnToDashboard() {
+        Intent intent = new Intent(AgentWalletTopUpPaymentActivity.this, AgentActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private String getCountryCurrencyCode(String countryName) {
@@ -424,7 +509,10 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        hideLoading();
+                        progressBar.setVisibility(View.GONE);
+                        cardPaymentContainer.setVisibility(View.VISIBLE);
+                        creditCardLayout.setVisibility(View.VISIBLE);
+                        agentWalletPaymentButton.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -433,60 +521,56 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
 
                         if (paymentResponse.getStatus().equals("02")) {
-                            displayOtpDialog(paymentResponse.getDescription(), paymentResponse
+                            saveCurrentOtpStatus();
+                            saveCurrentOtpValues(paymentResponse.getDescription(), paymentResponse
                                     .getDetails().getOtpref());
+                            saveWalletTopUpValues();
+                            switchToOtpView();
                         } else {
-                            hideLoading();
+                            cardPaymentContainer.setVisibility(View.VISIBLE);
+                            creditCardLayout.setVisibility(View.VISIBLE);
+                            agentWalletPaymentButton.setVisibility(View.VISIBLE);
                             showResultDialog(paymentResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
                 });
     }
 
-    private void displayOtpDialog(String description, String otpRef) {
+    @OnClick(R.id.otp_button)
+    void processOtp() {
+        otpValue = otpText.getText().toString();
 
-        final EditText input = new EditText(AgentWalletTopUpPaymentActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
-                .MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
+        boolean cancel = false;
+        View focusView = null;
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(AgentWalletTopUpPaymentActivity
-                .this);
-        dialog.setCancelable(false)
-                .setTitle("Please enter OTP")
-                .setMessage(description)
-                .setView(input)
-                .setPositiveButton("Send OTP", (dialog1, id) -> {
-                    final String otp = input.getText().toString();
-                    if (otp.isEmpty()) {
-                        displayOtpDialog(description, otpRef);
-                        Toast.makeText(this, "Please enter an OTP", Toast.LENGTH_SHORT).show();
-                    } else if (otp.length() != 6) {
-                        displayOtpDialog(description, otpRef);
-                        input.setText(otp);
-                        Toast.makeText(this, "Please enter a valid OTP", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (!InternetConnectivity.isDeviceConnected(this)) {
-                            displayOtpDialog(description, otpRef);
-                            input.setText(otp);
-                            Snackbar.make(cardNumberLayout, R.string.internet_error,
-                                    Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            performOtpTransaction(otpRef, otp);
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", (dialog12, which) -> {
-                    dialog12.dismiss();
-                    hideLoading();
-                });
+        if (otpValue.isEmpty()) {
+            otpTextLayout.setError("Enter a 6 digit PIN");
+            focusView = otpTextLayout;
+            cancel = true;
+        } else if (otpText.length() != 6) {
+            otpTextLayout.setError("Enter a valid OTP number");
+            focusView = otpTextLayout;
+            cancel = true;
+        } else {
+            otpTextLayout.setError(null);
+        }
 
-        final AlertDialog alert = dialog.create();
-        alert.show();
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            if (!InternetConnectivity.isDeviceConnected(this)) {
+                Snackbar.make(otpTextLayout, R.string.internet_error, Snackbar.LENGTH_SHORT).show();
+            } else {
+                performOtpTransaction(getOtpRef(), otpValue);
+            }
+        }
     }
 
+
     private void performOtpTransaction(String otpRef, String otp) {
-        progressBar.setVisibility(View.VISIBLE);
+        otpProgressBar.setVisibility(View.VISIBLE);
+        otpLayoutContent.setVisibility(View.GONE);
 
         com.swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject chargeObject = new com
                 .swifta.onerecharge.cardpayment.otp.requestmodel.ChargeObject(otpRef, otp);
@@ -515,7 +599,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        hideLoading();
+                        otpProgressBar.setVisibility(View.GONE);
+                        otpLayoutContent.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
@@ -525,7 +610,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                             performWalletTopUp(otpResponse.getDescription(), otpResponse
                                     .getDetails().getMfisaTxnId());
                         } else {
-                            hideLoading();
+                            otpProgressBar.setVisibility(View.GONE);
+                            otpLayoutContent.setVisibility(View.VISIBLE);
                             showResultDialog(otpResponse.getDescription(), TRANSACTION_FAILED);
                         }
                     }
@@ -534,8 +620,8 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
     private void performWalletTopUp(String description, String transactionId) {
 
-        AgentWalletTopUpRequest walletTopUpRequest = new AgentWalletTopUpRequest(amount,
-                agentToken, description, transactionId, referenceId, email);
+        AgentWalletTopUpRequest walletTopUpRequest = new AgentWalletTopUpRequest(getWalletAmount(),
+                getAgentToken(), description, transactionId, getReferenceId(), getEmail());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -554,18 +640,21 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
 
                     @Override
                     public void onCompleted() {
-                        hideLoading();
+                        otpProgressBar.setVisibility(View.GONE);
+                        otpLayoutContent.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        hideLoading();
+                        otpProgressBar.setVisibility(View.GONE);
+                        otpLayoutContent.setVisibility(View.VISIBLE);
                         showResultDialog(TRANSACTION_ERROR_MESSAGE, TRANSACTION_FAILED);
                     }
 
                     @Override
                     public void onNext(AgentWalletTopUpResponse walletTopUpResponse) {
                         if (walletTopUpResponse.getStatus() == 1) {
+                            updateSavedCustomerOtpStatus();
                             showRechargeSuccessfulDialog();
                         } else {
                             showResultDialog(walletTopUpResponse.getData().getMessage(),
@@ -573,6 +662,37 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private String getOtpRef() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_agent_wallet_otp_ref), "");
+    }
+
+    private void saveCurrentOtpStatus() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string.saved_agent_wallet_otp_status),
+                true);
+        editor.apply();
+    }
+
+    private void saveCurrentOtpValues(String description, String otpRef) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getResources().getString(R.string.saved_agent_wallet_otp_description),
+                description);
+        editor.putString(getResources().getString(R.string.saved_agent_wallet_otp_ref), otpRef);
+        editor.apply();
+    }
+
+    private void saveWalletTopUpValues() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(getResources().getString(R.string.saved_agent_wallet_otp_amount), amount);
+        editor.putString(getResources().getString(R.string
+                .saved_agent_wallet_otp_customer_token), agentToken);
+        editor.putString(getResources().getString(R.string
+                .saved_agent_wallet_otp_reference_id), referenceId);
+        editor.putString(getResources().getString(R.string.saved_agent_wallet_otp_email), email);
+        editor.apply();
     }
 
     private void showResultDialog(String message, int status) {
@@ -604,6 +724,12 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         alert.show();
     }
 
+    private void updateSavedCustomerOtpStatus() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getResources().getString(R.string.saved_agent_wallet_otp_status), false);
+        editor.apply();
+    }
+
     private void showLoading() {
         cardPaymentContainer.setVisibility(View.GONE);
         creditCardLayout.setVisibility(View.GONE);
@@ -611,10 +737,23 @@ public class AgentWalletTopUpPaymentActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideLoading() {
-        progressBar.setVisibility(View.GONE);
-        cardPaymentContainer.setVisibility(View.VISIBLE);
-        creditCardLayout.setVisibility(View.VISIBLE);
-        agentWalletPaymentButton.setVisibility(View.VISIBLE);
+    private Integer getWalletAmount() {
+        return sharedPreferences.getInt(getResources().getString(R.string
+                .saved_agent_wallet_otp_amount), 0);
+    }
+
+    private String getReferenceId() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_agent_wallet_otp_reference_id), "");
+    }
+
+    private String getAgentToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_agent_wallet_otp_customer_token), "");
+    }
+
+    private String getEmail() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_agent_wallet_otp_email), "");
     }
 }
