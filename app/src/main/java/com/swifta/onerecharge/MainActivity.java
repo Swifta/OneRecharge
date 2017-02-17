@@ -33,16 +33,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchCustomerActivity() {
-        Intent customerIntent = new Intent(MainActivity.this,
-                CustomerRegistrationActivity
-                        .class);
+        Intent customerIntent = new Intent(MainActivity.this, CustomerRegistrationActivity.class);
         startActivity(customerIntent);
     }
 
     private void launchAgentActivity() {
-        Intent agentIntent = new Intent(MainActivity.this,
-                AgentRegistrationActivity
-                        .class);
+        Intent agentIntent = new Intent(MainActivity.this, AgentRegistrationActivity.class);
         startActivity(agentIntent);
     }
 }
