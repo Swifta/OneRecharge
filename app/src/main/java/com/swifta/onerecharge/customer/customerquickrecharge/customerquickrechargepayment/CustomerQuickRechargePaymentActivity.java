@@ -168,7 +168,8 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
             addExpiryDateYearTextChangedListener();
 
             addCvvTextChangedListener();
-        }    }
+        }
+    }
 
     private void getDataFromBundle() {
         phoneNumber = getIntent().getStringExtra("phone_number");
@@ -692,7 +693,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
     }
 
     private void saveQuickRechargeValues() {
-      // save these values in case the activity is destroyed
+        // save these values in case the activity is destroyed
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getResources().getString(R.string
@@ -727,7 +728,7 @@ public class CustomerQuickRechargePaymentActivity extends AppCompatActivity {
     private void updateSavedCustomerOtpStatus() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getResources().getString(R.string
-                .saved_customer_quick_recharge_otp_status),
+                        .saved_customer_quick_recharge_otp_status),
                 false);
         editor.apply();
     }

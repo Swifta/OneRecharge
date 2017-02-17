@@ -116,6 +116,12 @@ public class CustomerQuickRechargeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ArrayAdapter<String> adapter;
+        sharedPreferences = getActivity().getSharedPreferences(getString(R
+                .string.customer_shared_preference_name), Context.MODE_PRIVATE);
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_customer_quick_recharge, container,
@@ -125,9 +131,6 @@ public class CustomerQuickRechargeFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle
                 (getResources().getString(R.string.quick_recharge));
-
-        sharedPreferences = getActivity().getSharedPreferences(getString(R
-                .string.customer_shared_preference_name), Context.MODE_PRIVATE);
 
         if (CountryListRepository.getCountryList() != null) {
             List<String> countryList = CountryListRepository.getCountryList();
@@ -161,6 +164,26 @@ public class CustomerQuickRechargeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isOtpTransaction()) {
+            switchToOtpView();
+        }
+    }
+
+    private boolean isOtpTransaction() {
+        return sharedPreferences.getBoolean(getResources().getString(R.string
+                .saved_customer_quick_recharge_otp_status), false);
+    }
+
+    private void switchToOtpView() {
+        Intent paymentActivityIntent = new Intent(getActivity(),
+                CustomerQuickRechargePaymentActivity.class);
+        startActivity(paymentActivityIntent);
     }
 
     private void setNetworkAdapter(int countryChoiceSpinnerPosition) {
