@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,9 +33,11 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.agent.AgentActivity;
 import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargerequestmodel.QuickRechargeRequest;
 import com.swifta.onerecharge.agent.agentquickrecharge.quickrechargeresponsemodel.QuickRechargeResponse;
 import com.swifta.onerecharge.countryinfo.CountryListRepository;
@@ -341,8 +344,7 @@ public class QuickRechargeFragment extends Fragment {
                     public void onNext(QuickRechargeResponse quickRechargeResponse) {
 
                         if (quickRechargeResponse.getStatus() == 1) {
-                            showResultDialog(TRANSACTION_SUCCESSFUL_MESSAGE, TRANSACTION_SUCCESSFUL);
-                            clearInputFields();
+                            showRechargeSuccessfulDialog();
                         } else if (quickRechargeResponse.getStatus() == 0) {
                             showResultDialog(quickRechargeResponse.getData().getMessage(),
                                     TRANSACTION_FAILED);
@@ -365,6 +367,27 @@ public class QuickRechargeFragment extends Fragment {
         FragmentManager fragmentManager = getChildFragmentManager();
         successfulFragment = RechargeResponseFragment.newInstance(message, status);
         successfulFragment.show(fragmentManager, "");
+    }
+
+    private void showRechargeSuccessfulDialog() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
+
+        TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
+        textView.setText(TRANSACTION_SUCCESSFUL_MESSAGE);
+
+        dialog.setCancelable(false)
+                .setView(dialogView)
+                .setPositiveButton("OK", (dialog1, id) -> {
+                    Intent dashboardIntent = new Intent(getActivity(), AgentActivity.class);
+                    startActivity(dashboardIntent);
+                });
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
     }
 
     private void clearInputFields() {

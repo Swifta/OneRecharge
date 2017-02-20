@@ -100,6 +100,22 @@ public class AgentActivity extends AppCompatActivity
     String currentDisplayedView = "none";
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
@@ -109,6 +125,10 @@ public class AgentActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences(getString(R.string
                 .agent_shared_preference_name), Context.MODE_PRIVATE);
         realm = Realm.getDefaultInstance();
+
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
 
         fragmentManager = getSupportFragmentManager();
 
@@ -158,6 +178,47 @@ public class AgentActivity extends AppCompatActivity
         getAgentApiKey();
 
         getAvailableCountries();
+    }
+
+    private void updateWalletBalance() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        String emailAddress = getEmailAddress();
+        String authToken = getToken();
+
+        final AgentService agentService = retrofit
+                .create(AgentService.class);
+        final Observable<AgentSummary> agent = agentService
+                .getSummary(emailAddress, authToken);
+
+        agent.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<AgentSummary>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), e.getLocalizedMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(AgentSummary agentSummary) {
+                        if (agentSummary.getStatus() == 1) {
+
+                            String walletBalance = agentSummary.getData
+                                    ().getWalletBalance();
+                            setUpWalletWithCurrentValue(walletBalance);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -348,7 +409,8 @@ public class AgentActivity extends AppCompatActivity
                                                   totalAmountSold, int successfulTransactionAmount, String
                                                   successfulTransactionTime,
                                           int totalFailedTransactions, int
-                                                  totalFailedTransactionAmount, int lastFailedAmount, String lastFailedTime, String lastFailedDescription) {
+                                                  totalFailedTransactionAmount, int lastFailedAmount, String lastFailedTime, String
+                                                  lastFailedDescription) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getResources().getString(R.string.saved_referral_id)
                 , referralId);
