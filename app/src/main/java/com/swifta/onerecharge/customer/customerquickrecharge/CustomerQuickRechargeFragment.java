@@ -43,6 +43,8 @@ import com.swifta.onerecharge.customer.CustomerActivity;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargepayment.CustomerQuickRechargePaymentActivity;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargerequestmodel.CustomerQuickRechargeRequest;
 import com.swifta.onerecharge.customer.customerquickrecharge.customerquickrechargeresponsemodel.CustomerQuickRechargeResponse;
+import com.swifta.onerecharge.customer.customerwalletbalance.balancerequestmodel.CustomerWalletBalanceRequest;
+import com.swifta.onerecharge.customer.customerwalletbalance.balanceresponsemodel.CustomerWalletBalanceResponse;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.util.CustomerService;
 import com.swifta.onerecharge.util.InternetConnectivity;
@@ -390,8 +392,6 @@ public class CustomerQuickRechargeFragment extends Fragment {
 
                     @Override
                     public void onCompleted() {
-                        progressBar.setVisibility(View.GONE);
-                        quickRechargeContainer.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -403,14 +403,73 @@ public class CustomerQuickRechargeFragment extends Fragment {
                     public void onNext(CustomerQuickRechargeResponse quickRechargeResponse) {
 
                         if (quickRechargeResponse.getStatus() == 1) {
-                            showRechargeSuccessfulDialog();
-                            clearInputFields();
+                            getNewWalletBalance();
                         } else if (quickRechargeResponse.getStatus() == 0) {
+                            progressBar.setVisibility(View.GONE);
+                            quickRechargeContainer.setVisibility(View.VISIBLE);
                             showResultDialog(quickRechargeResponse.getData().getMessage(),
                                     TRANSACTION_FAILED);
                         }
                     }
                 });
+    }
+
+    private void getNewWalletBalance() {
+
+        CustomerWalletBalanceRequest walletBalanceRequest = new CustomerWalletBalanceRequest
+                (getCustomerToken(), getCustomerEmail());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<CustomerWalletBalanceResponse> walletBalanceResponse =
+                customerService.getWalletBallance(walletBalanceRequest);
+
+        walletBalanceResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<CustomerWalletBalanceResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(CustomerWalletBalanceResponse walletBalanceResponse) {
+
+                        if (walletBalanceResponse.getStatus() == 1) {
+                            updateSavedCustomerBalance(walletBalanceResponse.getData().getBalance
+                                    ());
+                            progressBar.setVisibility(View.GONE);
+                            quickRechargeContainer.setVisibility(View.VISIBLE);
+                            showRechargeSuccessfulDialog();
+                            clearInputFields();
+                        }
+                    }
+                });
+    }
+
+    private String getCustomerToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_auth_token), "");
+    }
+
+    private void updateSavedCustomerBalance(Double balance) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Integer walletBalanceAsInteger = balance.intValue();
+
+        editor.putInt(getResources().getString(R.string.saved_customer_balance),
+                walletBalanceAsInteger);
+        editor.apply();
     }
 
     private String getCustomerEmail() {

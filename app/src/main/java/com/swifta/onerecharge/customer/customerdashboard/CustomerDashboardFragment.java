@@ -50,6 +50,15 @@ public class CustomerDashboardFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (InternetConnectivity.isDeviceConnected(getActivity())) {
+            updateWalletBalance();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -64,17 +73,21 @@ public class CustomerDashboardFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(getString(R
                 .string.customer_shared_preference_name), Context.MODE_PRIVATE);
 
-        setUpUiWithDefaultValues();
-        setUpUi();
+        if (InternetConnectivity.isDeviceConnected(getActivity())) {
+            updateWalletBalance();
+        }
 
+        setUpUi();
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void setUpUi() {
+        walletBalanceText.setText(getResources().getString(R.string.wallet_balance,
+                getWalletBalance()));
 
-        setUpUi();
+        promoTextView.setText(getPromo());
+        discountsTextView.setText(getDiscounts());
+        rechargedTextView.setText(getRecharged());
     }
 
     private String getWalletBalance() {
@@ -83,21 +96,6 @@ public class CustomerDashboardFragment extends Fragment {
                 .saved_customer_balance), 0));
 
         return (balance.equals("0")) ? "0.00" : balance;
-    }
-
-    private void setUpUiWithDefaultValues() {
-        walletBalanceText.setText(getResources().getString(R.string
-                .wallet_balance, getWalletBalance()));
-    }
-
-    private void setUpUi() {
-        promoTextView.setText(getPromo());
-        discountsTextView.setText(getDiscounts());
-        rechargedTextView.setText(getRecharged());
-
-        if (InternetConnectivity.isDeviceConnected(getActivity())) {
-            getNewWalletBalance();
-        }
     }
 
     private String getPromo() {
@@ -118,7 +116,7 @@ public class CustomerDashboardFragment extends Fragment {
         return recharged;
     }
 
-    private void getNewWalletBalance() {
+    private void updateWalletBalance() {
 
         CustomerWalletBalanceRequest walletBalanceRequest = new CustomerWalletBalanceRequest
                 (getCustomerToken(), getCustomerEmail());
@@ -152,20 +150,10 @@ public class CustomerDashboardFragment extends Fragment {
                         if (walletBalanceResponse.getStatus() == 1) {
                             updateSavedCustomerBalance(walletBalanceResponse.getData().getBalance
                                     ());
-                            setUpUiWithDefaultValues();
+                            setUpUi();
                         }
                     }
                 });
-    }
-
-    private String getCustomerEmail() {
-        return sharedPreferences.getString(getResources().getString(R.string
-                .saved_customer_email_address), "");
-    }
-
-    private String getCustomerToken() {
-        return sharedPreferences.getString(getResources().getString(R.string
-                .saved_customer_auth_token), "");
     }
 
     private void updateSavedCustomerBalance(Double balance) {
@@ -176,5 +164,15 @@ public class CustomerDashboardFragment extends Fragment {
         editor.putInt(getResources().getString(R.string.saved_customer_balance),
                 walletBalanceAsInteger);
         editor.apply();
+    }
+
+    private String getCustomerEmail() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_email_address), "");
+    }
+
+    private String getCustomerToken() {
+        return sharedPreferences.getString(getResources().getString(R.string
+                .saved_customer_auth_token), "");
     }
 }

@@ -27,6 +27,8 @@ import com.swifta.onerecharge.countryinfo.Data;
 import com.swifta.onerecharge.customer.customerdashboard.CustomerDashboardFragment;
 import com.swifta.onerecharge.customer.customerlogout.CustomerLogout;
 import com.swifta.onerecharge.customer.customerquickrecharge.CustomerQuickRechargeFragment;
+import com.swifta.onerecharge.customer.customerwalletbalance.balancerequestmodel.CustomerWalletBalanceRequest;
+import com.swifta.onerecharge.customer.customerwalletbalance.balanceresponsemodel.CustomerWalletBalanceResponse;
 import com.swifta.onerecharge.customer.customerwallettopup.CustomerWalletTopUpFragment;
 import com.swifta.onerecharge.networklist.NetworkListRepository;
 import com.swifta.onerecharge.privacypolicy.PrivacyPolicyActivity;
@@ -54,6 +56,24 @@ public class CustomerActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
@@ -62,6 +82,10 @@ public class CustomerActivity extends AppCompatActivity
 
         sharedPreferences = getSharedPreferences(getString(R.string.customer_shared_preference_name),
                 Context.MODE_PRIVATE);
+
+        if (InternetConnectivity.isDeviceConnected(this)) {
+            updateWalletBalance();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string
@@ -80,6 +104,55 @@ public class CustomerActivity extends AppCompatActivity
         setHeaderViewText();
 
         getAvailableCountries();
+    }
+
+    private void updateWalletBalance() {
+
+        CustomerWalletBalanceRequest walletBalanceRequest = new CustomerWalletBalanceRequest
+                (getCustomerToken(), getCustomerEmail());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Url.BASE_URL)
+                .build();
+
+        CustomerService customerService = retrofit.create(CustomerService.class);
+        final Observable<CustomerWalletBalanceResponse> walletBalanceResponse =
+                customerService.getWalletBallance(walletBalanceRequest);
+
+        walletBalanceResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<CustomerWalletBalanceResponse>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(CustomerWalletBalanceResponse walletBalanceResponse) {
+
+                        if (walletBalanceResponse.getStatus() == 1) {
+                            updateSavedCustomerBalance(walletBalanceResponse.getData().getBalance
+                                    ());
+                        }
+                    }
+                });
+    }
+
+    private void updateSavedCustomerBalance(Double balance) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Integer walletBalanceAsInteger = balance.intValue();
+
+        editor.putInt(getResources().getString(R.string.saved_customer_balance),
+                walletBalanceAsInteger);
+        editor.apply();
     }
 
     @Override
