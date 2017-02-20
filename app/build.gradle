@@ -17,8 +17,8 @@ android {
         applicationId "com.swifta.onerecharge"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.0.6"
+        versionCode 9
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        dataBinding.enabled = true
         signingConfig signingConfigs.config
