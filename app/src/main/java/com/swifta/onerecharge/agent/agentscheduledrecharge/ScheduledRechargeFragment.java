@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,9 +33,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swifta.onerecharge.R;
+import com.swifta.onerecharge.agent.AgentActivity;
 import com.swifta.onerecharge.agent.agentquickrecharge.RechargeResponseFragment;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.Schedule;
 import com.swifta.onerecharge.agent.agentscheduledrecharge.scheduledrechargerequestmodel.ScheduledRechargeRequest;
@@ -460,8 +463,7 @@ public class ScheduledRechargeFragment extends Fragment {
                     public void onNext(ScheduledRechargeResponse scheduledRechargeResponse) {
 
                         if (scheduledRechargeResponse.getStatus() == 1) {
-                            showResultDialog(TRANSACTION_SUCCESSFUL_MESSAGE, TRANSACTION_SUCCESSFUL);
-                            clearInputFields();
+                            showRechargeSuccessfulDialog();
                         } else if (scheduledRechargeResponse.getStatus() == 0) {
                             showResultDialog(scheduledRechargeResponse
                                     .getData().getMessage(), TRANSACTION_FAILED);
@@ -486,18 +488,24 @@ public class ScheduledRechargeFragment extends Fragment {
         successfulFragment.show(fragmentManager, "");
     }
 
-    private void clearInputFields() {
-        scheduledRechargePhoneText.setText("");
-        networkChoiceSpinner.setSelection(0);
-        scheduledRechargeAmountText.setText("");
-        datePickerButton.setText(getResources().getString(R.string.date));
-        timePickerButton.setText(getResources().getString(R.string.time));
-        if (datePickerButton.getVisibility() == View.GONE) {
-            datePickerButton.setVisibility(View.VISIBLE);
-        }
+    private void showRechargeSuccessfulDialog() {
 
-        if (timePickerButton.getVisibility() == View.GONE) {
-            datePickerButton.setVisibility(View.VISIBLE);
-        }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.recharge_successful_layout, null);
+
+        TextView textView = (TextView) dialogView.findViewById(R.id.success_message);
+        textView.setText(TRANSACTION_SUCCESSFUL_MESSAGE);
+
+        dialog.setCancelable(false)
+                .setView(dialogView)
+                .setPositiveButton("OK", (dialog1, id) -> {
+                    Intent dashboardIntent = new Intent(getActivity(), AgentActivity.class);
+                    startActivity(dashboardIntent);
+                });
+
+        final AlertDialog alert = dialog.create();
+        alert.show();
     }
 }

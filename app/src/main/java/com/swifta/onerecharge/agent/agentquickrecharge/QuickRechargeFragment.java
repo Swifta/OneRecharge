@@ -389,10 +389,4 @@ public class QuickRechargeFragment extends Fragment {
         final AlertDialog alert = dialog.create();
         alert.show();
     }
-
-    private void clearInputFields() {
-        quickRechargePhoneText.setText("");
-        networkChoiceSpinner.setSelection(0);
-        quickRechargeAmountText.setText("");
-    }
 }
